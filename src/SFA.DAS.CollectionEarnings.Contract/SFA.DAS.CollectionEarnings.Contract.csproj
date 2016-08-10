@@ -41,8 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DasContextPropertyKeys.cs" />
-    <Compile Include="IDasContext.cs" />
-    <Compile Include="IDasTask.cs" />
+    <Compile Include="IExternalTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
