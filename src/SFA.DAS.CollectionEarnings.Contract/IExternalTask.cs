@@ -2,8 +2,8 @@
 
 namespace SFA.DAS.CollectionEarnings.Contract
 {
-    public interface IDasContext
+    public interface IExternalTask
     {
-        Dictionary<string, string> Properties { get; set; }
+        void Execute(IDictionary<string, string> context);
     }
 }
