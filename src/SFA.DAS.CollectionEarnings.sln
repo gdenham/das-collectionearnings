@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.CollectionEarnings.Validation", "SFA.DAS.CollectionEarnings.Validation\SFA.DAS.CollectionEarnings.Validation.csproj", "{E0B60D5B-969C-4C05-A636-27788CD19BE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.CollectionEarnings.DataLock", "SFA.DAS.CollectionEarnings.DataLock\SFA.DAS.CollectionEarnings.DataLock.csproj", "{E0B60D5B-969C-4C05-A636-27788CD19BE0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C69707A2-A4B1-497A-B10E-74BF405DFB13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.CollectionEarnings.Validation.UnitTests", "SFA.DAS.CollectionEarnings.Validation.UnitTests\SFA.DAS.CollectionEarnings.Validation.UnitTests.csproj", "{79593EF5-9F58-4E91-BE67-C5D20EE0DBC0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.CollectionEarnings.Validation.UnitTests", "SFA.DAS.CollectionEarnings.DataLock.UnitTests\SFA.DAS.CollectionEarnings.DataLock.UnitTests.csproj", "{79593EF5-9F58-4E91-BE67-C5D20EE0DBC0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.CollectionEarnings.Contract", "SFA.DAS.CollectionEarnings.Contract\SFA.DAS.CollectionEarnings.Contract.csproj", "{0C1E6DF4-AD3B-4865-9794-8499B6876B14}"
 EndProject

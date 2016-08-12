@@ -7,8 +7,8 @@
     <ProjectGuid>{79593EF5-9F58-4E91-BE67-C5D20EE0DBC0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SFA.DAS.CollectionEarnings.Validation.UnitTests</RootNamespace>
-    <AssemblyName>SFA.DAS.CollectionEarnings.Validation.UnitTests</AssemblyName>
+    <RootNamespace>SFA.DAS.CollectionEarnings.DataLock.UnitTests</RootNamespace>
+    <AssemblyName>SFA.DAS.CollectionEarnings.DataLock.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -56,7 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="DataLockTaskTests\WhenExecuting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +64,24 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.Contract\SFA.DAS.CollectionEarnings.Contract.csproj">
+      <Project>{0c1e6df4-ad3b-4865-9794-8499b6876b14}</Project>
+      <Name>SFA.DAS.CollectionEarnings.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.DataLock\SFA.DAS.CollectionEarnings.DataLock.csproj">
+      <Project>{e0b60d5b-969c-4c05-a636-27788cd19be0}</Project>
+      <Name>SFA.DAS.CollectionEarnings.DataLock</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.Domain\SFA.DAS.CollectionEarnings.Domain.csproj">
+      <Project>{BBD4DA21-700B-41C3-8337-3AEBF684D64D}</Project>
+      <Name>SFA.DAS.CollectionEarnings.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.Infrastructure\SFA.DAS.CollectionEarnings.Infrastructure.csproj">
+      <Project>{36CC7877-7707-4AD5-9039-2569DCC032C8}</Project>
+      <Name>SFA.DAS.CollectionEarnings.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

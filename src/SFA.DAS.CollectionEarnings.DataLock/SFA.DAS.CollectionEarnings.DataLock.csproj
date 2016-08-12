@@ -7,8 +7,8 @@
     <ProjectGuid>{E0B60D5B-969C-4C05-A636-27788CD19BE0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SFA.DAS.CollectionEarnings.Validation</RootNamespace>
-    <AssemblyName>SFA.DAS.CollectionEarnings.Validation</AssemblyName>
+    <RootNamespace>SFA.DAS.CollectionEarnings.DataLock</RootNamespace>
+    <AssemblyName>SFA.DAS.CollectionEarnings.DataLock</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,7 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="DataLockProcessor.cs" />
+    <Compile Include="DataLockTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
