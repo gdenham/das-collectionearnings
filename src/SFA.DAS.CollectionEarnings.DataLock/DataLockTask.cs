@@ -1,18 +1,17 @@
-﻿using NLog;
-using SFA.DAS.CollectionEarnings.Contract;
+﻿using CS.Common.External.Interfaces;
+using NLog;
 using SFA.DAS.CollectionEarnings.Domain.DependencyResolution;
+using SFA.DAS.CollectionEarnings.Infrastructure.DcContext;
 using SFA.DAS.CollectionEarnings.Infrastructure.DependencyResolution;
 using SFA.DAS.CollectionEarnings.Infrastructure.Logging;
 using System;
-using System.Collections.Generic;
 
 namespace SFA.DAS.CollectionEarnings.DataLock
 {
     public class DataLockTask : IExternalTask
     {
         private readonly IDependencyResolver _dependencyResolver;
-        private string transientConnectionString;
-        private string logLevel;
+        private DcContextWrapper _contextWrapper;
 
         public DataLockTask()
         {
@@ -24,16 +23,17 @@ namespace SFA.DAS.CollectionEarnings.DataLock
             _dependencyResolver = dependencyResolver;
         }
 
-        public void Execute(IDictionary<string, string> context)
+        public void Execute(IExternalContext context)
         {
-            ValidateContext(context);
-
             _dependencyResolver.Init(typeof(DataLockProcessor));
+            _contextWrapper = new DcContextWrapper(context);
 
-            transientConnectionString = context[DasContextPropertyKeys.TransientDatabaseConnectionString];
-            logLevel = context[DasContextPropertyKeys.LogLevel];
+            ValidateContext(_contextWrapper);
 
-            LoggingConfig.ConfigureLogging(transientConnectionString, logLevel);
+            LoggingConfig.ConfigureLogging(
+                _contextWrapper.GetPropertyValue(DcContextPropertyKeys.TransientDatabaseConnectionString),
+                _contextWrapper.GetPropertyValue(DcContextPropertyKeys.LogLevel)
+            );
 
             var logger = _dependencyResolver.GetInstance<ILogger>();
 
@@ -42,16 +42,16 @@ namespace SFA.DAS.CollectionEarnings.DataLock
             processor.Process();
         }
 
-        private void ValidateContext(IDictionary<string, string> context)
+        private void ValidateContext(DcContextWrapper contextWrapper)
         {
-            if (!context.ContainsKey(DasContextPropertyKeys.TransientDatabaseConnectionString))
+            if (contextWrapper.GetPropertyValue(DcContextPropertyKeys.TransientDatabaseConnectionString) == null)
             {
-                throw new ArgumentNullException(DasContextPropertyKeys.TransientDatabaseConnectionString);
+                throw new ArgumentNullException(DcContextPropertyKeys.TransientDatabaseConnectionString);
             }
 
-            if (!context.ContainsKey(DasContextPropertyKeys.LogLevel))
+            if (contextWrapper.GetPropertyValue(DcContextPropertyKeys.LogLevel) == null)
             {
-                throw new ArgumentNullException(DasContextPropertyKeys.LogLevel);
+                throw new ArgumentNullException(DcContextPropertyKeys.LogLevel);
             }
         }
     }

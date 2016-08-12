@@ -7,9 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.CollectionEarnings.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C69707A2-A4B1-497A-B10E-74BF405DFB13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.CollectionEarnings.Validation.UnitTests", "SFA.DAS.CollectionEarnings.DataLock.UnitTests\SFA.DAS.CollectionEarnings.DataLock.UnitTests.csproj", "{79593EF5-9F58-4E91-BE67-C5D20EE0DBC0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.CollectionEarnings.Contract", "SFA.DAS.CollectionEarnings.Contract\SFA.DAS.CollectionEarnings.Contract.csproj", "{0C1E6DF4-AD3B-4865-9794-8499B6876B14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.CollectionEarnings.DataLock.UnitTests", "SFA.DAS.CollectionEarnings.DataLock.UnitTests\SFA.DAS.CollectionEarnings.DataLock.UnitTests.csproj", "{79593EF5-9F58-4E91-BE67-C5D20EE0DBC0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.CollectionEarnings.Domain", "SFA.DAS.CollectionEarnings.Domain\SFA.DAS.CollectionEarnings.Domain.csproj", "{BBD4DA21-700B-41C3-8337-3AEBF684D64D}"
 EndProject
@@ -31,10 +29,6 @@ Global
 		{79593EF5-9F58-4E91-BE67-C5D20EE0DBC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79593EF5-9F58-4E91-BE67-C5D20EE0DBC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79593EF5-9F58-4E91-BE67-C5D20EE0DBC0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0C1E6DF4-AD3B-4865-9794-8499B6876B14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C1E6DF4-AD3B-4865-9794-8499B6876B14}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C1E6DF4-AD3B-4865-9794-8499B6876B14}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C1E6DF4-AD3B-4865-9794-8499B6876B14}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BBD4DA21-700B-41C3-8337-3AEBF684D64D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BBD4DA21-700B-41C3-8337-3AEBF684D64D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBD4DA21-700B-41C3-8337-3AEBF684D64D}.Release|Any CPU.ActiveCfg = Release|Any CPU

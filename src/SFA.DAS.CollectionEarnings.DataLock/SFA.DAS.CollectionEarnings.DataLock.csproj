@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CS.Common.External">
+      <HintPath>..\Lib\CS.Common.External.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.3.7\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
@@ -52,10 +55,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.Contract\SFA.DAS.CollectionEarnings.Contract.csproj">
-      <Project>{0c1e6df4-ad3b-4865-9794-8499b6876b14}</Project>
-      <Name>SFA.DAS.CollectionEarnings.Contract</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SFA.DAS.CollectionEarnings.Domain\SFA.DAS.CollectionEarnings.Domain.csproj">
       <Project>{bbd4da21-700b-41c3-8337-3aebf684d64d}</Project>
       <Name>SFA.DAS.CollectionEarnings.Domain</Name>

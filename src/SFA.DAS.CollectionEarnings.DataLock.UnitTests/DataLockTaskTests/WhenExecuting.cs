@@ -1,8 +1,9 @@
-﻿using Moq;
+﻿using CS.Common.External.Interfaces;
+using Moq;
 using NLog;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.Contract;
 using SFA.DAS.CollectionEarnings.Domain.DependencyResolution;
+using SFA.DAS.CollectionEarnings.Infrastructure.DcContext;
 using System;
 using System.Collections.Generic;
 
@@ -10,6 +11,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTaskTests
 {
     public class WhenExecuting
     {
+        private IExternalContext _context = new ExternalContext();
         private IExternalTask _task;
 
         private Mock<IDependencyResolver> _dependencyResolver;
@@ -29,41 +31,52 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTaskTests
         [Test]
         public void WithNoConnectionStringThenExpectingException()
         {
-            var context = new Dictionary<string, string>
+            var properties = new Dictionary<string, string>
             {
-                { DasContextPropertyKeys.LogLevel, "Info" }
+                { DcContextPropertyKeys.LogLevel, "Info" }
             };
 
+            _context.Properties = properties;
+
             // Assert
-            Assert.That(() => _task.Execute(context), Throws.Exception.TypeOf<ArgumentNullException>());
+            Assert.That(() => _task.Execute(_context), Throws.Exception.TypeOf<ArgumentNullException>());
         }
 
         [Test]
         public void WithNoLogLevelThenExpectingException()
         {
-            var context = new Dictionary<string, string>
+            var properties = new Dictionary<string, string>
             {
-                { DasContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" }
+                { DcContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" }
             };
 
+            _context.Properties = properties;
+
             // Assert
-            Assert.That(() => _task.Execute(context), Throws.Exception.TypeOf<ArgumentNullException>());
+            Assert.That(() => _task.Execute(_context), Throws.Exception.TypeOf<ArgumentNullException>());
         }
 
         [Test]
         public void WithVlidContextThenLoggingIsDone()
         {
             // Act
-            var context = new Dictionary<string, string>
+            var properties = new Dictionary<string, string>
             {
-                { DasContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" },
-                { DasContextPropertyKeys.LogLevel, "Info" }
+                { DcContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" },
+                { DcContextPropertyKeys.LogLevel, "Info" }
             };
 
-            _task.Execute(context);
+            _context.Properties = properties;
+
+            _task.Execute(_context);
 
             // Assert
             _logger.Verify(l => l.Info(It.IsAny<string>()), Times.Exactly(2));
+        }
+
+        internal class ExternalContext : IExternalContext
+        {
+            public IDictionary<string, string> Properties { get; set; }
         }
     }
 }

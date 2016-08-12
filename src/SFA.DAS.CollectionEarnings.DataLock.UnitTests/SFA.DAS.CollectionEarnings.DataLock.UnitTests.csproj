@@ -34,6 +34,9 @@
       <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="CS.Common.External">
+      <HintPath>..\Lib\CS.Common.External.dll</HintPath>
+    </Reference>
     <Reference Include="Moq, Version=4.5.16.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.5.16\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
@@ -66,10 +69,6 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.Contract\SFA.DAS.CollectionEarnings.Contract.csproj">
-      <Project>{0c1e6df4-ad3b-4865-9794-8499b6876b14}</Project>
-      <Name>SFA.DAS.CollectionEarnings.Contract</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SFA.DAS.CollectionEarnings.DataLock\SFA.DAS.CollectionEarnings.DataLock.csproj">
       <Project>{e0b60d5b-969c-4c05-a636-27788cd19be0}</Project>
       <Name>SFA.DAS.CollectionEarnings.DataLock</Name>
