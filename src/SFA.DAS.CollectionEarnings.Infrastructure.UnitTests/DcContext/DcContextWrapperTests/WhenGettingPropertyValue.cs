@@ -3,6 +3,9 @@ using CS.Common.External.Interfaces;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Infrastructure.DcContext;
 
+/*
+ * Unit tests pattern under review. Might be changed in other solutions. Should not be taken as reference.
+ */
 namespace SFA.DAS.CollectionEarnings.Infrastructure.UnitTests.DcContext.DcContextWrapperTests
 {
     public class WhenGettingPropertyValue

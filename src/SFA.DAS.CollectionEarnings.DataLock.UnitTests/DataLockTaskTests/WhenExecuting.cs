@@ -7,6 +7,9 @@ using SFA.DAS.CollectionEarnings.Infrastructure.DcContext;
 using System;
 using System.Collections.Generic;
 
+/*
+ * Unit tests pattern under review. Might be changed in other solutions. Should not be taken as reference.
+ */
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTaskTests
 {
     public class WhenExecuting

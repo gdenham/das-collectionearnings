@@ -2,6 +2,9 @@
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Infrastructure.DependencyResolution;
 
+/*
+ * Unit tests pattern under review. Might be changed in other solutions. Should not be taken as reference.
+ */
 namespace SFA.DAS.CollectionEarnings.Infrastructure.UnitTests.DependencyResolution.TaskDependencyResolverTests
 {
     public class WhenInitialising
