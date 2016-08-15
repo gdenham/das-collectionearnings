@@ -5,6 +5,9 @@ using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Infrastructure.Logging;
 using System.Linq;
 
+/*
+ * Unit tests pattern under review. Might be changed in other solutions. Should not be taken as reference.
+ */
 namespace SFA.DAS.CollectionEarnings.Infrastructure.UnitTests.Logging.LoggingConfigurationTests
 {
     public class WhenConfiguringLogging
