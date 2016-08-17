@@ -1,28 +1,30 @@
 ﻿using System.Collections.Generic;
 using CS.Common.External.Interfaces;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.Infrastructure.DcContext;
+using SFA.DAS.CollectionEarnings.Infrastructure.Context;
 
 /*
  * Unit tests pattern under review. Might be changed in other solutions. Should not be taken as reference.
  */
 //TODO Change test format or remove comments
-namespace SFA.DAS.CollectionEarnings.Infrastructure.UnitTests.DcContext.DcContextWrapperTests
+namespace SFA.DAS.CollectionEarnings.Infrastructure.UnitTests.Context.ContextWrapperTests
 {
     public class WhenGettingPropertyValue
     {
-        private DcContextWrapper _contextWrapper;
+        private ContextWrapper _contextWrapper;
 
         [SetUp]
         public void Arrange()
         {
-            var context = new ExternalContext();
-            context.Properties = new Dictionary<string, string>
+            var context = new ExternalContext
+            {
+                Properties = new Dictionary<string, string>
                 {
-                    { "key", "value" }
-                };
+                    {"key", "value"}
+                }
+            };
 
-            _contextWrapper = new DcContextWrapper(context);
+            _contextWrapper = new ContextWrapper(context);
         }
 
         [Test]
@@ -56,7 +58,7 @@ namespace SFA.DAS.CollectionEarnings.Infrastructure.UnitTests.DcContext.DcContex
             Assert.IsNull(val);
         }
 
-        internal class ExternalContext : IExternalContext
+        private class ExternalContext : IExternalContext
         {
             public IDictionary<string, string> Properties { get; set; }
         }

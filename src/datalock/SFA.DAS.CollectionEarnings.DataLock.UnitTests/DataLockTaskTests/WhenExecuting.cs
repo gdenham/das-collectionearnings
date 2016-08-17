@@ -3,9 +3,9 @@ using Moq;
 using NLog;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Domain.DependencyResolution;
-using SFA.DAS.CollectionEarnings.Infrastructure.DcContext;
-using System;
 using System.Collections.Generic;
+using SFA.DAS.CollectionEarnings.Infrastructure.Context;
+using SFA.DAS.CollectionEarnings.Infrastructure.Exceptions;
 
 /*
  * Unit tests pattern under review. Might be changed in other solutions. Should not be taken as reference.
@@ -15,6 +15,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTaskTests
 {
     public class WhenExecuting
     {
+        private static readonly object[] EmptyProperties =
+        {
+            new object[] {null},
+            new object[] {new Dictionary<string, string>()}
+        };
+
         private IExternalContext _context = new ExternalContext();
         private IExternalTask _task;
 
@@ -33,17 +39,37 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTaskTests
         }
 
         [Test]
+        public void WithNullContextThenExpectingException()
+        {
+            // Assert
+            var ex = Assert.Throws<DataLockInvalidContextException>(() => _task.Execute(null));
+            Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ContextNull));
+        }
+
+        [Test]
+        [TestCaseSource(nameof(EmptyProperties))]
+        public void WithNoContextPropertiesThenExpectingException(IDictionary<string, string> properties)
+        {
+            _context.Properties = properties;
+
+            // Assert
+            var ex = Assert.Throws<DataLockInvalidContextException>(() => _task.Execute(_context));
+            Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ContextNoProperties));
+        }
+
+        [Test]
         public void WithNoConnectionStringThenExpectingException()
         {
             var properties = new Dictionary<string, string>
             {
-                { DcContextPropertyKeys.LogLevel, "Info" }
+                { ContextPropertyKeys.LogLevel, "Info" }
             };
 
             _context.Properties = properties;
 
             // Assert
-            Assert.That(() => _task.Execute(_context), Throws.Exception.TypeOf<ArgumentNullException>());
+            var ex = Assert.Throws<DataLockInvalidContextException>(() => _task.Execute(_context));
+            Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ContextPropertiesNoConnectionString));
         }
 
         [Test]
@@ -51,23 +77,24 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTaskTests
         {
             var properties = new Dictionary<string, string>
             {
-                { DcContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" }
+                { ContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" }
             };
 
             _context.Properties = properties;
 
             // Assert
-            Assert.That(() => _task.Execute(_context), Throws.Exception.TypeOf<ArgumentNullException>());
+            var ex = Assert.Throws<DataLockInvalidContextException>(() => _task.Execute(_context));
+            Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ContextPropertiesNoLogLevel));
         }
 
         [Test]
-        public void WithVlidContextThenLoggingIsDone()
+        public void WithValidContextThenLoggingIsDone()
         {
             // Act
             var properties = new Dictionary<string, string>
             {
-                { DcContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" },
-                { DcContextPropertyKeys.LogLevel, "Info" }
+                { ContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" },
+                { ContextPropertyKeys.LogLevel, "Info" }
             };
 
             _context.Properties = properties;

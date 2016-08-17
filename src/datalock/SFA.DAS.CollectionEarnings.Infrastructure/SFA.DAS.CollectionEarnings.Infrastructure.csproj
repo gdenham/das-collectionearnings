@@ -55,9 +55,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DcContext\DcContextPropertyKeys.cs" />
-    <Compile Include="DcContext\DcContextWrapper.cs" />
+    <Compile Include="Context\ContextPropertyKeys.cs" />
+    <Compile Include="Context\ContextWrapper.cs" />
     <Compile Include="DependencyResolution\TaskDependencyResolver.cs" />
+    <Compile Include="Exceptions\DataLockExceptionMessages.cs" />
+    <Compile Include="Exceptions\DataLockInvalidContextException.cs" />
     <Compile Include="Logging\LoggingConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

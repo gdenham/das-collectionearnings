@@ -1,6 +1,6 @@
-﻿namespace SFA.DAS.CollectionEarnings.Infrastructure.DcContext
+﻿namespace SFA.DAS.CollectionEarnings.Infrastructure.Context
 {
-    public class DcContextPropertyKeys
+    public class ContextPropertyKeys
     {
         public const string TransientDatabaseConnectionString = "TransientDatabaseConnectionString";
         public const string LogLevel = "LogLevel";

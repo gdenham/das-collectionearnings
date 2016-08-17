@@ -1,17 +1,17 @@
 ﻿using CS.Common.External.Interfaces;
 using NLog;
 using SFA.DAS.CollectionEarnings.Domain.DependencyResolution;
-using SFA.DAS.CollectionEarnings.Infrastructure.DcContext;
 using SFA.DAS.CollectionEarnings.Infrastructure.DependencyResolution;
 using SFA.DAS.CollectionEarnings.Infrastructure.Logging;
-using System;
+using SFA.DAS.CollectionEarnings.Infrastructure.Context;
+using SFA.DAS.CollectionEarnings.Infrastructure.Exceptions;
 
 namespace SFA.DAS.CollectionEarnings.DataLock
 {
     public class DataLockTask : IExternalTask
     {
         private readonly IDependencyResolver _dependencyResolver;
-        private DcContextWrapper _contextWrapper;
+        private ContextWrapper _contextWrapper;
 
         public DataLockTask()
         {
@@ -26,13 +26,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock
         public void Execute(IExternalContext context)
         {
             _dependencyResolver.Init(typeof(DataLockProcessor));
-            _contextWrapper = new DcContextWrapper(context);
+            _contextWrapper = new ContextWrapper(context);
 
             ValidateContext(_contextWrapper);
 
             LoggingConfig.ConfigureLogging(
-                _contextWrapper.GetPropertyValue(DcContextPropertyKeys.TransientDatabaseConnectionString),
-                _contextWrapper.GetPropertyValue(DcContextPropertyKeys.LogLevel)
+                _contextWrapper.GetPropertyValue(ContextPropertyKeys.TransientDatabaseConnectionString),
+                _contextWrapper.GetPropertyValue(ContextPropertyKeys.LogLevel)
             );
 
             var logger = _dependencyResolver.GetInstance<ILogger>();
@@ -42,16 +42,16 @@ namespace SFA.DAS.CollectionEarnings.DataLock
             processor.Process();
         }
 
-        private void ValidateContext(DcContextWrapper contextWrapper)
+        private static void ValidateContext(ContextWrapper contextWrapper)
         {
-            if (contextWrapper.GetPropertyValue(DcContextPropertyKeys.TransientDatabaseConnectionString) == null)
+            if (string.IsNullOrEmpty(contextWrapper.GetPropertyValue(ContextPropertyKeys.TransientDatabaseConnectionString)))
             {
-                throw new ArgumentNullException(DcContextPropertyKeys.TransientDatabaseConnectionString);
+                throw new DataLockInvalidContextException(DataLockExceptionMessages.ContextPropertiesNoConnectionString);
             }
 
-            if (contextWrapper.GetPropertyValue(DcContextPropertyKeys.LogLevel) == null)
+            if (string.IsNullOrEmpty(contextWrapper.GetPropertyValue(ContextPropertyKeys.LogLevel)))
             {
-                throw new ArgumentNullException(DcContextPropertyKeys.LogLevel);
+                throw new DataLockInvalidContextException(DataLockExceptionMessages.ContextPropertiesNoLogLevel);
             }
         }
     }

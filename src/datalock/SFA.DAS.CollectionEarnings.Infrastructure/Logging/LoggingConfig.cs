@@ -1,7 +1,9 @@
-﻿using NLog;
+﻿using System;
+using NLog;
 using NLog.Config;
 using NLog.Layouts;
 using NLog.Targets;
+using SFA.DAS.CollectionEarnings.Infrastructure.Exceptions;
 
 namespace SFA.DAS.CollectionEarnings.Infrastructure.Logging
 {
@@ -14,7 +16,7 @@ namespace SFA.DAS.CollectionEarnings.Infrastructure.Logging
 
             sqlServerTarget.ConnectionString = connectionString;
 
-            sqlServerTarget.CommandText = @"INSERT INTO [Das].[TaskLog] (
+            sqlServerTarget.CommandText = @"INSERT INTO [DataLock].[TaskLog] (
                                         Level, Logger, Message, Exception
                                     ) VALUES (
                                         @level, @logger, @message, @exception
@@ -34,7 +36,14 @@ namespace SFA.DAS.CollectionEarnings.Infrastructure.Logging
 
         private static LogLevel GetLogLevel(string logLevel)
         {
-            return LogLevel.FromString(logLevel);
+            try
+            {
+                return LogLevel.FromString(logLevel);
+            }
+            catch (Exception ex)
+            {
+                throw new DataLockInvalidContextException(DataLockExceptionMessages.ContextPropertiesInvalidLogLevel, ex);
+            }
         }
     }
 }
