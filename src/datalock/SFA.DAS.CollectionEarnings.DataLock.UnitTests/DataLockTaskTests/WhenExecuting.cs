@@ -2,10 +2,10 @@
 using Moq;
 using NLog;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.Domain.DependencyResolution;
 using System.Collections.Generic;
-using SFA.DAS.CollectionEarnings.Infrastructure.Context;
-using SFA.DAS.CollectionEarnings.Infrastructure.Exceptions;
+using SFA.DAS.CollectionEarnings.DataLock.Context;
+using SFA.DAS.CollectionEarnings.DataLock.DependencyResolution;
+using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
 
 /*
  * Unit tests pattern under review. Might be changed in other solutions. Should not be taken as reference.

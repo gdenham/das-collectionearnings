@@ -1,17 +1,15 @@
 ﻿using CS.Common.External.Interfaces;
 using NLog;
-using SFA.DAS.CollectionEarnings.Domain.DependencyResolution;
-using SFA.DAS.CollectionEarnings.Infrastructure.DependencyResolution;
-using SFA.DAS.CollectionEarnings.Infrastructure.Logging;
-using SFA.DAS.CollectionEarnings.Infrastructure.Context;
-using SFA.DAS.CollectionEarnings.Infrastructure.Exceptions;
+using SFA.DAS.CollectionEarnings.DataLock.Context;
+using SFA.DAS.CollectionEarnings.DataLock.DependencyResolution;
+using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
+using SFA.DAS.CollectionEarnings.DataLock.Logging;
 
 namespace SFA.DAS.CollectionEarnings.DataLock
 {
     public class DataLockTask : IExternalTask
     {
         private readonly IDependencyResolver _dependencyResolver;
-        private ContextWrapper _contextWrapper;
 
         public DataLockTask()
         {
@@ -26,13 +24,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock
         public void Execute(IExternalContext context)
         {
             _dependencyResolver.Init(typeof(DataLockProcessor));
-            _contextWrapper = new ContextWrapper(context);
+            var contextWrapper = new ContextWrapper(context);
 
-            ValidateContext(_contextWrapper);
+            ValidateContext(contextWrapper);
 
             LoggingConfig.ConfigureLogging(
-                _contextWrapper.GetPropertyValue(ContextPropertyKeys.TransientDatabaseConnectionString),
-                _contextWrapper.GetPropertyValue(ContextPropertyKeys.LogLevel)
+                contextWrapper.GetPropertyValue(ContextPropertyKeys.TransientDatabaseConnectionString),
+                contextWrapper.GetPropertyValue(ContextPropertyKeys.LogLevel)
             );
 
             var logger = _dependencyResolver.GetInstance<ILogger>();

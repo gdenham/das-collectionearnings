@@ -62,16 +62,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.Domain\SFA.DAS.CollectionEarnings.Domain.csproj">
-      <Project>{bbd4da21-700b-41c3-8337-3aebf684d64d}</Project>
-      <Name>SFA.DAS.CollectionEarnings.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.Infrastructure\SFA.DAS.CollectionEarnings.Infrastructure.csproj">
-      <Project>{36cc7877-7707-4ad5-9039-2569dcc032c8}</Project>
-      <Name>SFA.DAS.CollectionEarnings.Infrastructure</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup />

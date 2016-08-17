@@ -59,7 +59,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\ContextWrapperTests\WhenGettingPropertyValue.cs" />
+    <Compile Include="Context\ContextWrapperTests\WhenInstantiating.cs" />
     <Compile Include="DataLockTaskTests\WhenExecuting.cs" />
+    <Compile Include="DependencyResolution\TaskDependencyResolverTests\WhenInitialising.cs" />
+    <Compile Include="Logging\LoggingConfigurationTests\WhenConfiguringLogging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,14 +76,6 @@
     <ProjectReference Include="..\SFA.DAS.CollectionEarnings.DataLock\SFA.DAS.CollectionEarnings.DataLock.csproj">
       <Project>{e0b60d5b-969c-4c05-a636-27788cd19be0}</Project>
       <Name>SFA.DAS.CollectionEarnings.DataLock</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.Domain\SFA.DAS.CollectionEarnings.Domain.csproj">
-      <Project>{BBD4DA21-700B-41C3-8337-3AEBF684D64D}</Project>
-      <Name>SFA.DAS.CollectionEarnings.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.Infrastructure\SFA.DAS.CollectionEarnings.Infrastructure.csproj">
-      <Project>{36CC7877-7707-4AD5-9039-2569DCC032C8}</Project>
-      <Name>SFA.DAS.CollectionEarnings.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

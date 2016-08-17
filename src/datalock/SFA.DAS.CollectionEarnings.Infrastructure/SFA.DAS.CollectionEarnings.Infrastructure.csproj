@@ -64,12 +64,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.Domain\SFA.DAS.CollectionEarnings.Domain.csproj">
-      <Project>{bbd4da21-700b-41c3-8337-3aebf684d64d}</Project>
-      <Name>SFA.DAS.CollectionEarnings.Domain</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
