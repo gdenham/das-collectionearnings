@@ -37,6 +37,14 @@
     <Reference Include="CS.Common.External">
       <HintPath>..\Lib\CS.Common.External.dll</HintPath>
     </Reference>
+    <Reference Include="Dapper, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.0\lib\net45\Dapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Dapper.Contrib, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.Contrib.1.50.0\lib\net45\Dapper.Contrib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Moq, Version=4.5.16.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.5.16\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
@@ -51,6 +59,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,6 +71,7 @@
     <Compile Include="Context\ContextWrapperTests\WhenGettingPropertyValue.cs" />
     <Compile Include="Context\ContextWrapperTests\WhenInstantiating.cs" />
     <Compile Include="DataLockTaskTests\WhenExecuting.cs" />
+    <Compile Include="Data\Repositories\ValidationErrorRepository\AddValidationError\WhenCalled.cs" />
     <Compile Include="DependencyResolution\TaskDependencyResolverTests\WhenInitialising.cs" />
     <Compile Include="Logging\LoggingConfigurationTests\WhenConfiguringLogging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
