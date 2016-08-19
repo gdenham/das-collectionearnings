@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
 
@@ -6,18 +7,16 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Data.Repositories.Valida
 {
     public class WhenCalled
     {
-        private readonly string _connectionString = "Server=(local); User Id=sa;Password=Password1; Initial Catalog=IlrTransient;";
-
-        private IValidationErrorRepository _validationErrorRepository;
+        private Mock<IValidationErrorRepository> _validationErrorRepository;
 
         [SetUp]
         public void Arrange()
         {
-            _validationErrorRepository = new DataLock.Data.Repositories.ValidationErrorRepository(_connectionString);
+            _validationErrorRepository = new Mock<IValidationErrorRepository>();
         }
 
         [Test]
-        public void ThenValidationErrorAddedSuccessfully()
+        public void ThenValidationErrorCalledSuccessfully()
         {
             // Arrange
             var validationError = new ValidationError()
@@ -28,10 +27,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Data.Repositories.Valida
             };
 
             // Act
-            _validationErrorRepository.AddValidationError(validationError);
+            _validationErrorRepository.Object.AddValidationError(validationError);
 
             // Assert
-            // TODO
+            _validationErrorRepository.Verify(ver => ver.AddValidationError(validationError), Times.Once());
         }
     }
 }
