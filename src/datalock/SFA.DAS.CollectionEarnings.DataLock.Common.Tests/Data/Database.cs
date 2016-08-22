@@ -9,7 +9,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                connection.Execute("EXEC sp_MSForEachTable 'TRUNCATE TABLE ?'");
+                connection.Execute("TRUNCATE TABLE [DataLock].[TaskLog]");
+                connection.Execute("TRUNCATE TABLE [DataLock].[ValidationError]");
             }
         }
     }
