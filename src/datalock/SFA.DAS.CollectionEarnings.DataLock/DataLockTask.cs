@@ -1,6 +1,7 @@
 ﻿using CS.Common.External.Interfaces;
 using NLog;
 using SFA.DAS.CollectionEarnings.DataLock.Context;
+using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
 using SFA.DAS.CollectionEarnings.DataLock.DependencyResolution;
 using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
 using SFA.DAS.CollectionEarnings.DataLock.Logging;
@@ -23,7 +24,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock
 
         public void Execute(IExternalContext context)
         {
-            _dependencyResolver.Init(typeof(DataLockProcessor));
             var contextWrapper = new ContextWrapper(context);
 
             ValidateContext(contextWrapper);
@@ -33,9 +33,15 @@ namespace SFA.DAS.CollectionEarnings.DataLock
                 contextWrapper.GetPropertyValue(ContextPropertyKeys.LogLevel)
             );
 
-            var logger = _dependencyResolver.GetInstance<ILogger>();
+            _dependencyResolver.Init(
+                typeof(DataLockProcessor),
+                contextWrapper
+            );
 
-            var processor = new DataLockProcessor(logger);
+            var processor = new DataLockProcessor(
+                _dependencyResolver.GetInstance<ILogger>(),
+                _dependencyResolver.GetInstance<IValidationErrorRepository>()
+            );
 
             processor.Process();
         }

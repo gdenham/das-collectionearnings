@@ -30,8 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CS.Common.External">
-      <HintPath>..\..\..\..\das-providerpayments\src\calculator\Lib\CS.Common.External.dll</HintPath>
+    <Reference Include="CS.Common.External, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CS.Common.External.dll</HintPath>
     </Reference>
     <Reference Include="Dapper, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.0\lib\net45\Dapper.dll</HintPath>
@@ -64,12 +65,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.DataLock.Common.Tests\SFA.DAS.CollectionEarnings.DataLock.Common.Tests.csproj">
+      <Project>{DF260D8C-410C-48D3-93E1-31FFC09FC410}</Project>
+      <Name>SFA.DAS.CollectionEarnings.DataLock.Common.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SFA.DAS.CollectionEarnings.DataLock\SFA.DAS.CollectionEarnings.DataLock.csproj">
       <Project>{e0b60d5b-969c-4c05-a636-27788cd19be0}</Project>
       <Name>SFA.DAS.CollectionEarnings.DataLock</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

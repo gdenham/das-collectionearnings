@@ -1,19 +1,25 @@
-﻿using NUnit.Framework;
+﻿using System.Data.SqlClient;
+using System.Linq;
+using Dapper;
+using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
+using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Data.Repositories.ValidationErrorRepository.AddValidationError
 {
     public class WhenCalled
     {
-        private readonly string _connectionString = "Server=(local); User Id=sa;Password=Password1; Initial Catalog=IlrTransient;";
+        private readonly string _transientConnectionString = ConnectionStringFactory.GetTransientConnectionString();
 
         private IValidationErrorRepository _validationErrorRepository;
 
         [SetUp]
         public void Arrange()
         {
-            _validationErrorRepository = new DataLock.Data.Repositories.ValidationErrorRepository(_connectionString);
+            Database.Clean(_transientConnectionString);
+
+            _validationErrorRepository = new DataLock.Data.Repositories.ValidationErrorRepository(_transientConnectionString);
         }
 
         [Test]
@@ -31,7 +37,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Data.Repositories
             _validationErrorRepository.AddValidationError(validationError);
 
             // Assert
-            // TODO
+            using (var connection = new SqlConnection(_transientConnectionString))
+            {
+                var errors = connection.Query(ValidationError.SelectAll);
+
+                Assert.IsNotNull(errors);
+                Assert.AreEqual(1, errors.ToList().Count);
+            }
         }
+
     }
 }

@@ -3,7 +3,10 @@ using Moq;
 using NLog;
 using NUnit.Framework;
 using System.Collections.Generic;
+using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.ExternalContext;
 using SFA.DAS.CollectionEarnings.DataLock.Context;
+using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
+using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
 using SFA.DAS.CollectionEarnings.DataLock.DependencyResolution;
 using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
 
@@ -21,19 +24,22 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTaskTests
             new object[] {new Dictionary<string, string>()}
         };
 
-        private IExternalContext _context = new ExternalContext();
+        private IExternalContext _context = new ExternalContextStub();
         private IExternalTask _task;
 
         private Mock<IDependencyResolver> _dependencyResolver;
         private Mock<ILogger> _logger;
+        private Mock<IValidationErrorRepository> _validationErrorRepository;
 
         [SetUp]
         public void Arrange()
         {
             _logger = new Mock<ILogger>();
+            _validationErrorRepository = new Mock<IValidationErrorRepository>();
 
             _dependencyResolver = new Mock<IDependencyResolver>();
             _dependencyResolver.Setup(dr => dr.GetInstance<ILogger>()).Returns(_logger.Object);
+            _dependencyResolver.Setup(dr => dr.GetInstance<IValidationErrorRepository>()).Returns(_validationErrorRepository.Object);
 
             _task = new DataLockTask(_dependencyResolver.Object);
         }
@@ -88,7 +94,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTaskTests
         }
 
         [Test]
-        public void WithValidContextThenLoggingIsDone()
+        public void WithValidContextThenTaskIsExecuted()
         {
             // Act
             var properties = new Dictionary<string, string>
@@ -103,11 +109,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTaskTests
 
             // Assert
             _logger.Verify(l => l.Info(It.IsAny<string>()), Times.Exactly(2));
-        }
-
-        internal class ExternalContext : IExternalContext
-        {
-            public IDictionary<string, string> Properties { get; set; }
+            _validationErrorRepository.Verify(ver => ver.AddValidationError(It.IsAny<ValidationError>()), Times.Once());
         }
     }
 }
