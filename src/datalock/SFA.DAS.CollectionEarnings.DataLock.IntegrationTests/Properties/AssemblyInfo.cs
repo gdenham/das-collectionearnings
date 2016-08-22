@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SFA.DAS.CollectionEarnings.DataLock.UnitTests")]
+[assembly: AssemblyTitle("SFA.DAS.CollectionEarnings.DataLock.IntegrationTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SFA.DAS.CollectionEarnings.DataLock.UnitTests")]
+[assembly: AssemblyProduct("SFA.DAS.CollectionEarnings.DataLock.IntegrationTests")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("79593ef5-9f58-4e91-be67-c5d20ee0dbc0")]
+[assembly: Guid("44d50594-88b7-4573-8c82-9dab9937a5bb")]
 
 // Version information for an assembly consists of the following four values:
 //

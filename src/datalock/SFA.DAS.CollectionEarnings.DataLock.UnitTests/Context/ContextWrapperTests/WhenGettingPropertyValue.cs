@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using CS.Common.External.Interfaces;
 using NUnit.Framework;
+using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.ExternalContext;
 using SFA.DAS.CollectionEarnings.DataLock.Context;
 
 /*
@@ -16,7 +16,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Context.ContextWrapperTe
         [SetUp]
         public void Arrange()
         {
-            var context = new ExternalContext
+            var context = new ExternalContextStub
             {
                 Properties = new Dictionary<string, string>
                 {
@@ -56,11 +56,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Context.ContextWrapperTe
 
             // Assert
             Assert.IsNull(val);
-        }
-
-        private class ExternalContext : IExternalContext
-        {
-            public IDictionary<string, string> Properties { get; set; }
         }
     }
 }

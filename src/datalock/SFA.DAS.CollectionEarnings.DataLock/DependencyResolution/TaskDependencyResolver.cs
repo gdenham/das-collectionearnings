@@ -1,5 +1,7 @@
 ﻿using System;
 using NLog;
+using SFA.DAS.CollectionEarnings.DataLock.Context;
+using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
 using StructureMap;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.DependencyResolution
@@ -8,11 +10,17 @@ namespace SFA.DAS.CollectionEarnings.DataLock.DependencyResolution
     {
         private IContainer _container;
 
-        public void Init(Type taskType)
+        public void Init(Type taskType, ContextWrapper contextWrapper)
         {
-            _container = new Container(c => 
+            _container = new Container(c =>
                 {
-                    c.For<ILogger>().Use(() => LogManager.GetLogger(taskType.FullName));
+                    c.For<ILogger>()
+                        .Use(() => LogManager.GetLogger(taskType.FullName));
+
+                    c.For<IValidationErrorRepository>()
+                        .Use<ValidationErrorRepository>()
+                        .Ctor<string>()
+                        .Is(contextWrapper.GetPropertyValue(ContextPropertyKeys.TransientDatabaseConnectionString));
                 }
             );
         }

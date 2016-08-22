@@ -1,5 +1,9 @@
-﻿using NLog;
+﻿using System.Collections.Generic;
+using NLog;
 using NUnit.Framework;
+using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.ExternalContext;
+using SFA.DAS.CollectionEarnings.DataLock.Context;
+using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
 using SFA.DAS.CollectionEarnings.DataLock.DependencyResolution;
 
 /*
@@ -15,8 +19,20 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DependencyResolution.Tas
         [SetUp]
         public void Arrange()
         {
+            var context = new ExternalContextStub
+            {
+                Properties = new Dictionary<string, string>()
+                {
+                    {ContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String"},
+                    {ContextPropertyKeys.LogLevel, "Info"}
+                }
+            };
+
             _dependencyResolver = new TaskDependencyResolver();
-            _dependencyResolver.Init(typeof(WhenInitialising));
+            _dependencyResolver.Init(
+                typeof(WhenInitialising),
+                new ContextWrapper(context)
+            );
         }
 
         [Test]
@@ -37,6 +53,16 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DependencyResolution.Tas
 
             // Assert
             Assert.AreEqual(typeof(WhenInitialising).FullName, logger.Name);
+        }
+
+        [Test]
+        public void ThenTheValidationErrorRepositoryCanBeResolved()
+        {
+            // Act
+            var validationErrorRepositoy = _dependencyResolver.GetInstance<IValidationErrorRepository>();
+
+            // Assert
+            Assert.IsNotNull(validationErrorRepositoy);
         }
     }
 }

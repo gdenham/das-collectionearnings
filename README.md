@@ -4,6 +4,12 @@ This solution represents the code base relating to the Data Lock DC component an
 
 ## Running Locally
 
+## Running Database Integration Tests Locally
+
+To successfully run the database integration tests you need:
+* Create a database named 'DataLockTransient'.
+* Run the 'src/datalock/Ilr.Transient.DataLock.DDL.sql' script against the newly created database.
+
 ### Prerequisites
 
 To run the solution locally you will need:

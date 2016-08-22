@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{79593EF5-9F58-4E91-BE67-C5D20EE0DBC0}</ProjectGuid>
+    <ProjectGuid>{DF260D8C-410C-48D3-93E1-31FFC09FC410}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SFA.DAS.CollectionEarnings.DataLock.UnitTests</RootNamespace>
-    <AssemblyName>SFA.DAS.CollectionEarnings.DataLock.UnitTests</AssemblyName>
+    <RootNamespace>SFA.DAS.CollectionEarnings.DataLock.Common.Tests</RootNamespace>
+    <AssemblyName>SFA.DAS.CollectionEarnings.DataLock.Common.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,28 +30,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="CS.Common.External">
       <HintPath>..\Lib\CS.Common.External.dll</HintPath>
     </Reference>
-    <Reference Include="Moq, Version=4.5.16.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.5.16\lib\net45\Moq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.3.7\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
+    <Reference Include="Dapper, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.0\lib\net45\Dapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,29 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context\ContextWrapperTests\WhenGettingPropertyValue.cs" />
-    <Compile Include="Context\ContextWrapperTests\WhenInstantiating.cs" />
-    <Compile Include="DataLockTaskTests\WhenExecuting.cs" />
-    <Compile Include="Data\Repositories\ValidationErrorRepository\AddValidationError\WhenCalled.cs" />
-    <Compile Include="DependencyResolution\TaskDependencyResolverTests\WhenInitialising.cs" />
-    <Compile Include="Logging\LoggingConfigurationTests\WhenConfiguringLogging.cs" />
+    <Compile Include="Data\ConnectionStringFactory.cs" />
+    <Compile Include="Data\Database.cs" />
+    <Compile Include="ExternalContext\ExternalContextStub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.DataLock.Common.Tests\SFA.DAS.CollectionEarnings.DataLock.Common.Tests.csproj">
-      <Project>{df260d8c-410c-48d3-93e1-31ffc09fc410}</Project>
-      <Name>SFA.DAS.CollectionEarnings.DataLock.Common.Tests</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.DataLock\SFA.DAS.CollectionEarnings.DataLock.csproj">
-      <Project>{e0b60d5b-969c-4c05-a636-27788cd19be0}</Project>
-      <Name>SFA.DAS.CollectionEarnings.DataLock</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
