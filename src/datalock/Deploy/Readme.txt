@@ -17,7 +17,11 @@ DAS Data Lock Component
   - sql\ddl\Ilr.Transient.DataLock.DDL.sql:
    - database tables that need to be present when the component is executed
  
- 1.3 Validation messages CSV file
+ 1.3 Test results:
+  - test-results\TestResult.xml
+  - test-results\TestResult-Integration.xml
+ 
+ 1.4 Validation messages CSV file
   - DataLock.ValidationMessages.csv
   
 -------------------------------------------------------------------------------------
