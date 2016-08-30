@@ -35,6 +35,55 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data.Entities
             };
         }
 
+        public CommitmentBuilder WithCommitmentId(string commitmentId)
+        {
+            _commitmentId = commitmentId;
+
+            return this;
+        }
+
+        public CommitmentBuilder WithUln(long uln)
+        {
+            _uln = uln;
+
+            return this;
+        }
+
+        public CommitmentBuilder Withukprn(long ukprn)
+        {
+            _ukprn = ukprn;
+
+            return this;
+        }
+
+        public CommitmentBuilder WithAccountId(string accountId)
+        {
+            _accountId = accountId;
+
+            return this;
+        }
+
+        public CommitmentBuilder WithStartDate(DateTime startDate)
+        {
+            _startDate = startDate;
+
+            return this;
+        }
+
+        public CommitmentBuilder WithEndDate(DateTime endDate)
+        {
+            _endDate = endDate;
+
+            return this;
+        }
+
+        public CommitmentBuilder WithAgreedCost(decimal agreedCost)
+        {
+            _agreedCost = agreedCost;
+
+            return this;
+        }
+
         public CommitmentBuilder WithStandardCode(long? standardCode)
         {
             _standardCode = standardCode;
