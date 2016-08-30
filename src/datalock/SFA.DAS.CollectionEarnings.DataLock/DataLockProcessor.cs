@@ -30,7 +30,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock
 
             if (!commitments.IsValid)
             {
-                _logger.Error(commitments.Exception, "Error while reading commitments.");
                 throw new DataLockProcessorException("Error while reading commitments.", commitments.Exception);
             }
 
@@ -40,7 +39,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock
 
             if (!dasLearners.IsValid)
             {
-                _logger.Error(dasLearners.Exception, "Error while reading DAS specific learners.");
                 throw new DataLockProcessorException("Error while reading DAS specific learners.", dasLearners.Exception);
             }
 
@@ -57,7 +55,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock
 
             if (!dataLockValidationErrors.IsValid)
             {
-                _logger.Error(dataLockValidationErrors.Exception, "Error while performing data lock.");
                 throw new DataLockProcessorException("Error while performing data lock.", dataLockValidationErrors.Exception);
             }
 
@@ -73,7 +70,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock
 
                 if (!writeValidationErrorsResult.IsValid)
                 {
-                    _logger.Error(dataLockValidationErrors.Exception, "Error while writing data lock validation errors.");
                     throw new DataLockProcessorException("Error while writing data lock validation errors.", writeValidationErrorsResult.Exception);
                 }
 
