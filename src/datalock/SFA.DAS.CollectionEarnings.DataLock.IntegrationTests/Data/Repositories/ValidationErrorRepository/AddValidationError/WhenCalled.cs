@@ -2,9 +2,9 @@
 using System.Linq;
 using Dapper;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
 using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data;
+using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Data.Repositories.ValidationErrorRepository.AddValidationError
 {
@@ -45,6 +45,5 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Data.Repositories
                 Assert.AreEqual(1, errors.ToList().Count);
             }
         }
-
     }
 }

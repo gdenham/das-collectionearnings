@@ -30,16 +30,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Amor.DCFT.BinaryTask">
+      <HintPath>..\Lib\Amor.DCFT.BinaryTask.dll</HintPath>
+    </Reference>
+    <Reference Include="CS.Common">
+      <HintPath>..\Lib\CS.Common.dll</HintPath>
+    </Reference>
     <Reference Include="CS.Common.External">
       <HintPath>..\Lib\CS.Common.External.dll</HintPath>
+    </Reference>
+    <Reference Include="CS.Common.XmlToSql">
+      <HintPath>..\Lib\CS.Common.XmlToSql.dll</HintPath>
     </Reference>
     <Reference Include="Dapper, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.0\lib\net45\Dapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Dapper.Contrib, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.Contrib.1.50.0\lib\net45\Dapper.Contrib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,11 +64,31 @@
   <ItemGroup>
     <Compile Include="Data\ConnectionStringFactory.cs" />
     <Compile Include="Data\Database.cs" />
+    <Compile Include="Data\Entities\CommitmentBuilder.cs" />
+    <Compile Include="Data\Entities\DasLearnerBuilder.cs" />
+    <Compile Include="Data\Entities\IBuilder.cs" />
+    <Compile Include="Data\Entities\ValidationErrorBuilder.cs" />
     <Compile Include="ExternalContext\ExternalContextStub.cs" />
+    <Compile Include="Ilr\PreProcessingCallback.cs" />
+    <Compile Include="Ilr\Shredder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.DataLock\SFA.DAS.CollectionEarnings.DataLock.csproj">
+      <Project>{e0b60d5b-969c-4c05-a636-27788cd19be0}</Project>
+      <Name>SFA.DAS.CollectionEarnings.DataLock</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Ilr\Files\ILR-10007459-1617-20160505-225627-99.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ilr\Files\IlrTableMap.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

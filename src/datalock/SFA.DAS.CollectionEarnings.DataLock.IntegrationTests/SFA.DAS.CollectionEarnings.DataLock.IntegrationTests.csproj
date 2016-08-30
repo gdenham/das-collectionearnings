@@ -61,6 +61,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataLockTask\Execute\WhenCalled.cs" />
+    <Compile Include="Data\Repositories\CommitmentRepository\GetAllCommitments\WhenCalled.cs" />
+    <Compile Include="Data\Repositories\DasLearnerRepository\GetAllDasLearners\WhenCalled.cs" />
+    <Compile Include="Data\Repositories\ValidationErrorRepository\AddValidationErrors\WhenCalled.cs" />
     <Compile Include="Data\Repositories\ValidationErrorRepository\AddValidationError\WhenCalled.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

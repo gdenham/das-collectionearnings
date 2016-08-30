@@ -1,22 +1,17 @@
-﻿using CS.Common.External.Interfaces;
+﻿using System.Collections.Generic;
+using CS.Common.External.Interfaces;
+using MediatR;
 using Moq;
 using NLog;
 using NUnit.Framework;
-using System.Collections.Generic;
 using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.ExternalContext;
 using SFA.DAS.CollectionEarnings.DataLock.Context;
-using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
-using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
 using SFA.DAS.CollectionEarnings.DataLock.DependencyResolution;
 using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
 
-/*
- * Unit tests pattern under review. Might be changed in other solutions. Should not be taken as reference.
- */
-//TODO Change test format or remove comments
-namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTaskTests
+namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTask.Execute
 {
-    public class WhenExecuting
+    public class WhenCalledWithInvalidContext
     {
         private static readonly object[] EmptyProperties =
         {
@@ -29,23 +24,23 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTaskTests
 
         private Mock<IDependencyResolver> _dependencyResolver;
         private Mock<ILogger> _logger;
-        private Mock<IValidationErrorRepository> _validationErrorRepository;
+        private Mock<IMediator> _mediator;
 
         [SetUp]
         public void Arrange()
         {
             _logger = new Mock<ILogger>();
-            _validationErrorRepository = new Mock<IValidationErrorRepository>();
+            _mediator = new Mock<IMediator>();
 
             _dependencyResolver = new Mock<IDependencyResolver>();
             _dependencyResolver.Setup(dr => dr.GetInstance<ILogger>()).Returns(_logger.Object);
-            _dependencyResolver.Setup(dr => dr.GetInstance<IValidationErrorRepository>()).Returns(_validationErrorRepository.Object);
+            _dependencyResolver.Setup(dr => dr.GetInstance<IMediator>()).Returns(_mediator.Object);
 
-            _task = new DataLockTask(_dependencyResolver.Object);
+            _task = new DataLock.DataLockTask(_dependencyResolver.Object);
         }
 
         [Test]
-        public void WithNullContextThenExpectingException()
+        public void ThenExpectingExceptionForNullContextProvided()
         {
             // Assert
             var ex = Assert.Throws<DataLockInvalidContextException>(() => _task.Execute(null));
@@ -54,7 +49,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTaskTests
 
         [Test]
         [TestCaseSource(nameof(EmptyProperties))]
-        public void WithNoContextPropertiesThenExpectingException(IDictionary<string, string> properties)
+        public void ThenExpectingExceptionForNoContextPropertiesProvided(IDictionary<string, string> properties)
         {
             _context.Properties = properties;
 
@@ -64,7 +59,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTaskTests
         }
 
         [Test]
-        public void WithNoConnectionStringThenExpectingException()
+        public void ThenExpectingExceptionForNoConnectionStringProvided()
         {
             var properties = new Dictionary<string, string>
             {
@@ -79,7 +74,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTaskTests
         }
 
         [Test]
-        public void WithNoLogLevelThenExpectingException()
+        public void ThenExpectingExceptionForNoLogLevelProvided()
         {
             var properties = new Dictionary<string, string>
             {
@@ -91,25 +86,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTaskTests
             // Assert
             var ex = Assert.Throws<DataLockInvalidContextException>(() => _task.Execute(_context));
             Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ContextPropertiesNoLogLevel));
-        }
-
-        [Test]
-        public void WithValidContextThenTaskIsExecuted()
-        {
-            // Act
-            var properties = new Dictionary<string, string>
-            {
-                { ContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" },
-                { ContextPropertyKeys.LogLevel, "Info" }
-            };
-
-            _context.Properties = properties;
-
-            _task.Execute(_context);
-
-            // Assert
-            _logger.Verify(l => l.Info(It.IsAny<string>()), Times.Exactly(2));
-            _validationErrorRepository.Verify(ver => ver.AddValidationError(It.IsAny<ValidationError>()), Times.Once());
         }
     }
 }

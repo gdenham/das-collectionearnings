@@ -41,6 +41,14 @@
       <HintPath>..\packages\Dapper.Contrib.1.50.0\lib\net45\Dapper.Contrib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FastMember, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.1.1.0\lib\net40\FastMember.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MediatR, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MediatR.2.1.0\lib\net45\MediatR.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.3.7\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
@@ -60,17 +68,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryHandler.cs" />
+    <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryRequest.cs" />
+    <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryResponse.cs" />
+    <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandHandler.cs" />
+    <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandRequest.cs" />
+    <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandResponse.cs" />
     <Compile Include="Context\ContextPropertyKeys.cs" />
     <Compile Include="Context\ContextWrapper.cs" />
+    <Compile Include="DataLockPassThroughProcessor.cs" />
     <Compile Include="DataLockProcessor.cs" />
     <Compile Include="DataLockTask.cs" />
+    <Compile Include="Data\Entities\Commitment.cs" />
+    <Compile Include="Data\Entities\DasLearner.cs" />
     <Compile Include="Data\Entities\ValidationError.cs" />
+    <Compile Include="Application\Commitment\GetAllCommitmentsQuery\GetAllCommitmentsQueryHandler.cs" />
+    <Compile Include="Application\Commitment\GetAllCommitmentsQuery\GetAllCommitmentsQueryRequest.cs" />
+    <Compile Include="Application\Commitment\GetAllCommitmentsQuery\GetAllCommitmentsQueryResponse.cs" />
+    <Compile Include="Application\DasLearner\GetAllDasLearnersQuery\GetAllDasLearnersQueryHandler.cs" />
+    <Compile Include="Application\DasLearner\GetAllDasLearnersQuery\GetAllDasLearnersQueryRequest.cs" />
+    <Compile Include="Application\DasLearner\GetAllDasLearnersQuery\GetAllDasLearnersQueryResponse.cs" />
+    <Compile Include="Application\CommandResponse.cs" />
+    <Compile Include="Application\QueryResponse.cs" />
+    <Compile Include="Application\ValidationError\AddValidationErrorCommand\AddValidationErrorCommandHandler.cs" />
+    <Compile Include="Application\ValidationError\AddValidationErrorCommand\AddValidationErrorCommandRequest.cs" />
+    <Compile Include="Application\ValidationError\AddValidationErrorCommand\AddValidationErrorCommandResponse.cs" />
+    <Compile Include="Data\Repositories\CommitmentRepository.cs" />
+    <Compile Include="Data\Repositories\DasLearnerRepository.cs" />
+    <Compile Include="Data\Repositories\ICommitmentRepository.cs" />
+    <Compile Include="Data\Repositories\IDasLearnerRepository.cs" />
     <Compile Include="Data\Repositories\IValidationErrorRepository.cs" />
     <Compile Include="Data\Repositories\ValidationErrorRepository.cs" />
     <Compile Include="DependencyResolution\IDependencyResolver.cs" />
     <Compile Include="DependencyResolution\TaskDependencyResolver.cs" />
     <Compile Include="Exceptions\DataLockExceptionMessages.cs" />
     <Compile Include="Exceptions\DataLockInvalidContextException.cs" />
+    <Compile Include="Exceptions\DataLockProcessorException.cs" />
     <Compile Include="Logging\LoggingConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

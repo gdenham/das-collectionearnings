@@ -37,6 +37,10 @@
     <Reference Include="CS.Common.External">
       <HintPath>..\Lib\CS.Common.External.dll</HintPath>
     </Reference>
+    <Reference Include="MediatR, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MediatR.2.1.0\lib\net45\MediatR.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Moq, Version=4.5.16.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.5.16\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
@@ -60,10 +64,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context\ContextWrapperTests\WhenGettingPropertyValue.cs" />
-    <Compile Include="Context\ContextWrapperTests\WhenInstantiating.cs" />
-    <Compile Include="DataLockTaskTests\WhenExecuting.cs" />
-    <Compile Include="Data\Repositories\ValidationErrorRepository\AddValidationError\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryHandler\Handle\WhenCalled.cs" />
+    <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandHandler\Handle\WhenCalled.cs" />
+    <Compile Include="Context\ContextWrapper\ContextWrapper\WhenCalledWithInvalidContext.cs" />
+    <Compile Include="Context\ContextWrapper\ContextWrapper\WhenCalledWithValidContext.cs" />
+    <Compile Include="Context\ContextWrapper\GetPropertyValue\WhenCalledForKnownProperty.cs" />
+    <Compile Include="Context\ContextWrapper\GetPropertyValue\WhenCalledForNullOrEmptyProperty.cs" />
+    <Compile Include="Context\ContextWrapper\GetPropertyValue\WhenCalledForUnknownProperty.cs" />
+    <Compile Include="DataLockTask\Execute\WhenCalledWithInvalidContext.cs" />
+    <Compile Include="DataLockTask\Execute\WhenCalledWithValidContext.cs" />
+    <Compile Include="Application\Commitment\GetAllCommitmentsQuery\GetAllCommitmentsQueryHandler\Handle\WhenCalled.cs" />
+    <Compile Include="Application\DasLearner\GetAllDasLearnersQuery\GetAllDasLearnersQueryHandler\Handle\WhenCalled.cs" />
+    <Compile Include="Application\ValidationError\AddValidationErrorCommand\AddValidationErrorCommandHandler\Handle\WhenCalled.cs" />
     <Compile Include="DependencyResolution\TaskDependencyResolverTests\WhenInitialising.cs" />
     <Compile Include="Logging\LoggingConfigurationTests\WhenConfiguringLogging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -84,6 +96,7 @@
       <Name>SFA.DAS.CollectionEarnings.DataLock</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -7,6 +7,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Data.Repositories
     {
         void AddValidationError(ValidationError validationError);
 
-        void AddValidationErrors(List<ValidationError> validationErrors);
+        void AddValidationErrors(IEnumerable<ValidationError> validationErrors);
     }
 }

@@ -1,34 +1,84 @@
-﻿using NLog;
-using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
-using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
+﻿using System.Linq;
+using MediatR;
+using NLog;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.DasLearner.GetAllDasLearnersQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFailuresQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
+using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
 
 namespace SFA.DAS.CollectionEarnings.DataLock
 {
     internal class DataLockProcessor
     {
         private readonly ILogger _logger;
-        private readonly IValidationErrorRepository _validationErrorRepository;
+        private readonly IMediator _mediator;
 
-        public DataLockProcessor(ILogger logger, IValidationErrorRepository validationErrorRepository)
+        public DataLockProcessor(ILogger logger, IMediator mediator)
         {
             _logger = logger;
-            _validationErrorRepository = validationErrorRepository;
+            _mediator = mediator;
         }
 
         public void Process()
         {
             _logger.Info("Started Data Lock Processor.");
 
-            _logger.Debug("Started writing validation error.");
-            var validationError = new ValidationError()
-            {
-                LearnRefNumber = "Lrn001",
-                AimSeqNumber = 1,
-                RuleId = "DLOCK_01"
-            };
+            _logger.Debug("Reading commitments.");
 
-            _validationErrorRepository.AddValidationError(validationError);
-            _logger.Debug("Finished writing validation error.");
+            var commitments = _mediator.Send(new GetAllCommitmentsQueryRequest());
+
+            if (!commitments.IsValid)
+            {
+                _logger.Error(commitments.Exception, "Error while reading commitments.");
+                throw new DataLockProcessorException("Error while reading commitments.", commitments.Exception);
+            }
+
+            _logger.Debug("Reading DAS learners.");
+
+            var dasLearners = _mediator.Send(new GetAllDasLearnersQueryRequest());
+
+            if (!dasLearners.IsValid)
+            {
+                _logger.Error(dasLearners.Exception, "Error while reading DAS specific learners.");
+                throw new DataLockProcessorException("Error while reading DAS specific learners.", dasLearners.Exception);
+            }
+
+            _logger.Debug("Started Data Lock Validation.");
+
+            var dataLockValidationErrors =
+                _mediator.Send(new GetDataLockFailuresQueryRequest
+                {
+                    Commitments = commitments.Items,
+                    DasLearners = dasLearners.Items
+                });
+
+            _logger.Debug("Finished Data Lock Validation.");
+
+            if (!dataLockValidationErrors.IsValid)
+            {
+                _logger.Error(dataLockValidationErrors.Exception, "Error while performing data lock.");
+                throw new DataLockProcessorException("Error while performing data lock.", dataLockValidationErrors.Exception);
+            }
+
+            if (dataLockValidationErrors.Items.Any())
+            {
+                _logger.Debug("Started writing Data Lock Validation Errors");
+
+                var writeValidationErrorsResult =
+                    _mediator.Send(new AddValidationErrorsCommandRequest
+                    {
+                        ValidationErrors = dataLockValidationErrors.Items
+                    });
+
+                if (!writeValidationErrorsResult.IsValid)
+                {
+                    _logger.Error(dataLockValidationErrors.Exception, "Error while writing data lock validation errors.");
+                    throw new DataLockProcessorException("Error while writing data lock validation errors.", writeValidationErrorsResult.Exception);
+                }
+
+                _logger.Debug("Finished writing Data Lock Validation Errors");
+            }
 
             _logger.Info("Finished Data Lock Processor.");
         }

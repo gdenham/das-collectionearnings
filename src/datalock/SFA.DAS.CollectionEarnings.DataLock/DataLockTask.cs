@@ -1,7 +1,7 @@
 ﻿using CS.Common.External.Interfaces;
+using MediatR;
 using NLog;
 using SFA.DAS.CollectionEarnings.DataLock.Context;
-using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
 using SFA.DAS.CollectionEarnings.DataLock.DependencyResolution;
 using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
 using SFA.DAS.CollectionEarnings.DataLock.Logging;
@@ -40,7 +40,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock
 
             var processor = new DataLockProcessor(
                 _dependencyResolver.GetInstance<ILogger>(),
-                _dependencyResolver.GetInstance<IValidationErrorRepository>()
+                _dependencyResolver.GetInstance<IMediator>()
             );
 
             processor.Process();
