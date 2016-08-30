@@ -8,7 +8,8 @@ This solution represents the code base relating to the Data Lock DC component an
 
 To successfully run the database integration tests you need:
 * Create a database named 'DataLockTransient'.
-* Run the 'src/datalock/Ilr.Transient.DataLock.DDL.sql' script against the newly created database.
+* Run the 'src/datalock/Deploy/sql/ddl/Ilr.Transient.DataLock.DDL.sql' script against the newly created database.
+* Run the 'src/datalock/SFA.DAS.CollectionEarnings.DataLock.IntegrationTests/Ilr.Transient.DDL.sql' script against the newly created database.
 
 ### Prerequisites
 
