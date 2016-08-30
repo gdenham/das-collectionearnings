@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
-using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
+using System.Linq;
 using Dapper.Contrib.Extensions;
+using FastMember;
+using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.Data.Repositories
 {
@@ -32,9 +33,26 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Data.Repositories
             }
         }
 
-        public void AddValidationErrors(List<ValidationError> validationErrors)
+        public void AddValidationErrors(IEnumerable<ValidationError> validationErrors)
         {
-            throw new NotImplementedException();
+            var columns = typeof(ValidationError).GetProperties().Select(p => p.Name).ToArray();
+
+            using (var bcp = new SqlBulkCopy(_connectionString))
+            {
+                foreach (var column in columns)
+                {
+                    bcp.ColumnMappings.Add(column, column);
+                }
+
+                bcp.BulkCopyTimeout = 0;
+                bcp.DestinationTableName = "DataLock.ValidationError";
+                bcp.BatchSize = 1000;
+
+                using (var reader = ObjectReader.Create(validationErrors, columns))
+                {
+                    bcp.WriteToServer(reader);
+                }
+            }
         }
     }
 }

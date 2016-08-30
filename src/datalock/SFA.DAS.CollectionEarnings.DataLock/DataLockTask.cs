@@ -1,7 +1,8 @@
-﻿using CS.Common.External.Interfaces;
+﻿using System;
+using CS.Common.External.Interfaces;
+using MediatR;
 using NLog;
 using SFA.DAS.CollectionEarnings.DataLock.Context;
-using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
 using SFA.DAS.CollectionEarnings.DataLock.DependencyResolution;
 using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
 using SFA.DAS.CollectionEarnings.DataLock.Logging;
@@ -38,12 +39,20 @@ namespace SFA.DAS.CollectionEarnings.DataLock
                 contextWrapper
             );
 
-            var processor = new DataLockProcessor(
-                _dependencyResolver.GetInstance<ILogger>(),
-                _dependencyResolver.GetInstance<IValidationErrorRepository>()
-            );
+            var logger = _dependencyResolver.GetInstance<ILogger>();
+            var mediator = _dependencyResolver.GetInstance<IMediator>();
 
-            processor.Process();
+            try
+            {
+                var processor = new DataLockProcessor(logger, mediator);
+
+                processor.Process();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, ex.Message);
+                throw;
+            }
         }
 
         private static void ValidateContext(ContextWrapper contextWrapper)
