@@ -68,6 +68,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\DataLock\DataLockMatcher.cs" />
+    <Compile Include="Application\DataLock\DataLockMatchLevel.cs" />
     <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryHandler.cs" />
     <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryRequest.cs" />
     <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryResponse.cs" />

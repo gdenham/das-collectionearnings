@@ -64,6 +64,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\DataLock\DataLockMatcher\Match\WhenCalledWithMatchingData.cs" />
+    <Compile Include="Application\DataLock\DataLockMatcher\Match\WhenCalledWithMismatchingData.cs" />
     <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryHandler\Handle\WhenCalled.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandHandler\Handle\WhenCalled.cs" />
     <Compile Include="Context\ContextWrapper\ContextWrapper\WhenCalledWithInvalidContext.cs" />
