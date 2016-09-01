@@ -4,6 +4,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Commitment.GetAllCommitmentsQuery.GetAllCommitmentsQueryHandler.Handle
 {
@@ -30,24 +31,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Commitment.G
             // Arrange
             _commitmentRepository
                 .Setup(cr => cr.GetAllCommitments())
-                .Returns(new[]
-                    {
-                        new Data.Entities.Commitment
-                        {
-                            CommitmentId = "C-001",
-                            Uln = 1000000019,
-                            Ukprn = 10007459,
-                            AccountId = "A-001",
-                            StartDate = new DateTime(2016, 9, 1),
-                            EndDate = new DateTime(2018, 12, 31),
-                            AgreedCost = 15000.00m,
-                            StandardCode = null,
-                            ProgrammeType = 20,
-                            FrameworkCode = 550,
-                            PathwayCode = 6
-                        }
-                    }
-                );
+                .Returns(new[] {new CommitmentBuilder().Build()});
 
             // Act
             var response = _handler.Handle(_request);

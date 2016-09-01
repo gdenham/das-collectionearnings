@@ -4,6 +4,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DasLearner.GetAllDasLearnersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DasLearner.GetAllDasLearnersQuery.GetAllDasLearnersQueryHandler.Handle
 {
@@ -30,23 +31,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DasLearner.G
             // Arrange
             _dasLearnerRepository
                 .Setup(dlr => dlr.GetAllDasLearners())
-                .Returns(new[]
-                    {
-                        new Data.Entities.DasLearner
-                        {
-                            Ukprn = 10007459,
-                            LearnRefNumber = "Lrn001",
-                            Uln = 1000000019,
-                            NiNumber = "",
-                            AimSeqNumber = 1,
-                            StdCode = null,
-                            ProgType = 20,
-                            FworkCode = 550,
-                            PwayCode = 6,
-                            TbFinAmount = 15000
-                        }
-                    }
-                );
+                .Returns(new[] {new DasLearnerBuilder().Build()});
 
             // Act
             var response = _handler.Handle(_request);

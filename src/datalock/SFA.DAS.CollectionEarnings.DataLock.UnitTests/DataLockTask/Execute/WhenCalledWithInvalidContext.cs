@@ -4,10 +4,10 @@ using MediatR;
 using Moq;
 using NLog;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.ExternalContext;
 using SFA.DAS.CollectionEarnings.DataLock.Context;
 using SFA.DAS.CollectionEarnings.DataLock.DependencyResolution;
 using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTask.Execute
 {

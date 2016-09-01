@@ -1,7 +1,7 @@
 ﻿using System;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
 
-namespace SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data.Entities
+namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
 {
     public class CommitmentBuilder : IBuilder<Commitment>
     {

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Configuration;
 
-namespace SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data
+namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
 {
     public class ConnectionStringFactory
     {
 
         public static string GetTransientConnectionString()
         {
-            var connectionString = "";
+            string connectionString;
 
             if (Environment.GetEnvironmentVariable("TransientConnectionString") != null)
             {

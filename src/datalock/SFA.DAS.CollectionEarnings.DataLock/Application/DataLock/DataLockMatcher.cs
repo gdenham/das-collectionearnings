@@ -2,73 +2,49 @@
 {
     public class DataLockMatcher
     {
-        public static bool Match(Data.Entities.Commitment commitment, Data.Entities.DasLearner learner, DataLockMatchLevel level)
+        public static bool MatchUkprn(Data.Entities.Commitment commitment, Data.Entities.DasLearner learner)
         {
-            // Ukprn match
-            var result = commitment.Ukprn == learner.Ukprn;
+            return commitment.Ukprn == learner.Ukprn;
+        }
 
-            if (!result || level == DataLockMatchLevel.Ukprn)
-            {
-                return result;
-            }
+        public static bool MatchUln(Data.Entities.Commitment commitment, Data.Entities.DasLearner learner)
+        {
+            return learner.Uln.HasValue &&
+                   commitment.Uln == learner.Uln.Value;
+        }
 
-            // Uln match
-            result = learner.Uln.HasValue && commitment.Uln == learner.Uln.Value;
+        public static bool MatchStandard(Data.Entities.Commitment commitment, Data.Entities.DasLearner learner)
+        {
+            return learner.StdCode.HasValue &&
+                   commitment.StandardCode.HasValue &&
+                   commitment.StandardCode.Value == learner.StdCode.Value;
+        }
 
-            if (!result || level == DataLockMatchLevel.Uln)
-            {
-                return result;
-            }
-
-            if (learner.StdCode.HasValue)
-            {
-                // Standard match
-                result = commitment.StandardCode.HasValue &&
-                         commitment.StandardCode.Value == learner.StdCode.Value;
-
-                if (!result || level == DataLockMatchLevel.Standard)
-                {
-                    return result;
-                }
-            }
-            else
-            {
-                // Framework match
-                result = commitment.FrameworkCode.HasValue &&
+        public static bool MatchFramework(Data.Entities.Commitment commitment, Data.Entities.DasLearner learner)
+        {
+            return commitment.FrameworkCode.HasValue &&
                    learner.FworkCode.HasValue &&
                    commitment.FrameworkCode.Value == learner.FworkCode.Value;
+        }
 
-                if (!result || level == DataLockMatchLevel.Framework)
-                {
-                    return result;
-                }
-
-                // Programme match
-                result = commitment.ProgrammeType.HasValue &&
+        public static bool MatchProgramme(Data.Entities.Commitment commitment, Data.Entities.DasLearner learner)
+        {
+            return commitment.ProgrammeType.HasValue &&
                    learner.ProgType.HasValue &&
                    commitment.ProgrammeType.Value == learner.ProgType.Value;
+        }
 
-                if (!result || level == DataLockMatchLevel.Programme)
-                {
-                    return result;
-                }
-
-                // Pathway match
-                result = commitment.PathwayCode.HasValue &&
+        public static bool MatchPathway(Data.Entities.Commitment commitment, Data.Entities.DasLearner learner)
+        {
+            return commitment.PathwayCode.HasValue &&
                    learner.PwayCode.HasValue &&
                    commitment.PathwayCode.Value == learner.PwayCode.Value;
+        }
 
-                if (!result || level == DataLockMatchLevel.Pathway)
-                {
-                    return result;
-                }
-            }
-
-            // Price match
-            result = learner.TbFinAmount.HasValue &&
-                     (long)commitment.AgreedCost == learner.TbFinAmount.Value;
-
-            return result;
+        public static bool MatchPrice(Data.Entities.Commitment commitment, Data.Entities.DasLearner learner)
+        {
+            return learner.TbFinAmount.HasValue &&
+                   (long) commitment.AgreedCost == learner.TbFinAmount.Value;
         }
     }
 }

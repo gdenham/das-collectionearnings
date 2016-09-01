@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Ilr;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
+using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
+using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools.Ilr;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Data.Repositories.DasLearnerRepository.GetAllDasLearners
 {

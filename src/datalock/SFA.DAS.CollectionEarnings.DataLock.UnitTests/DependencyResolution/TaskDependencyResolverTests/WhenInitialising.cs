@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using NLog;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.ExternalContext;
 using SFA.DAS.CollectionEarnings.DataLock.Context;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
 using SFA.DAS.CollectionEarnings.DataLock.DependencyResolution;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools;
 
 /*
  * Unit tests pattern under review. Might be changed in other solutions. Should not be taken as reference.

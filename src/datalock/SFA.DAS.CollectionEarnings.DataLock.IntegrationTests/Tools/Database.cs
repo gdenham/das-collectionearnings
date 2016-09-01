@@ -3,7 +3,7 @@ using Dapper;
 using Dapper.Contrib.Extensions;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
 
-namespace SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data
+namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
 {
     public class Database
     {

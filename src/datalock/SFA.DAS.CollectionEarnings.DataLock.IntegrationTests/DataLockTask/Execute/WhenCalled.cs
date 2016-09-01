@@ -4,12 +4,12 @@ using System.Linq;
 using CS.Common.External.Interfaces;
 using Dapper;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data.Entities;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.ExternalContext;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Ilr;
 using SFA.DAS.CollectionEarnings.DataLock.Context;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
+using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
+using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools.Ilr;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask.Execute
 {

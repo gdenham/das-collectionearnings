@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFailuresQuery;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data.Entities;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.GetDataLockFailuresQuery.GetDataLockFailuresQueryHandler.Handle
 {
@@ -243,6 +243,32 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Get
             Assert.IsNotNull(response);
             Assert.IsTrue(response.IsValid);
             Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == "DLOCK_07"));
+        }
+
+        [Test]
+        public void ThenErrorExpectedForMultiplePriceMatchingCommitments()
+        {
+            // Arrange
+            _request = new GetDataLockFailuresQueryRequest
+            {
+                Commitments = new[]
+                {
+                    new CommitmentBuilder().Build(),
+                    new CommitmentBuilder().WithCommitmentId("C-002").Build()
+                },
+                DasLearners = new[]
+                {
+                    new DasLearnerBuilder().Build()
+                }
+            };
+
+            // Act
+            var response = _handler.Handle(_request);
+
+            // Assert
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.IsValid);
+            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == "DLOCK_08"));
         }
 
         [Test]

@@ -30,9 +30,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Amor.DCFT.BinaryTask, Version=1.1.0.0, Culture=neutral, PublicKeyToken=32bb07491246f85f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Amor.DCFT.BinaryTask.dll</HintPath>
+    </Reference>
+    <Reference Include="CS.Common, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CS.Common.dll</HintPath>
+    </Reference>
     <Reference Include="CS.Common.External, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CS.Common.External.dll</HintPath>
+    </Reference>
+    <Reference Include="CS.Common.XmlToSql, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CS.Common.XmlToSql.dll</HintPath>
     </Reference>
     <Reference Include="Dapper, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.0\lib\net45\Dapper.dll</HintPath>
@@ -51,6 +63,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
@@ -66,12 +79,16 @@
     <Compile Include="Data\Repositories\DasLearnerRepository\GetAllDasLearners\WhenCalled.cs" />
     <Compile Include="Data\Repositories\ValidationErrorRepository\AddValidationErrors\WhenCalled.cs" />
     <Compile Include="Data\Repositories\ValidationErrorRepository\AddValidationError\WhenCalled.cs" />
+    <Compile Include="Tools\ConnectionStringFactory.cs" />
+    <Compile Include="Tools\Database.cs" />
+    <Compile Include="Tools\Ilr\PreProcessingCallback.cs" />
+    <Compile Include="Tools\Ilr\Shredder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.DataLock.Common.Tests\SFA.DAS.CollectionEarnings.DataLock.Common.Tests.csproj">
-      <Project>{DF260D8C-410C-48D3-93E1-31FFC09FC410}</Project>
-      <Name>SFA.DAS.CollectionEarnings.DataLock.Common.Tests</Name>
+    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.DataLock.UnitTests\SFA.DAS.CollectionEarnings.DataLock.UnitTests.csproj">
+      <Project>{79593ef5-9f58-4e91-be67-c5d20ee0dbc0}</Project>
+      <Name>SFA.DAS.CollectionEarnings.DataLock.UnitTests</Name>
     </ProjectReference>
     <ProjectReference Include="..\SFA.DAS.CollectionEarnings.DataLock\SFA.DAS.CollectionEarnings.DataLock.csproj">
       <Project>{e0b60d5b-969c-4c05-a636-27788cd19be0}</Project>
@@ -84,6 +101,14 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tools\Ilr\Files\ILR-10007459-1617-20160505-225627-99.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrTableMap.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

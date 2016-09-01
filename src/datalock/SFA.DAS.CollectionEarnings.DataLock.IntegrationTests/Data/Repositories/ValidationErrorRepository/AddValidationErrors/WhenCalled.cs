@@ -2,10 +2,10 @@
 using System.Linq;
 using Dapper;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
+using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Data.Repositories.ValidationErrorRepository.AddValidationErrors
 {

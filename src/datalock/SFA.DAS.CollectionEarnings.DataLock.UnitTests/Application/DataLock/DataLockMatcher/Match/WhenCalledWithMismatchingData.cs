@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data.Entities;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.DataLockMatcher.Match
 {
@@ -50,7 +49,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Dat
             var learner = new DasLearnerBuilder().WithUkprn(999).Build();
 
             // Act
-            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.Match(commitment, learner, DataLockMatchLevel.Ukprn);
+            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.MatchUkprn(commitment, learner);
 
             // Assert
             Assert.IsFalse(result);
@@ -64,7 +63,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Dat
             var commitment = new CommitmentBuilder().Build();
 
             // Act
-            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.Match(commitment, learner, DataLockMatchLevel.Uln);
+            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.MatchUln(commitment, learner);
 
             // Assert
             Assert.IsFalse(result);
@@ -78,7 +77,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Dat
             var learner = new DasLearnerBuilder().WithStdCode(998).Build();
 
             // Act
-            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.Match(commitment, learner, DataLockMatchLevel.Standard);
+            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.MatchStandard(commitment, learner);
 
             // Assert
             Assert.IsFalse(result);
@@ -92,7 +91,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Dat
             var commitment = new CommitmentBuilder().Build();
 
             // Act
-            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.Match(commitment, learner, DataLockMatchLevel.Framework);
+            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.MatchFramework(commitment, learner);
 
             // Assert
             Assert.IsFalse(result);
@@ -106,7 +105,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Dat
             var commitment = new CommitmentBuilder().Build();
 
             // Act
-            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.Match(commitment, learner, DataLockMatchLevel.Programme);
+            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.MatchProgramme(commitment, learner);
 
             // Assert
             Assert.IsFalse(result);
@@ -120,7 +119,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Dat
             var commitment = new CommitmentBuilder().Build();
 
             // Act
-            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.Match(commitment, learner, DataLockMatchLevel.Pathway);
+            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.MatchPathway(commitment, learner);
 
             // Assert
             Assert.IsFalse(result);
@@ -134,7 +133,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Dat
             var commitment = new CommitmentBuilder().WithStandardCode(999).Build();
 
             // Act
-            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.Match(commitment, learner, DataLockMatchLevel.Price);
+            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.MatchPrice(commitment, learner);
 
             // Assert
             Assert.IsFalse(result);
@@ -148,7 +147,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Dat
             var commitment = new CommitmentBuilder().Build();
 
             // Act
-            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.Match(commitment, learner, DataLockMatchLevel.Price);
+            var result = CollectionEarnings.DataLock.Application.DataLock.DataLockMatcher.MatchPrice(commitment, learner);
 
             // Assert
             Assert.IsFalse(result);
