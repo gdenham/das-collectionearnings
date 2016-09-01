@@ -6,3 +6,4 @@ DLOCK_04,E,No matching commitment found for the Framework code
 DLOCK_05,E,No matching commitment found for the Programme type
 DLOCK_06,E,No matching commitment found for the Pathway code
 DLOCK_07,E,No matching commitment found for the Negociated Price
+DLOCK_08,W,Multiple matching commitments found
