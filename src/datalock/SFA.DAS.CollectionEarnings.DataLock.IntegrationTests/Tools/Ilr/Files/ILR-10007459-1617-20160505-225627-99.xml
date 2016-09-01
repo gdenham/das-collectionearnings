@@ -111,7 +111,7 @@
 				<LearnDelFAMCode>129</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<LearningDeliveryFAM>
-				<LearnDelFAMType>DAS</LearnDelFAMType>
+				<LearnDelFAMType>ACT</LearnDelFAMType>
 				<LearnDelFAMCode>2</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<TrailblazerApprenticeshipFinancialRecord>
@@ -226,7 +226,7 @@
 				<LearnDelFAMCode>129</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<LearningDeliveryFAM>
-				<LearnDelFAMType>DAS</LearnDelFAMType>
+				<LearnDelFAMType>ACT</LearnDelFAMType>
 				<LearnDelFAMCode>1</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<TrailblazerApprenticeshipFinancialRecord>
@@ -321,7 +321,7 @@
 				<LearnDelFAMCode>129</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<LearningDeliveryFAM>
-				<LearnDelFAMType>DAS</LearnDelFAMType>
+				<LearnDelFAMType>ACT</LearnDelFAMType>
 				<LearnDelFAMCode>3</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<TrailblazerApprenticeshipFinancialRecord>
@@ -421,7 +421,7 @@
 				<LearnDelFAMCode>99</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<LearningDeliveryFAM>
-				<LearnDelFAMType>DAS</LearnDelFAMType>
+				<LearnDelFAMType>ACT</LearnDelFAMType>
 				<LearnDelFAMCode>1</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<TrailblazerApprenticeshipFinancialRecord>
@@ -525,12 +525,12 @@
 				<LearnDelFAMCode>129</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<LearningDeliveryFAM>
-				<LearnDelFAMType>DAS</LearnDelFAMType>
+				<LearnDelFAMType>ACT</LearnDelFAMType>
 				<LearnDelFAMCode>1</LearnDelFAMCode>
 				<LearnDelFAMDateTo>2016-08-31</LearnDelFAMDateTo>
 			</LearningDeliveryFAM>
 			<LearningDeliveryFAM>
-				<LearnDelFAMType>DAS</LearnDelFAMType>
+				<LearnDelFAMType>ACT</LearnDelFAMType>
 				<LearnDelFAMCode>2</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<TrailblazerApprenticeshipFinancialRecord>
@@ -625,12 +625,12 @@
 				<LearnDelFAMCode>129</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<LearningDeliveryFAM>
-				<LearnDelFAMType>DAS</LearnDelFAMType>
+				<LearnDelFAMType>ACT</LearnDelFAMType>
 				<LearnDelFAMCode>2</LearnDelFAMCode>
 				<LearnDelFAMDateTo>2016-09-15</LearnDelFAMDateTo>
 			</LearningDeliveryFAM>
 			<LearningDeliveryFAM>
-				<LearnDelFAMType>DAS</LearnDelFAMType>
+				<LearnDelFAMType>ACT</LearnDelFAMType>
 				<LearnDelFAMCode>1</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<TrailblazerApprenticeshipFinancialRecord>
@@ -742,7 +742,7 @@
 				<LearnDelFAMCode>129</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<LearningDeliveryFAM>
-				<LearnDelFAMType>DAS</LearnDelFAMType>
+				<LearnDelFAMType>ACT</LearnDelFAMType>
 				<LearnDelFAMCode>1</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<TrailblazerApprenticeshipFinancialRecord>
@@ -853,7 +853,7 @@
 				<LearnDelFAMCode>129</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<LearningDeliveryFAM>
-				<LearnDelFAMType>DAS</LearnDelFAMType>
+				<LearnDelFAMType>ACT</LearnDelFAMType>
 				<LearnDelFAMCode>1</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<TrailblazerApprenticeshipFinancialRecord>
@@ -963,7 +963,7 @@
 				<LearnDelFAMCode>129</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<LearningDeliveryFAM>
-				<LearnDelFAMType>DAS</LearnDelFAMType>
+				<LearnDelFAMType>ACT</LearnDelFAMType>
 				<LearnDelFAMCode>1</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<TrailblazerApprenticeshipFinancialRecord>
@@ -1062,7 +1062,7 @@
 				<LearnDelFAMCode>99</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<LearningDeliveryFAM>
-				<LearnDelFAMType>DAS</LearnDelFAMType>
+				<LearnDelFAMType>ACT</LearnDelFAMType>
 				<LearnDelFAMCode>1</LearnDelFAMCode>
 			</LearningDeliveryFAM>
 			<TrailblazerApprenticeshipFinancialRecord>
