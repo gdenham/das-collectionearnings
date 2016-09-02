@@ -50,7 +50,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock
             }
             catch (Exception ex)
             {
-                logger.Error(ex, ex.Message);
+                logger.Fatal(ex, ex.Message);
                 throw;
             }
         }

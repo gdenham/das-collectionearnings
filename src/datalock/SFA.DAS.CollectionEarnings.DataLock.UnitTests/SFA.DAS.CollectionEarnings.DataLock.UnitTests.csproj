@@ -64,9 +64,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\DataLock\DataLockMatcher\Match\WhenCalledWithMatchingData.cs" />
-    <Compile Include="Application\DataLock\DataLockMatcher\Match\WhenCalledWithMismatchingData.cs" />
     <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryHandler\Handle\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\FrameworkMatchHandler\Match\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\MultipleMatchHandler\Match\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\PathwayMatchHandler\Match\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\PriceMatchHandler\Match\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\ProgrammeMatchHandler\Match\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\StandardMatchHandler\Match\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\UkprnMatchHandler\Match\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\UlnMatchHandler\Match\WhenCalled.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandHandler\Handle\WhenCalled.cs" />
     <Compile Include="Context\ContextWrapper\ContextWrapper\WhenCalledWithInvalidContext.cs" />
     <Compile Include="Context\ContextWrapper\ContextWrapper\WhenCalledWithValidContext.cs" />

@@ -1,4 +1,5 @@
-﻿using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
+﻿using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
+using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
 {
@@ -6,7 +7,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
     {
         private string _learnRefNumber = "Lrn001";
         private long? _aimSeqNumber = 1;
-        private string _ruleId = "DLOCK_01";
+        private string _ruleId = DataLockErrorCodes.MismatchingUkprn;
 
         public ValidationError Build()
         {

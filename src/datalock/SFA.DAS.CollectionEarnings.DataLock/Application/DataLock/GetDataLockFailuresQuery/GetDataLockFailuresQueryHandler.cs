@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
+using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFailuresQuery
 {
@@ -21,142 +22,46 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFa
                 {
                     for (var x = range.Item1; x < range.Item2; x++)
                     {
-                        var dl = learners[x];
+                        var learner = learners[x];
 
-                        var gotMismatch = false;
+                        var ukprnMatcher = new UkprnMatchHandler();
+                        var ulnMatcher = new UlnMatchHandler();
+                        var standardMatcher = new StandardMatchHandler();
+                        var frameworkMatcher = new FrameworkMatchHandler();
+                        var programmeMatcher = new ProgrammeMatchHandler();
+                        var pathwaymatcher = new PathwayMatchHandler();
+                        var priceMatcher = new PriceMatchHandler();
+                        var multipleMatcher = new MultipleMatchHandler();
 
-                        // 1. UKPRN match
-                        var remainingCommitmentsToMatchAgainstTo = message.Commitments.Where(c => DataLockMatcher.MatchUkprn(c, dl)).ToList();
+                        // Setup matching chain
+                        ukprnMatcher.SetNextMatchHandler(ulnMatcher);
 
-                        if (!remainingCommitmentsToMatchAgainstTo.Any())
+                        if (learner.StdCode.HasValue)
+                        {
+                            ulnMatcher.SetNextMatchHandler(standardMatcher);
+                            standardMatcher.SetNextMatchHandler(priceMatcher);
+                        }
+                        else
+                        {
+                            ulnMatcher.SetNextMatchHandler(frameworkMatcher);
+                            frameworkMatcher.SetNextMatchHandler(programmeMatcher);
+                            programmeMatcher.SetNextMatchHandler(pathwaymatcher);
+                            pathwaymatcher.SetNextMatchHandler(priceMatcher);
+                        }
+
+                        priceMatcher.SetNextMatchHandler(multipleMatcher);
+
+                        // Execute the matching chain
+                        var matchResult = ukprnMatcher.Match(message.Commitments.ToList(), learner);
+
+                        if (!string.IsNullOrEmpty(matchResult))
                         {
                             validationErrors.Add(new Data.Entities.ValidationError
                             {
-                                LearnRefNumber = dl.LearnRefNumber,
-                                AimSeqNumber = dl.AimSeqNumber,
-                                RuleId = "DLOCK_01"
+                                LearnRefNumber = learner.LearnRefNumber,
+                                AimSeqNumber = learner.AimSeqNumber,
+                                RuleId = matchResult
                             });
-
-                            gotMismatch = true;
-                        }
-
-                        // 2. ULN match
-                        if (!gotMismatch)
-                        {
-                            remainingCommitmentsToMatchAgainstTo = remainingCommitmentsToMatchAgainstTo.Where(c => DataLockMatcher.MatchUln(c, dl)).ToList();
-
-                            if (!remainingCommitmentsToMatchAgainstTo.Any())
-                            {
-                                validationErrors.Add(new Data.Entities.ValidationError
-                                {
-                                    LearnRefNumber = dl.LearnRefNumber,
-                                    AimSeqNumber = dl.AimSeqNumber,
-                                    RuleId = "DLOCK_02"
-                                });
-
-                                gotMismatch = true;
-                            }
-
-                            if (!gotMismatch)
-                            {
-                                if (dl.StdCode.HasValue)
-                                {
-                                    // standard
-                                    // 3.1. Standard match (if standard is present)
-                                    remainingCommitmentsToMatchAgainstTo = remainingCommitmentsToMatchAgainstTo.Where(c => DataLockMatcher.MatchStandard(c, dl)).ToList();
-
-                                    if (!remainingCommitmentsToMatchAgainstTo.Any())
-                                    {
-                                        validationErrors.Add(new Data.Entities.ValidationError
-                                        {
-                                            LearnRefNumber = dl.LearnRefNumber,
-                                            AimSeqNumber = dl.AimSeqNumber,
-                                            RuleId = "DLOCK_03"
-                                        });
-
-                                        gotMismatch = true;
-                                    }
-                                }
-                                else
-                                {
-                                    // framework
-                                    // 3.2. Framework match (if standard is not present)
-                                    remainingCommitmentsToMatchAgainstTo = remainingCommitmentsToMatchAgainstTo.Where(c => DataLockMatcher.MatchFramework(c, dl)).ToList();
-
-                                    if (!remainingCommitmentsToMatchAgainstTo.Any())
-                                    {
-                                        validationErrors.Add(new Data.Entities.ValidationError
-                                        {
-                                            LearnRefNumber = dl.LearnRefNumber,
-                                            AimSeqNumber = dl.AimSeqNumber,
-                                            RuleId = "DLOCK_04"
-                                        });
-
-                                        gotMismatch = true;
-                                    }
-
-                                    // 3.3. Programme match (if standard is not present)
-                                    if (!gotMismatch)
-                                    {
-                                        remainingCommitmentsToMatchAgainstTo = remainingCommitmentsToMatchAgainstTo.Where(c => DataLockMatcher.MatchProgramme(c, dl)).ToList();
-
-                                        if (!remainingCommitmentsToMatchAgainstTo.Any())
-                                        {
-                                            validationErrors.Add(new Data.Entities.ValidationError
-                                            {
-                                                LearnRefNumber = dl.LearnRefNumber,
-                                                AimSeqNumber = dl.AimSeqNumber,
-                                                RuleId = "DLOCK_05"
-                                            });
-
-                                            gotMismatch = true;
-                                        }
-                                    }
-
-                                    // 3.4. Pathway match (if standard is not present)
-                                    if (!gotMismatch)
-                                    {
-                                        remainingCommitmentsToMatchAgainstTo = remainingCommitmentsToMatchAgainstTo.Where(c => DataLockMatcher.MatchPathway(c, dl)).ToList();
-
-                                        if (!remainingCommitmentsToMatchAgainstTo.Any())
-                                        {
-                                            validationErrors.Add(new Data.Entities.ValidationError
-                                            {
-                                                LearnRefNumber = dl.LearnRefNumber,
-                                                AimSeqNumber = dl.AimSeqNumber,
-                                                RuleId = "DLOCK_06"
-                                            });
-
-                                            gotMismatch = true;
-                                        }
-                                    }
-                                }
-
-                                // 4. Price match
-                                if (!gotMismatch)
-                                {
-                                    remainingCommitmentsToMatchAgainstTo = remainingCommitmentsToMatchAgainstTo.Where(c => DataLockMatcher.MatchPrice(c, dl)).ToList();
-
-                                    if (!remainingCommitmentsToMatchAgainstTo.Any())
-                                    {
-                                        validationErrors.Add(new Data.Entities.ValidationError
-                                        {
-                                            LearnRefNumber = dl.LearnRefNumber,
-                                            AimSeqNumber = dl.AimSeqNumber,
-                                            RuleId = "DLOCK_07"
-                                        });
-                                    }
-                                    else if (remainingCommitmentsToMatchAgainstTo.Count != 1)
-                                    {
-                                        validationErrors.Add(new Data.Entities.ValidationError
-                                        {
-                                            LearnRefNumber = dl.LearnRefNumber,
-                                            AimSeqNumber = dl.AimSeqNumber,
-                                            RuleId = "DLOCK_08"
-                                        });
-                                    }
-                                }
-                            }
                         }
                     }
                 });

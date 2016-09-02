@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
@@ -25,7 +26,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.ValidationEr
                 ValidationErrors = new[]
                 {
                     new ValidationErrorBuilder().Build(),
-                    new ValidationErrorBuilder().WithRuleId("DLOCK_02").Build()
+                    new ValidationErrorBuilder().WithRuleId(DataLockErrorCodes.MismatchingUln).Build()
                 }
             };
 

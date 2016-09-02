@@ -4,6 +4,7 @@ using System.Linq;
 using CS.Common.External.Interfaces;
 using Dapper;
 using NUnit.Framework;
+using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Context;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
@@ -69,9 +70,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask.Exec
 
                 Assert.IsNotNull(errors);
                 Assert.AreEqual(8, errors.Count);
-                Assert.AreEqual(6, errors.Count(e => e.RuleId == "DLOCK_02"));
-                Assert.AreEqual(1, errors.Count(e => e.RuleId == "DLOCK_04"));
-                Assert.AreEqual(1, errors.Count(e => e.RuleId == "DLOCK_07"));
+                Assert.AreEqual(6, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingUln));
+                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingFramework));
+                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingPrice));
             }
         }
 

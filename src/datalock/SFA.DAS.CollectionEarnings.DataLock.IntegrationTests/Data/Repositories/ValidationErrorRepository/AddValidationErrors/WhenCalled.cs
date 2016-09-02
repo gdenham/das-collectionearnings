@@ -2,6 +2,7 @@
 using System.Linq;
 using Dapper;
 using NUnit.Framework;
+using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
 using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
@@ -30,7 +31,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Data.Repositories
             var validationErrors = new[]
             {
                 new ValidationErrorBuilder().Build(),
-                new ValidationErrorBuilder().WithAimSeqNumber(2).WithRuleId("DLOCK_02").Build(),
+                new ValidationErrorBuilder().WithAimSeqNumber(2).WithRuleId(DataLockErrorCodes.MismatchingUln).Build(),
 
                 new ValidationErrorBuilder().WithLearnRefNumber(string.Empty).Build(),
                 new ValidationErrorBuilder().WithLearnRefNumber(null).Build(),
