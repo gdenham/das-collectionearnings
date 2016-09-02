@@ -9,11 +9,11 @@ using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmen
 using SFA.DAS.CollectionEarnings.DataLock.Application.DasLearner.GetAllDasLearnersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFailuresQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data.Entities;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.ExternalContext;
 using SFA.DAS.CollectionEarnings.DataLock.Context;
 using SFA.DAS.CollectionEarnings.DataLock.DependencyResolution;
 using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTask.Execute
 {

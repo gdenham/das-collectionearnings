@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
+using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Data.Repositories.CommitmentRepository.GetAllCommitments
 {
@@ -13,34 +13,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Data.Repositories
 
         private readonly Commitment[] _commitments =
         {
-            new Commitment
-            {
-                CommitmentId = "C-001",
-                Uln = 1000000019,
-                Ukprn = 10007459,
-                AccountId = "A-001",
-                StartDate = new DateTime(2016, 9, 1),
-                EndDate = new DateTime(2018, 12, 31),
-                AgreedCost = 15000.00m,
-                StandardCode = null,
-                ProgrammeType = 20,
-                FrameworkCode = 550,
-                PathwayCode = 6
-            },
-            new Commitment
-            {
-                CommitmentId = "C-002",
-                Uln = 1000000027,
-                Ukprn = 10007459,
-                AccountId = "A-002",
-                StartDate = new DateTime(2016, 9, 15),
-                EndDate = new DateTime(2018, 12, 15),
-                AgreedCost = 30000.00m,
-                StandardCode = null,
-                ProgrammeType = 20,
-                FrameworkCode = 550,
-                PathwayCode = 6
-            }
+            new CommitmentBuilder().Build(),
+            new CommitmentBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithAgreedCost(30000.00m).Build()
         };
 
         private ICommitmentRepository _commitmentRepository;

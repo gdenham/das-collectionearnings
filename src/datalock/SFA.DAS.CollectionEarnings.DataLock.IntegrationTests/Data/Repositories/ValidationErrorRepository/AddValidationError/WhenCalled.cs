@@ -3,8 +3,9 @@ using System.Linq;
 using Dapper;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
+using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Data.Repositories.ValidationErrorRepository.AddValidationError
 {
@@ -26,12 +27,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Data.Repositories
         public void ThenValidationErrorAddedSuccessfully()
         {
             // Arrange
-            var validationError = new ValidationError()
-            {
-                LearnRefNumber = "Lrn001",
-                AimSeqNumber = 1,
-                RuleId = "DLOCK_01"
-            };
+            var validationError = new ValidationErrorBuilder().Build();
 
             // Act
             _validationErrorRepository.AddValidationError(validationError);

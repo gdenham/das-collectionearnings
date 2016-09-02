@@ -68,9 +68,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\DataLock\DataLockErrorCodes.cs" />
     <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryHandler.cs" />
     <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryRequest.cs" />
     <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryResponse.cs" />
+    <Compile Include="Application\DataLock\Matcher\FrameworkMatchHandler.cs" />
+    <Compile Include="Application\DataLock\Matcher\MatchHandler.cs" />
+    <Compile Include="Application\DataLock\Matcher\MultipleMatchHandler.cs" />
+    <Compile Include="Application\DataLock\Matcher\PathwayMatchHandler.cs" />
+    <Compile Include="Application\DataLock\Matcher\PriceMatchHandler.cs" />
+    <Compile Include="Application\DataLock\Matcher\ProgrammeMatchHandler.cs" />
+    <Compile Include="Application\DataLock\Matcher\StandardMatchHandler.cs" />
+    <Compile Include="Application\DataLock\Matcher\UkprnMatchHandler.cs" />
+    <Compile Include="Application\DataLock\Matcher\UlnMatchHandler.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandHandler.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandRequest.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandResponse.cs" />

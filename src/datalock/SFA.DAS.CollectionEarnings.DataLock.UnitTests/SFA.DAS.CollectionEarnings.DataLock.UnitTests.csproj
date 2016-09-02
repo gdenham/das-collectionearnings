@@ -65,6 +65,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryHandler\Handle\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\FrameworkMatchHandler\Match\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\MultipleMatchHandler\Match\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\PathwayMatchHandler\Match\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\PriceMatchHandler\Match\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\ProgrammeMatchHandler\Match\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\StandardMatchHandler\Match\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\UkprnMatchHandler\Match\WhenCalled.cs" />
+    <Compile Include="Application\DataLock\Matcher\UlnMatchHandler\Match\WhenCalled.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandHandler\Handle\WhenCalled.cs" />
     <Compile Include="Context\ContextWrapper\ContextWrapper\WhenCalledWithInvalidContext.cs" />
     <Compile Include="Context\ContextWrapper\ContextWrapper\WhenCalledWithValidContext.cs" />
@@ -79,6 +87,11 @@
     <Compile Include="DependencyResolution\TaskDependencyResolverTests\WhenInitialising.cs" />
     <Compile Include="Logging\LoggingConfigurationTests\WhenConfiguringLogging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\Entities\CommitmentBuilder.cs" />
+    <Compile Include="Tools\Entities\DasLearnerBuilder.cs" />
+    <Compile Include="Tools\Entities\IBuilder.cs" />
+    <Compile Include="Tools\Entities\ValidationErrorBuilder.cs" />
+    <Compile Include="Tools\ExternalContextStub.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -87,10 +100,6 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.CollectionEarnings.DataLock.Common.Tests\SFA.DAS.CollectionEarnings.DataLock.Common.Tests.csproj">
-      <Project>{df260d8c-410c-48d3-93e1-31ffc09fc410}</Project>
-      <Name>SFA.DAS.CollectionEarnings.DataLock.Common.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SFA.DAS.CollectionEarnings.DataLock\SFA.DAS.CollectionEarnings.DataLock.csproj">
       <Project>{e0b60d5b-969c-4c05-a636-27788cd19be0}</Project>
       <Name>SFA.DAS.CollectionEarnings.DataLock</Name>

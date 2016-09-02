@@ -32,7 +32,7 @@
 		        LEFT JOIN [Input].[TrailblazerApprenticeshipFinancialRecord] afr ON ld.[LearnRefNumber] = afr.[LearnRefNumber]
 		           AND ld.[AimSeqNumber] = afr.[AimSeqNumber]
                    AND afr.[TBFinType] = 'TNP'
-            WHERE ldf.[LearnDelFAMType] = 'DAS'
+            WHERE ldf.[LearnDelFAMType] = 'ACT'
 	           AND ldf.[LearnDelFAMCode] IN ('1', '3')";
     }
 }

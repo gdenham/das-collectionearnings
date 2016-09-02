@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.ExternalContext;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Context.ContextWrapper.GetPropertyValue
 {

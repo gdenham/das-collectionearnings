@@ -2,8 +2,8 @@
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.ValidationError.AddValidationErrorCommand.AddValidationErrorCommandHandler.Handle
 {

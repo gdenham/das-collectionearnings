@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using NUnit.Framework;
+using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFailuresQuery;
-using SFA.DAS.CollectionEarnings.DataLock.Common.Tests.Data.Entities;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.GetDataLockFailuresQuery.GetDataLockFailuresQueryHandler.Handle
 {
@@ -87,7 +88,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Get
             // Assert
             Assert.IsNotNull(response);
             Assert.IsTrue(response.IsValid);
-            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == "DLOCK_01"));
+            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == DataLockErrorCodes.MismatchingUkprn));
         }
 
         [Test]
@@ -113,7 +114,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Get
             // Assert
             Assert.IsNotNull(response);
             Assert.IsTrue(response.IsValid);
-            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == "DLOCK_02"));
+            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == DataLockErrorCodes.MismatchingUln));
         }
 
         [Test]
@@ -138,7 +139,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Get
             // Assert
             Assert.IsNotNull(response);
             Assert.IsTrue(response.IsValid);
-            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == "DLOCK_03"));
+            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == DataLockErrorCodes.MismatchingStandard));
         }
 
         [Test]
@@ -164,7 +165,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Get
             // Assert
             Assert.IsNotNull(response);
             Assert.IsTrue(response.IsValid);
-            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == "DLOCK_04"));
+            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == DataLockErrorCodes.MismatchingFramework));
         }
 
         [Test]
@@ -190,7 +191,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Get
             // Assert
             Assert.IsNotNull(response);
             Assert.IsTrue(response.IsValid);
-            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == "DLOCK_05"));
+            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == DataLockErrorCodes.MismatchingProgramme));
         }
 
         [Test]
@@ -216,7 +217,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Get
             // Assert
             Assert.IsNotNull(response);
             Assert.IsTrue(response.IsValid);
-            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == "DLOCK_06"));
+            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == DataLockErrorCodes.MismatchingPathway));
         }
 
         [Test]
@@ -242,7 +243,33 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Get
             // Assert
             Assert.IsNotNull(response);
             Assert.IsTrue(response.IsValid);
-            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == "DLOCK_07"));
+            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == DataLockErrorCodes.MismatchingPrice));
+        }
+
+        [Test]
+        public void ThenErrorExpectedForMultiplePriceMatchingCommitments()
+        {
+            // Arrange
+            _request = new GetDataLockFailuresQueryRequest
+            {
+                Commitments = new[]
+                {
+                    new CommitmentBuilder().Build(),
+                    new CommitmentBuilder().WithCommitmentId("C-002").Build()
+                },
+                DasLearners = new[]
+                {
+                    new DasLearnerBuilder().Build()
+                }
+            };
+
+            // Act
+            var response = _handler.Handle(_request);
+
+            // Assert
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.IsValid);
+            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == DataLockErrorCodes.MultipleMatches));
         }
 
         [Test]
