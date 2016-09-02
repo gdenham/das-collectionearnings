@@ -10,19 +10,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
     public class WhenCalled
     {
         private CollectionEarnings.DataLock.Application.DataLock.Matcher.MultipleMatchHandler _matcher;
-        private Mock<MatchHandler> _nextMatcher;
 
         [SetUp]
         public void Arrange()
         {
             _matcher = new CollectionEarnings.DataLock.Application.DataLock.Matcher.MultipleMatchHandler();
-            _nextMatcher = new Mock<MatchHandler>();
-
-            _nextMatcher
-                .Setup(m => m.Match(It.IsAny<List<Data.Entities.Commitment>>(), It.IsAny<Data.Entities.DasLearner>()))
-                .Returns(string.Empty);
-
-            _matcher.SetNextMatchHandler(_nextMatcher.Object);
         }
 
         [Test]
@@ -41,10 +33,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
 
             // Assert
             Assert.IsNull(matchResult);
-            _nextMatcher.Verify(
-                m =>
-                    m.Match(It.IsAny<List<Data.Entities.Commitment>>(), It.IsAny<Data.Entities.DasLearner>()),
-                Times.Never());
         }
 
         [Test]
@@ -64,10 +52,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
 
             // Assert
             Assert.AreEqual(DataLockErrorCodes.MultipleMatches, matchResult);
-            _nextMatcher.Verify(
-                m =>
-                    m.Match(It.IsAny<List<Data.Entities.Commitment>>(), It.IsAny<Data.Entities.DasLearner>()),
-                Times.Never());
         }
     }
 }

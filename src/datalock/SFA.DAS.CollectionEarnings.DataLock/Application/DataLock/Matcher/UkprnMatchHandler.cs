@@ -11,7 +11,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
 
             if (commitmentsToMatch.Any())
             {
-                return NextMatchHandler.Match(commitmentsToMatch, learner);
+                return ExecuteNextHandler(commitmentsToMatch, learner);
             }
 
             return DataLockErrorCodes.MismatchingUkprn;

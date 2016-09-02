@@ -7,16 +7,22 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
     {
         public override string Match(List<Data.Entities.Commitment> commitments, Data.Entities.DasLearner learner)
         {
-            var commitmentsToMatch = commitments.Where(c => c.FrameworkCode.HasValue &&
-                                                            learner.FworkCode.HasValue &&
-                                                            c.FrameworkCode.Value == learner.FworkCode.Value).ToList();
-
-            if (commitmentsToMatch.Any())
+            if (!learner.StdCode.HasValue)
             {
-                return NextMatchHandler.Match(commitmentsToMatch, learner);
+                var commitmentsToMatch = commitments.Where(c => c.FrameworkCode.HasValue &&
+                                                                learner.FworkCode.HasValue &&
+                                                                c.FrameworkCode.Value == learner.FworkCode.Value)
+                    .ToList();
+
+                if (commitmentsToMatch.Any())
+                {
+                    return ExecuteNextHandler(commitmentsToMatch, learner);
+                }
+
+                return DataLockErrorCodes.MismatchingFramework;
             }
 
-            return DataLockErrorCodes.MismatchingFramework;
+            return ExecuteNextHandler(commitments, learner);
         }
     }
 }

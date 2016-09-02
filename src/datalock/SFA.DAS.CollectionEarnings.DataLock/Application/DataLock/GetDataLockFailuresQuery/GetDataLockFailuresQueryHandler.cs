@@ -9,6 +9,30 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFa
 {
     public class GetDataLockFailuresQueryHandler : IRequestHandler<GetDataLockFailuresQueryRequest, GetDataLockFailuresQueryResponse>
     {
+        private readonly MatchHandler _initialHandler;
+
+        public GetDataLockFailuresQueryHandler()
+        {
+            var ukprnMatcher = new UkprnMatchHandler();
+            var ulnMatcher = new UlnMatchHandler();
+            var standardMatcher = new StandardMatchHandler();
+            var frameworkMatcher = new FrameworkMatchHandler();
+            var programmeMatcher = new ProgrammeMatchHandler();
+            var pathwaymatcher = new PathwayMatchHandler();
+            var priceMatcher = new PriceMatchHandler();
+            var multipleMatcher = new MultipleMatchHandler();
+
+            ukprnMatcher.SetNextMatchHandler(ulnMatcher);
+            ulnMatcher.SetNextMatchHandler(standardMatcher);
+            standardMatcher.SetNextMatchHandler(frameworkMatcher);
+            frameworkMatcher.SetNextMatchHandler(programmeMatcher);
+            programmeMatcher.SetNextMatchHandler(pathwaymatcher);
+            pathwaymatcher.SetNextMatchHandler(priceMatcher);
+            priceMatcher.SetNextMatchHandler(multipleMatcher);
+
+            _initialHandler = ukprnMatcher;
+        }
+
         public GetDataLockFailuresQueryResponse Handle(GetDataLockFailuresQueryRequest message)
         {
             try
@@ -24,35 +48,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFa
                     {
                         var learner = learners[x];
 
-                        var ukprnMatcher = new UkprnMatchHandler();
-                        var ulnMatcher = new UlnMatchHandler();
-                        var standardMatcher = new StandardMatchHandler();
-                        var frameworkMatcher = new FrameworkMatchHandler();
-                        var programmeMatcher = new ProgrammeMatchHandler();
-                        var pathwaymatcher = new PathwayMatchHandler();
-                        var priceMatcher = new PriceMatchHandler();
-                        var multipleMatcher = new MultipleMatchHandler();
-
-                        // Setup matching chain
-                        ukprnMatcher.SetNextMatchHandler(ulnMatcher);
-
-                        if (learner.StdCode.HasValue)
-                        {
-                            ulnMatcher.SetNextMatchHandler(standardMatcher);
-                            standardMatcher.SetNextMatchHandler(priceMatcher);
-                        }
-                        else
-                        {
-                            ulnMatcher.SetNextMatchHandler(frameworkMatcher);
-                            frameworkMatcher.SetNextMatchHandler(programmeMatcher);
-                            programmeMatcher.SetNextMatchHandler(pathwaymatcher);
-                            pathwaymatcher.SetNextMatchHandler(priceMatcher);
-                        }
-
-                        priceMatcher.SetNextMatchHandler(multipleMatcher);
-
                         // Execute the matching chain
-                        var matchResult = ukprnMatcher.Match(message.Commitments.ToList(), learner);
+                        var matchResult = _initialHandler.Match(message.Commitments.ToList(), learner);
 
                         if (!string.IsNullOrEmpty(matchResult))
                         {

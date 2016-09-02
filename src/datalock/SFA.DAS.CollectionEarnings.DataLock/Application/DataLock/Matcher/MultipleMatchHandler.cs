@@ -11,7 +11,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
                 return DataLockErrorCodes.MultipleMatches;
             }
 
-            return null;
+            return ExecuteNextHandler(commitments, learner);
         }
     }
 }
