@@ -68,6 +68,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryHandler\Handle\WhenCalled.cs" />
+    <Compile Include="Application\ProcessedLearningDeliveryPeriodisedValues\AddProcessedLearningDeliveryPeriodisedValuesCommand\CommandHandler\Handle\WhenCalled.cs" />
+    <Compile Include="Application\ProcessedLearningDelivery\AddProcessedLearningDeliveriesCommand\AddProcessedLearningDeliveriesCommandHandler\Handle\WhenCalled.cs" />
     <Compile Include="ApprenticeshipEarningsTask\Execute\WhenCalledWithInvalidContext.cs" />
     <Compile Include="ApprenticeshipEarningsTask\Execute\WhenCalledWithValidContext.cs" />
     <Compile Include="Context\ContextWrapper\ContextWrapper\WhenCalledWithInvalidContext.cs" />
@@ -81,6 +83,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Entities\IEntityBuilder.cs" />
     <Compile Include="Tools\Entities\LearningDeliveryToProcessBuilder.cs" />
+    <Compile Include="Tools\Entities\ProcessedLearningDeliveryBuilder.cs" />
+    <Compile Include="Tools\Entities\ProcessedLearningDeliveryPeriodisedValuesBuilder.cs" />
     <Compile Include="Tools\ExternalContextStub.cs" />
   </ItemGroup>
   <ItemGroup>

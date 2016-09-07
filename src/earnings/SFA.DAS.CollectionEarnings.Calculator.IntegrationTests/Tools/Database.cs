@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.IO;
-using System.Runtime.InteropServices;
 using Dapper;
-using Dapper.Contrib.Extensions;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools
 {

@@ -41,6 +41,10 @@
       <HintPath>..\packages\Dapper.Contrib.1.50.0\lib\net45\Dapper.Contrib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FastMember, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.1.1.0\lib\net40\FastMember.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MediatR, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MediatR.2.1.0\lib\net45\MediatR.dll</HintPath>
       <Private>True</Private>
@@ -68,14 +72,26 @@
     <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryHandler.cs" />
     <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryRequest.cs" />
     <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryResponse.cs" />
+    <Compile Include="Application\ProcessedLearningDelivery\AddProcessedLearningDeliveriesCommand\AddProcessedLearningDeliveriesCommandHandler.cs" />
+    <Compile Include="Application\ProcessedLearningDelivery\AddProcessedLearningDeliveriesCommand\AddProcessedLearningDeliveriesCommandRequest.cs" />
+    <Compile Include="Application\ProcessedLearningDelivery\AddProcessedLearningDeliveriesCommand\AddProcessedLearningDeliveriesCommandResponse.cs" />
+    <Compile Include="Application\ProcessedLearningDeliveryPeriodisedValues\AddProcessedLearningDeliveryPeriodisedValuesCommand\AddProcessedLearningDeliveryPeriodisedValuesCommandHandler.cs" />
+    <Compile Include="Application\ProcessedLearningDeliveryPeriodisedValues\AddProcessedLearningDeliveryPeriodisedValuesCommand\AddProcessedLearningDeliveryPeriodisedValuesCommandRequest.cs" />
+    <Compile Include="Application\ProcessedLearningDeliveryPeriodisedValues\AddProcessedLearningDeliveryPeriodisedValuesCommand\AddProcessedLearningDeliveryPeriodisedValuesCommandResponse.cs" />
     <Compile Include="Application\QueryResponse.cs" />
     <Compile Include="ApprenticeshipEarningsProcessor.cs" />
     <Compile Include="ApprenticeshipEarningsTask.cs" />
     <Compile Include="Context\ContextPropertyKeys.cs" />
     <Compile Include="Context\ContextWrapper.cs" />
+    <Compile Include="Data\Entities\ProcessedLearningDelivery.cs" />
+    <Compile Include="Data\Entities\ProcessedLearningDeliveryPeriodisedValues.cs" />
     <Compile Include="Data\Entities\LearningDeliveryToProcess.cs" />
     <Compile Include="Data\Repositories\ILearningDeliveryToProcessRepository.cs" />
+    <Compile Include="Data\Repositories\IProcessedLearningDeliveryPeriodisedValuesRepository.cs" />
+    <Compile Include="Data\Repositories\IProcessedLearningDeliveryRepository.cs" />
     <Compile Include="Data\Repositories\LearningDeliveryToProcessRepository.cs" />
+    <Compile Include="Data\Repositories\ProcessedLearningDeliveryPeriodisedValuesRepository.cs" />
+    <Compile Include="Data\Repositories\ProcessedLearningDeliveryRepository.cs" />
     <Compile Include="DependencyResolution\CalculatorRegistry.cs" />
     <Compile Include="DependencyResolution\ConnectionStringPolicy.cs" />
     <Compile Include="DependencyResolution\IDependencyResolver.cs" />
