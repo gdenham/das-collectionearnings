@@ -64,8 +64,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\CommandResponse.cs" />
+    <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryHandler.cs" />
+    <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryRequest.cs" />
+    <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryResponse.cs" />
+    <Compile Include="Application\QueryResponse.cs" />
+    <Compile Include="ApprenticeshipEarningsProcessor.cs" />
+    <Compile Include="ApprenticeshipEarningsTask.cs" />
     <Compile Include="Context\ContextPropertyKeys.cs" />
     <Compile Include="Context\ContextWrapper.cs" />
+    <Compile Include="Data\Entities\LearningDeliveryToProcess.cs" />
+    <Compile Include="Data\Repositories\ILearningDeliveryToProcessRepository.cs" />
+    <Compile Include="Data\Repositories\LearningDeliveryToProcessRepository.cs" />
+    <Compile Include="DependencyResolution\CalculatorRegistry.cs" />
+    <Compile Include="DependencyResolution\ConnectionStringPolicy.cs" />
     <Compile Include="DependencyResolution\IDependencyResolver.cs" />
     <Compile Include="DependencyResolution\TaskDependencyResolver.cs" />
     <Compile Include="Exceptions\EarningsCalculatorExceptionMessages.cs" />
@@ -77,6 +89,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
