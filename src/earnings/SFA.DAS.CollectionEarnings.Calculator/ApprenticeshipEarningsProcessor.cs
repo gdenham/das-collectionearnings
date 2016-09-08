@@ -1,7 +1,10 @@
 ﻿using System.Linq;
 using MediatR;
 using NLog;
+using SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.GetLearningDeliveriesEarningsQuery;
 using SFA.DAS.CollectionEarnings.Calculator.Application.LearningDeliveryToProcess.GetAllLearningDeliveriesToProcessQuery;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDelivery.AddProcessedLearningDeliveriesCommand;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriodisedValues.AddProcessedLearningDeliveryPeriodisedValuesCommand;
 using SFA.DAS.CollectionEarnings.Calculator.Exceptions;
 
 namespace SFA.DAS.CollectionEarnings.Calculator
@@ -36,7 +39,37 @@ namespace SFA.DAS.CollectionEarnings.Calculator
 
             if (learningDeliveries.Items != null && learningDeliveries.Items.Any())
             {
-                
+                var earnings = _mediator.Send(new GetLearningDeliveriesEarningsQueryRequest
+                {
+                    LearningDeliveries = learningDeliveries.Items
+                });
+
+                if (!earnings.IsValid)
+                {
+                    throw new EarningsCalculatorProcessorException("Error while processing the learning deliveries to calculate the earnings.", earnings.Exception);
+                }
+
+                var writeProcessedLearningDeliveriesResult =
+                    _mediator.Send(new AddProcessedLearningDeliveriesCommandRequest
+                    {
+                        LearningDeliveries = earnings.ProcessedLearningDeliveries
+                    });
+
+                if (!writeProcessedLearningDeliveriesResult.IsValid)
+                {
+                    throw new EarningsCalculatorProcessorException("Error while writing processed learning deliveries.", writeProcessedLearningDeliveriesResult.Exception);
+                }
+
+                var writeProcessedLearningDeliveryPeriodisedValuesResult =
+                    _mediator.Send(new AddProcessedLearningDeliveryPeriodisedValuesCommandRequest
+                    {
+                        PeriodisedValues = earnings.ProcessedLearningDeliveryPeriodisedValues
+                    });
+
+                if (!writeProcessedLearningDeliveryPeriodisedValuesResult.IsValid)
+                {
+                    throw new EarningsCalculatorProcessorException("Error while writing processed learning deliveries periodised values.", writeProcessedLearningDeliveryPeriodisedValuesResult.Exception);
+                }
             }
             else
             {

@@ -19,8 +19,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities
         private DateTime _learnPlanEndDate = new DateTime(2018, 12, 31);
         private DateTime? _learnActEndDate;
         private int _negotiatedPrice = 15000;
-        private int _numberOfPeriods = 12;
-        private int _currentPeriod = 1;
         private decimal _monthlyInstallment = 1000m;
         private decimal _monthlyInstallmentUncapped = 1000m;
         private decimal _completionPayment = 3000m;
@@ -44,8 +42,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities
                 LearnPlanEndDate = _learnPlanEndDate,
                 LearnActEndDate = _learnActEndDate,
                 NegotiatedPrice = _negotiatedPrice,
-                NumberOfPeriods = _numberOfPeriods,
-                CurrentPeriod = _currentPeriod,
                 MonthlyInstallment = _monthlyInstallment,
                 MonthlyInstallmentUncapped = _monthlyInstallmentUncapped,
                 CompletionPayment = _completionPayment,
@@ -147,20 +143,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities
         public ProcessedLearningDeliveryBuilder WithNegotiatedPrice(int negotiatedPrice)
         {
             _negotiatedPrice = negotiatedPrice;
-
-            return this;
-        }
-
-        public ProcessedLearningDeliveryBuilder WithNumberOfPeriods(int numberOfPeriods)
-        {
-            _numberOfPeriods = numberOfPeriods;
-
-            return this;
-        }
-
-        public ProcessedLearningDeliveryBuilder WithCurrentPeriod(int currentPeriod)
-        {
-            _currentPeriod = currentPeriod;
 
             return this;
         }

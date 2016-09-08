@@ -7,5 +7,7 @@
         public const string ContextPropertiesNoConnectionString = "The context does not contain the transientt database connection string property.";
         public const string ContextPropertiesNoLogLevel = "The context does not contain the logging level property.";
         public const string ContextPropertiesInvalidLogLevel = "The context does not contain a valid logging level.";
+        public const string ContextPropertiesNoYearOfCollection = "The context does not contain the year of collection property.";
+        public const string ContextPropertiesInvalidYearOfCollection = "The context does not contain a valid year of collection property.";
     }
 }

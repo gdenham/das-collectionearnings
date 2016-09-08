@@ -13,6 +13,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.DependencyResolution
             _container = new Container(c =>
                 {
                     c.Policies.Add(new ConnectionStringPolicy(contextWrapper));
+                    c.Policies.Add(new YearOfCollectionPolicy(contextWrapper));
                     c.AddRegistry(new CalculatorRegistry(taskType));
                 }
             );

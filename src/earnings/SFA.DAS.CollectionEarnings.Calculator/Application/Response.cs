@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.CollectionEarnings.Calculator.Application
 {
-    public abstract class CommandResponse
+    public abstract class Response
     {
         public bool IsValid { get; set; }
         public Exception Exception { get; set; }

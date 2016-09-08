@@ -18,8 +18,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Data.Entities
         public DateTime? OrigLearnStartDate { get; set; }
         public DateTime LearnPlanEndDate { get; set; }
         public DateTime? LearnActEndDate { get; set; }
-        public int NumberOfPeriods { get; set; }
-        public int CurrentPeriod { get; set; }
         public decimal MonthlyInstallment { get; set; }
         public decimal MonthlyInstallmentUncapped { get; set; }
         public decimal CompletionPayment { get; set; }

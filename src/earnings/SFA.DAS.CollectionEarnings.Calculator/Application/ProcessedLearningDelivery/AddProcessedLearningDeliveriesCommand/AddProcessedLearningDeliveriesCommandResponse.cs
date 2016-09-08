@@ -1,6 +1,6 @@
 ﻿namespace SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDelivery.AddProcessedLearningDeliveriesCommand
 {
-    public class AddProcessedLearningDeliveriesCommandResponse : CommandResponse
+    public class AddProcessedLearningDeliveriesCommandResponse : Response
     {
     }
 }

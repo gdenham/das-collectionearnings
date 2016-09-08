@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\EarningsCalculation\GetLearningDeliveriesEarningsQuery\GetLearningDeliveriesEarningsQueryHandler\Handle\WhenCalled.cs" />
     <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryHandler\Handle\WhenCalled.cs" />
     <Compile Include="Application\ProcessedLearningDeliveryPeriodisedValues\AddProcessedLearningDeliveryPeriodisedValuesCommand\CommandHandler\Handle\WhenCalled.cs" />
     <Compile Include="Application\ProcessedLearningDelivery\AddProcessedLearningDeliveriesCommand\AddProcessedLearningDeliveriesCommandHandler\Handle\WhenCalled.cs" />

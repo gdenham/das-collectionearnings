@@ -8,7 +8,10 @@ using SFA.DAS.CollectionEarnings.Calculator.Context;
 using SFA.DAS.CollectionEarnings.Calculator.DependencyResolution;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools;
 using NLog;
+using SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.GetLearningDeliveriesEarningsQuery;
 using SFA.DAS.CollectionEarnings.Calculator.Application.LearningDeliveryToProcess.GetAllLearningDeliveriesToProcessQuery;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDelivery.AddProcessedLearningDeliveriesCommand;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriodisedValues.AddProcessedLearningDeliveryPeriodisedValuesCommand;
 using SFA.DAS.CollectionEarnings.Calculator.Data.Entities;
 using SFA.DAS.CollectionEarnings.Calculator.Exceptions;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities;
@@ -39,7 +42,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
                 Properties = new Dictionary<string, string>
                 {
                     {ContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String"},
-                    {ContextPropertyKeys.LogLevel, "Info"}
+                    {ContextPropertyKeys.LogLevel, "Info"},
+                    {ContextPropertyKeys.YearOfCollection, "1718"}
                 }
             };
 
@@ -78,6 +82,32 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
                         }
                     }
                 );
+
+            _mediator
+                .Setup(m => m.Send(It.IsAny<GetLearningDeliveriesEarningsQueryRequest>()))
+                .Returns(new GetLearningDeliveriesEarningsQueryResponse
+                    {
+                        IsValid = true,
+                        ProcessedLearningDeliveries = new[] {new ProcessedLearningDeliveryBuilder().Build()},
+                        ProcessedLearningDeliveryPeriodisedValues = new[] {new ProcessedLearningDeliveryPeriodisedValuesBuilder().Build()}
+                    }
+                );
+
+            _mediator
+                .Setup(m => m.Send(It.IsAny<AddProcessedLearningDeliveriesCommandRequest>()))
+                .Returns(new AddProcessedLearningDeliveriesCommandResponse
+                    {
+                        IsValid = true
+                    }
+                );
+
+            _mediator
+                .Setup(m => m.Send(It.IsAny<AddProcessedLearningDeliveryPeriodisedValuesCommandRequest>()))
+                .Returns(new AddProcessedLearningDeliveryPeriodisedValuesCommandResponse
+                    {
+                        IsValid = true
+                    }
+                );
         }
 
         [Test]
@@ -87,10 +117,10 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
             _mediator
                 .Setup(m => m.Send(It.IsAny<GetAllLearningDeliveriesToProcessQueryRequest>()))
                 .Returns(new GetAllLearningDeliveriesToProcessQueryResponse
-                    {
-                        IsValid = false,
-                        Exception = new Exception("Error while reading learning deliveries to process.")
-                    }
+                {
+                    IsValid = false,
+                    Exception = new Exception("Error while reading learning deliveries to process.")
+                }
                 );
 
             _dependencyResolver
@@ -100,6 +130,72 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
             // Assert
             var ex = Assert.Throws<EarningsCalculatorProcessorException>(() => _task.Execute(_context));
             Assert.IsTrue(ex.Message.Contains("Error while reading learning deliveries to process."));
+        }
+
+        [Test]
+        public void ThenExpectingExceptionForGetLearningDeliveriesEarningsQueryFailure()
+        {
+            // Arrange
+            _mediator
+                .Setup(m => m.Send(It.IsAny<GetLearningDeliveriesEarningsQueryRequest>()))
+                .Returns(new GetLearningDeliveriesEarningsQueryResponse
+                {
+                        IsValid = false,
+                        Exception = new Exception("Error while processing the learning deliveries to calculate the earnings.")
+                    }
+                );
+
+            _dependencyResolver
+                .Setup(dr => dr.GetInstance<ApprenticeshipEarningsProcessor>())
+                .Returns(new ApprenticeshipEarningsProcessor(_logger.Object, _mediator.Object));
+
+            // Assert
+            var ex = Assert.Throws<EarningsCalculatorProcessorException>(() => _task.Execute(_context));
+            Assert.IsTrue(ex.Message.Contains("Error while processing the learning deliveries to calculate the earnings."));
+        }
+
+        [Test]
+        public void ThenExpectingExceptionForAddProcessedLearningDeliveriesCommandFailure()
+        {
+            // Arrange
+            _mediator
+                .Setup(m => m.Send(It.IsAny<AddProcessedLearningDeliveriesCommandRequest>()))
+                .Returns(new AddProcessedLearningDeliveriesCommandResponse
+                {
+                    IsValid = false,
+                    Exception = new Exception("Error while writing processed learning deliveries.")
+                }
+                );
+
+            _dependencyResolver
+                .Setup(dr => dr.GetInstance<ApprenticeshipEarningsProcessor>())
+                .Returns(new ApprenticeshipEarningsProcessor(_logger.Object, _mediator.Object));
+
+            // Assert
+            var ex = Assert.Throws<EarningsCalculatorProcessorException>(() => _task.Execute(_context));
+            Assert.IsTrue(ex.Message.Contains("Error while writing processed learning deliveries."));
+        }
+
+        [Test]
+        public void ThenExpectingExceptionForAddProcessedLearningDeliveryPeriodisedValuesCommandFailure()
+        {
+            // Arrange
+            _mediator
+                .Setup(m => m.Send(It.IsAny<AddProcessedLearningDeliveryPeriodisedValuesCommandRequest>()))
+                .Returns(new AddProcessedLearningDeliveryPeriodisedValuesCommandResponse
+                {
+                    IsValid = false,
+                    Exception = new Exception("Error while writing processed learning deliveries periodised values.")
+                }
+                );
+
+            _dependencyResolver
+                .Setup(dr => dr.GetInstance<ApprenticeshipEarningsProcessor>())
+                .Returns(new ApprenticeshipEarningsProcessor(_logger.Object, _mediator.Object));
+
+            // Assert
+            var ex = Assert.Throws<EarningsCalculatorProcessorException>(() => _task.Execute(_context));
+            Assert.IsTrue(ex.Message.Contains("Error while writing processed learning deliveries periodised values."));
         }
 
         [Test]
@@ -137,14 +233,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
                 .Returns(_processor.Object);
 
             // Act
-            var properties = new Dictionary<string, string>
-            {
-                { ContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" },
-                { ContextPropertyKeys.LogLevel, "Info" }
-            };
-
-            _context.Properties = properties;
-
             _task.Execute(_context);
 
             // Assert

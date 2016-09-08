@@ -63,7 +63,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
         {
             var properties = new Dictionary<string, string>
             {
-                { ContextPropertyKeys.LogLevel, "Info" }
+                { ContextPropertyKeys.LogLevel, "Info" },
+                { ContextPropertyKeys.YearOfCollection, "1617" }
             };
 
             _context.Properties = properties;
@@ -78,7 +79,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
         {
             var properties = new Dictionary<string, string>
             {
-                { ContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" }
+                { ContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" },
+                { ContextPropertyKeys.YearOfCollection, "1617" }
             };
 
             _context.Properties = properties;
@@ -86,6 +88,43 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
             // Assert
             var ex = Assert.Throws<EarningsCalculatorInvalidContextException>(() => _task.Execute(_context));
             Assert.IsTrue(ex.Message.Contains(EarningsCalculatorExceptionMessages.ContextPropertiesNoLogLevel));
+        }
+
+        [Test]
+        public void ThenExpectingExceptionForNoYearOfCollectionProvided()
+        {
+            var properties = new Dictionary<string, string>
+            {
+                { ContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" },
+                { ContextPropertyKeys.LogLevel, "Info" }
+            };
+
+            _context.Properties = properties;
+
+            // Assert
+            var ex = Assert.Throws<EarningsCalculatorInvalidContextException>(() => _task.Execute(_context));
+            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorExceptionMessages.ContextPropertiesNoYearOfCollection));
+        }
+
+        [TestCase(" ")]
+        [TestCase("acbd")]
+        [TestCase("12345")]
+        [TestCase("1234")]
+        [TestCase("9999")]
+        public void ThenExpectingExceptionForInvalidYearOfCollectionProvided(string yeatOfCollection)
+        {
+            var properties = new Dictionary<string, string>
+            {
+                { ContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" },
+                { ContextPropertyKeys.LogLevel, "Info" },
+                { ContextPropertyKeys.YearOfCollection, yeatOfCollection }
+            };
+
+            _context.Properties = properties;
+
+            // Assert
+            var ex = Assert.Throws<EarningsCalculatorInvalidContextException>(() => _task.Execute(_context));
+            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorExceptionMessages.ContextPropertiesInvalidYearOfCollection));
         }
     }
 }

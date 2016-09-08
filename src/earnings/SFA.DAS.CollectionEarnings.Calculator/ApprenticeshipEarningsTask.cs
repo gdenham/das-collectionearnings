@@ -69,6 +69,27 @@ namespace SFA.DAS.CollectionEarnings.Calculator
             {
                 throw new EarningsCalculatorInvalidContextException(EarningsCalculatorExceptionMessages.ContextPropertiesNoLogLevel);
             }
+
+            if (string.IsNullOrEmpty(contextWrapper.GetPropertyValue(ContextPropertyKeys.YearOfCollection)))
+            {
+                throw new EarningsCalculatorInvalidContextException(EarningsCalculatorExceptionMessages.ContextPropertiesNoYearOfCollection);
+            }
+
+            ValidateYearOfCollection(contextWrapper.GetPropertyValue(ContextPropertyKeys.YearOfCollection));
+        }
+
+        private void ValidateYearOfCollection(string yearOfCollection)
+        {
+            int year1;
+            int year2;
+
+            if (yearOfCollection.Length != 4 ||
+                !int.TryParse(yearOfCollection.Substring(0, 2), out year1) ||
+                !int.TryParse(yearOfCollection.Substring(2, 2), out year2) ||
+                (year2 != year1 + 1))
+            {
+                throw new EarningsCalculatorInvalidContextException(EarningsCalculatorExceptionMessages.ContextPropertiesInvalidYearOfCollection);
+            }
         }
     }
 }

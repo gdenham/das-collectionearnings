@@ -22,7 +22,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.ProcessedL
 
             _request = new AddProcessedLearningDeliveryPeriodisedValuesCommandRequest
             {
-                PeriodisedValueses = new []
+                PeriodisedValues = new []
                 {
                     new ProcessedLearningDeliveryPeriodisedValuesBuilder().Build(),
                     new ProcessedLearningDeliveryPeriodisedValuesBuilder().WithAimSeqNumber(2).Build(),

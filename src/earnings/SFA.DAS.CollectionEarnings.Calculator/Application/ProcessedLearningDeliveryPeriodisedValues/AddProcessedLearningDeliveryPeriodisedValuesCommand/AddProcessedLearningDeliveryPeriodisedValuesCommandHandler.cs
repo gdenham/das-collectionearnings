@@ -17,7 +17,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDel
         {
             try
             {
-                _repository.AddProcessedLearningDeliveryPeriodisedValues(message.PeriodisedValueses);
+                _repository.AddProcessedLearningDeliveryPeriodisedValues(message.PeriodisedValues);
 
                 return new AddProcessedLearningDeliveryPeriodisedValuesCommandResponse
                 {

@@ -5,6 +5,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDel
 {
     public class AddProcessedLearningDeliveryPeriodisedValuesCommandRequest : IRequest<AddProcessedLearningDeliveryPeriodisedValuesCommandResponse>
     {
-         public IEnumerable<Data.Entities.ProcessedLearningDeliveryPeriodisedValues> PeriodisedValueses { get; set; }
+         public IEnumerable<Data.Entities.ProcessedLearningDeliveryPeriodisedValues> PeriodisedValues { get; set; }
     }
 }

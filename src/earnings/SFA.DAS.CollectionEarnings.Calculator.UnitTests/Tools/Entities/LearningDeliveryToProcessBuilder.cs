@@ -14,9 +14,9 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities
         private int? _programmeType = 20;
         private int? _frameworkCode = 550;
         private int? _pathwayCode = 6;
-        private DateTime _learnStartDate = new DateTime(2016, 9, 1);
+        private DateTime _learnStartDate = new DateTime(2017, 9, 1);
         private DateTime? _origLearnStartDate;
-        private DateTime _learnPlanEndDate = new DateTime(2018, 12, 31);
+        private DateTime _learnPlanEndDate = new DateTime(2018, 9, 8);
         private DateTime? _learnActEndDate;
         private int? _completionStatus = 1;
         private int _negotiatedPrice = 15000;
