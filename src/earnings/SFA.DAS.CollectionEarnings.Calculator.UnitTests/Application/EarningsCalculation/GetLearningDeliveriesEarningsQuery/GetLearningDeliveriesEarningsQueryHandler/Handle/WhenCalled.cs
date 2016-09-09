@@ -53,7 +53,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
             },
             new object[]
             {
-                new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 2, 28)).Build()},
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 2, 28)).WithLearnActEndDate(new DateTime(2018, 2, 28)).Build()},
                 new DateTime(2018, 3, 15),
                 new[] {0.00m, 2000.00m, 2000.00m, 2000.00m, 2000.00m, 2000.00m, 5000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m},
                 "expecting monthly installments of 2000.00 starting from the second period and a completion payment added in the 7th period for a learning episode that starts on 01/09/2017, runs for 6 months, ends on a census date, has a negociated price of 15000 and is submitted on 15/03/2018."
@@ -67,21 +67,21 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
             },
             new object[]
             {
-                new[] {new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2017, 10, 1)).WithLearnPlanEndDate(new DateTime(2018, 3, 31)).WithNegotiatedPrice(3750).Build()},
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2017, 10, 1)).WithLearnPlanEndDate(new DateTime(2018, 3, 31)).WithLearnActEndDate(new DateTime(2018, 3, 31)).WithNegotiatedPrice(3750).Build()},
                 new DateTime(2018, 3, 15),
                 new[] {0.00m, 0.00m, 500.00m, 500.00m, 500.00m, 500.00m, 500.00m, 1250.00m, 0.00m, 0.00m, 0.00m, 0.00m},
                 "expecting monthly installments of 500.00 starting from the third period and a completion payment added in the 8th period for a learning episode that starts on 01/10/2017, runs for 6 months, ends on a census date, has a negociated price of 3750 and is submitted on 15/03/2018."
             },
             new object[]
             {
-                new[] {new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2017, 10, 1)).WithLearnPlanEndDate(new DateTime(2018, 4, 10)).WithNegotiatedPrice(3750).Build()},
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2017, 10, 1)).WithLearnPlanEndDate(new DateTime(2018, 4, 10)).WithLearnActEndDate(new DateTime(2018, 4, 10)).WithNegotiatedPrice(3750).Build()},
                 new DateTime(2018, 3, 15),
                 new[] {0.00m, 0.00m, 500.00m, 500.00m, 500.00m, 500.00m, 500.00m, 500.00m, 750.00m, 0.00m, 0.00m, 0.00m},
                 "expecting monthly installments of 500.00 starting from the third period and a completion payment of 750.00 added in the 9th period for a learning episode that starts on 01/10/2017, runs for 6 months, ends after a census date, has a negociated price of 3750 and is submitted on 15/03/2018."
             },
             new object[]
             {
-                new[] {new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2016, 9, 1)).WithLearnPlanEndDate(new DateTime(2017, 9, 8)).Build()},
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2016, 9, 1)).WithLearnPlanEndDate(new DateTime(2017, 9, 8)).WithLearnActEndDate(new DateTime(2017, 9, 8)).Build()},
                 new DateTime(2017, 9, 30),
                 new[] {1000.00m, 3000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m},
                 "expecting one monthly installment of 1000.00 in the first period and the 3000.00 completion payment in the second period for a learning episode that starts on 01/09/2016, runs for 12 months, does not end on a census date, has a negociated price of 15000 and is submitted on 30/09/2017."

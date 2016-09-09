@@ -155,18 +155,24 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                 Period_12 = 0m
             };
 
-            var completionPaymentAdded = false;
+            var addedCompletionPayment = false;
+            var shouldAddCompletionPayment = learningDelivery.LearnActEndDate.HasValue;
+
             var censusDate = CalculateFirstCensusDateForTheLearningDelivery(learningDelivery);
             var period = CalculateFirstPeriodForTheLearningDelivery(learningDelivery);
 
-            while (censusDate <= learningDelivery.LearnPlanEndDate && period <= 12)
+            var lastDate = learningDelivery.LearnActEndDate.HasValue
+                ? learningDelivery.LearnActEndDate
+                : learningDelivery.LearnPlanEndDate;
+
+            while (censusDate <= lastDate && period <= 12)
             {
                 var amount = monthlyInstallment;
 
-                if (censusDate == learningDelivery.LearnPlanEndDate)
+                if (censusDate == lastDate && shouldAddCompletionPayment)
                 {
                     amount += completionPayment;
-                    completionPaymentAdded = true;
+                    addedCompletionPayment = true;
                 }
 
                 result.SetPeriodValue(period, amount);
@@ -175,7 +181,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                 period++;
             }
 
-            if (!completionPaymentAdded && period < 12)
+            if (shouldAddCompletionPayment && !addedCompletionPayment && period < 12)
             {
                 result.SetPeriodValue(period, completionPayment);
             }
