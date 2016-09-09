@@ -28,37 +28,39 @@ namespace SFA.DAS.CollectionEarnings.Calculator
         {
             var contextWrapper = new ContextWrapper(context);
 
-            ValidateContext(contextWrapper);
-
-            LoggingConfig.ConfigureLogging(
-                contextWrapper.GetPropertyValue(ContextPropertyKeys.TransientDatabaseConnectionString),
-                contextWrapper.GetPropertyValue(ContextPropertyKeys.LogLevel)
-            );
-
-            _dependencyResolver.Init(
-                typeof(ApprenticeshipEarningsProcessor),
-                contextWrapper
-            );
-
-            if (_logger == null)
+            if (IsContextValid(contextWrapper))
             {
-                _logger = LogManager.GetCurrentClassLogger();
-            }
 
-            try
-            {
-                var processor = _dependencyResolver.GetInstance<ApprenticeshipEarningsProcessor>();
+                LoggingConfig.ConfigureLogging(
+                    contextWrapper.GetPropertyValue(ContextPropertyKeys.TransientDatabaseConnectionString),
+                    contextWrapper.GetPropertyValue(ContextPropertyKeys.LogLevel)
+                    );
 
-                processor.Process();
-            }
-            catch (Exception ex)
-            {
-                _logger.Fatal(ex, ex.Message);
-                throw;
+                _dependencyResolver.Init(
+                    typeof (ApprenticeshipEarningsProcessor),
+                    contextWrapper
+                    );
+
+                if (_logger == null)
+                {
+                    _logger = LogManager.GetCurrentClassLogger();
+                }
+
+                try
+                {
+                    var processor = _dependencyResolver.GetInstance<ApprenticeshipEarningsProcessor>();
+
+                    processor.Process();
+                }
+                catch (Exception ex)
+                {
+                    _logger.Fatal(ex, ex.Message);
+                    throw;
+                }
             }
         }
 
-        private void ValidateContext(ContextWrapper contextWrapper)
+        private bool IsContextValid(ContextWrapper contextWrapper)
         {
             if (string.IsNullOrEmpty(contextWrapper.GetPropertyValue(ContextPropertyKeys.TransientDatabaseConnectionString)))
             {
@@ -75,10 +77,10 @@ namespace SFA.DAS.CollectionEarnings.Calculator
                 throw new EarningsCalculatorInvalidContextException(EarningsCalculatorExceptionMessages.ContextPropertiesNoYearOfCollection);
             }
 
-            ValidateYearOfCollection(contextWrapper.GetPropertyValue(ContextPropertyKeys.YearOfCollection));
+            return ValidateYearOfCollection(contextWrapper.GetPropertyValue(ContextPropertyKeys.YearOfCollection));
         }
 
-        private void ValidateYearOfCollection(string yearOfCollection)
+        private bool ValidateYearOfCollection(string yearOfCollection)
         {
             int year1;
             int year2;
@@ -90,6 +92,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator
             {
                 throw new EarningsCalculatorInvalidContextException(EarningsCalculatorExceptionMessages.ContextPropertiesInvalidYearOfCollection);
             }
+
+            return true;
         }
     }
 }

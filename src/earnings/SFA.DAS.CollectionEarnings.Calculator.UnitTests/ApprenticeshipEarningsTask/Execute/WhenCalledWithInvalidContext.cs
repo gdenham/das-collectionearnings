@@ -111,13 +111,13 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
         [TestCase("12345")]
         [TestCase("1234")]
         [TestCase("9999")]
-        public void ThenExpectingExceptionForInvalidYearOfCollectionProvided(string yeatOfCollection)
+        public void ThenExpectingExceptionForInvalidYearOfCollectionProvided(string yearOfCollection)
         {
             var properties = new Dictionary<string, string>
             {
                 { ContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" },
                 { ContextPropertyKeys.LogLevel, "Info" },
-                { ContextPropertyKeys.YearOfCollection, yeatOfCollection }
+                { ContextPropertyKeys.YearOfCollection, yearOfCollection }
             };
 
             _context.Properties = properties;
