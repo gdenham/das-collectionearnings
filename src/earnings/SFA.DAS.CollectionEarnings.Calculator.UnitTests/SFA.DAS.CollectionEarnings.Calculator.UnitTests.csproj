@@ -71,6 +71,7 @@
     <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryHandler\Handle\WhenCalled.cs" />
     <Compile Include="Application\ProcessedLearningDeliveryPeriodisedValues\AddProcessedLearningDeliveryPeriodisedValuesCommand\CommandHandler\Handle\WhenCalled.cs" />
     <Compile Include="Application\ProcessedLearningDelivery\AddProcessedLearningDeliveriesCommand\AddProcessedLearningDeliveriesCommandHandler\Handle\WhenCalled.cs" />
+    <Compile Include="ApprenticeshipEarningsProcessor\Process\WhenCalled.cs" />
     <Compile Include="ApprenticeshipEarningsTask\Execute\WhenCalledWithInvalidContext.cs" />
     <Compile Include="ApprenticeshipEarningsTask\Execute\WhenCalledWithValidContext.cs" />
     <Compile Include="Context\ContextWrapper\ContextWrapper\WhenCalledWithInvalidContext.cs" />
@@ -97,6 +98,7 @@
       <Name>SFA.DAS.CollectionEarnings.Calculator</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
