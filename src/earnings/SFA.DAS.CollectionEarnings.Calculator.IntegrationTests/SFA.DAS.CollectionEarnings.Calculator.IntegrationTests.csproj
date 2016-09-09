@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApprenticeshipEarningsTask\Execute\WhenCalled.cs" />
     <Compile Include="Data\Repositories\LearningDeliveryToProcessRepository\GetAllLearningDeliveriesToProcess\WhenCalled.cs" />
     <Compile Include="Data\Repositories\ProcessedLearningDeliveryPeriodisedValuesRepository\AddProcessedLearningDeliveryPeriodisedValues\WhenCalled.cs" />
     <Compile Include="Data\Repositories\ProcessedLearningDeliveryRepository\AddProcessedLearningDeliveries\WhenCalled.cs" />

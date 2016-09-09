@@ -155,6 +155,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                 Period_12 = 0m
             };
 
+            var completionPaymentAdded = false;
             var censusDate = CalculateFirstCensusDateForTheLearningDelivery(learningDelivery);
             var period = CalculateFirstPeriodForTheLearningDelivery(learningDelivery);
 
@@ -165,12 +166,18 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                 if (censusDate == learningDelivery.LearnPlanEndDate)
                 {
                     amount += completionPayment;
+                    completionPaymentAdded = true;
                 }
 
                 result.SetPeriodValue(period, amount);
 
                 censusDate = censusDate.AddMonths(1).LastDayOfMonth();
                 period++;
+            }
+
+            if (!completionPaymentAdded && period < 12)
+            {
+                result.SetPeriodValue(period, completionPayment);
             }
 
             return result;
