@@ -7,11 +7,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
     {
         public override string Match(List<Data.Entities.Commitment> commitments, Data.Entities.DasLearner learner)
         {
-            if (!learner.StdCode.HasValue)
+            if (!learner.SandardCode.HasValue)
             {
                 var commitmentsToMatch = commitments.Where(c => c.PathwayCode.HasValue &&
-                                                                learner.PwayCode.HasValue &&
-                                                                c.PathwayCode.Value == learner.PwayCode.Value).ToList();
+                                                                learner.PathwayCode.HasValue &&
+                                                                c.PathwayCode.Value == learner.PathwayCode.Value).ToList();
 
                 if (commitmentsToMatch.Any())
                 {

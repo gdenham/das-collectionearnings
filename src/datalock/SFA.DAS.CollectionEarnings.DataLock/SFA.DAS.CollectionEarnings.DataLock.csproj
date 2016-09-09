@@ -79,6 +79,7 @@
     <Compile Include="Application\DataLock\Matcher\PriceMatchHandler.cs" />
     <Compile Include="Application\DataLock\Matcher\ProgrammeMatchHandler.cs" />
     <Compile Include="Application\DataLock\Matcher\StandardMatchHandler.cs" />
+    <Compile Include="Application\DataLock\Matcher\StartMonthMatcher.cs" />
     <Compile Include="Application\DataLock\Matcher\UkprnMatchHandler.cs" />
     <Compile Include="Application\DataLock\Matcher\UlnMatchHandler.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandHandler.cs" />
@@ -109,6 +110,8 @@
     <Compile Include="Data\Repositories\IDasLearnerRepository.cs" />
     <Compile Include="Data\Repositories\IValidationErrorRepository.cs" />
     <Compile Include="Data\Repositories\ValidationErrorRepository.cs" />
+    <Compile Include="DependencyResolution\ConnectionStringPolicy.cs" />
+    <Compile Include="DependencyResolution\DataLockRegistry.cs" />
     <Compile Include="DependencyResolution\IDependencyResolver.cs" />
     <Compile Include="DependencyResolution\TaskDependencyResolver.cs" />
     <Compile Include="Exceptions\DataLockExceptionMessages.cs" />

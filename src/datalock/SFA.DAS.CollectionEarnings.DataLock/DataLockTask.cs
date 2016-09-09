@@ -1,6 +1,5 @@
 ﻿using System;
 using CS.Common.External.Interfaces;
-using MediatR;
 using NLog;
 using SFA.DAS.CollectionEarnings.DataLock.Context;
 using SFA.DAS.CollectionEarnings.DataLock.DependencyResolution;
@@ -12,50 +11,56 @@ namespace SFA.DAS.CollectionEarnings.DataLock
     public class DataLockTask : IExternalTask
     {
         private readonly IDependencyResolver _dependencyResolver;
+        private ILogger _logger;
 
         public DataLockTask()
         {
             _dependencyResolver = new TaskDependencyResolver();
         }
 
-        internal DataLockTask(IDependencyResolver dependencyResolver)
+        internal DataLockTask(IDependencyResolver dependencyResolver, ILogger logger)
         {
             _dependencyResolver = dependencyResolver;
+            _logger = logger;
         }
 
         public void Execute(IExternalContext context)
         {
             var contextWrapper = new ContextWrapper(context);
 
-            ValidateContext(contextWrapper);
-
-            LoggingConfig.ConfigureLogging(
-                contextWrapper.GetPropertyValue(ContextPropertyKeys.TransientDatabaseConnectionString),
-                contextWrapper.GetPropertyValue(ContextPropertyKeys.LogLevel)
-            );
-
-            _dependencyResolver.Init(
-                typeof(DataLockProcessor),
-                contextWrapper
-            );
-
-            var logger = _dependencyResolver.GetInstance<ILogger>();
-            var mediator = _dependencyResolver.GetInstance<IMediator>();
-
-            try
+            if (IsValidContext(contextWrapper))
             {
-                var processor = new DataLockProcessor(logger, mediator);
 
-                processor.Process();
-            }
-            catch (Exception ex)
-            {
-                logger.Fatal(ex, ex.Message);
-                throw;
+                LoggingConfig.ConfigureLogging(
+                    contextWrapper.GetPropertyValue(ContextPropertyKeys.TransientDatabaseConnectionString),
+                    contextWrapper.GetPropertyValue(ContextPropertyKeys.LogLevel)
+                    );
+
+                _dependencyResolver.Init(
+                    typeof (DataLockProcessor),
+                    contextWrapper
+                    );
+
+                if (_logger == null)
+                {
+                    _logger = LogManager.GetCurrentClassLogger();
+                }
+
+                try
+                {
+                    var processor = _dependencyResolver.GetInstance<DataLockProcessor>();
+
+                    processor.Process();
+                }
+                catch (Exception ex)
+                {
+                    _logger.Fatal(ex, ex.Message);
+                    throw;
+                }
             }
         }
 
-        private static void ValidateContext(ContextWrapper contextWrapper)
+        private static bool IsValidContext(ContextWrapper contextWrapper)
         {
             if (string.IsNullOrEmpty(contextWrapper.GetPropertyValue(ContextPropertyKeys.TransientDatabaseConnectionString)))
             {
@@ -66,6 +71,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock
             {
                 throw new DataLockInvalidContextException(DataLockExceptionMessages.ContextPropertiesNoLogLevel);
             }
+
+            return true;
         }
     }
 }

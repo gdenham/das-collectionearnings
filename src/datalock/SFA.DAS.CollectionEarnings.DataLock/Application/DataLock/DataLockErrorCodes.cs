@@ -10,5 +10,6 @@
         public const string MismatchingPathway = "DLOCK_06";
         public const string MismatchingPrice = "DLOCK_07";
         public const string MultipleMatches = "DLOCK_08";
+        public const string EarlierStartMonth = "DLOCK_09";
     }
 }

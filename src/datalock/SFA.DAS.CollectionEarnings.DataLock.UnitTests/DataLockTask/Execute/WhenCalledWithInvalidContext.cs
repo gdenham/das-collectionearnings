@@ -36,7 +36,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockTask.Execute
             _dependencyResolver.Setup(dr => dr.GetInstance<ILogger>()).Returns(_logger.Object);
             _dependencyResolver.Setup(dr => dr.GetInstance<IMediator>()).Returns(_mediator.Object);
 
-            _task = new DataLock.DataLockTask(_dependencyResolver.Object);
+            _task = new DataLock.DataLockTask(_dependencyResolver.Object, _logger.Object);
         }
 
         [Test]

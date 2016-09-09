@@ -69,10 +69,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask.Exec
                 var errors = connection.Query<ValidationError>(ValidationError.SelectAll).ToList();
 
                 Assert.IsNotNull(errors);
-                Assert.AreEqual(8, errors.Count);
+                Assert.AreEqual(9, errors.Count);
                 Assert.AreEqual(6, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingUln));
                 Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingFramework));
                 Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingPrice));
+                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartMonth));
             }
         }
 
