@@ -6,18 +6,11 @@ using SFA.DAS.CollectionEarnings.Calculator.Context;
 using SFA.DAS.CollectionEarnings.Calculator.DependencyResolution;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools;
 using NLog;
-using SFA.DAS.CollectionEarnings.Calculator.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarningsTask.Execute
 {
     public class WhenCalledWithValidContext
     {
-        private static readonly object[] EmptyItems =
-        {
-            new object[] {null},
-            new object[] {new LearningDeliveryToProcess[] {}}
-        };
-
         private IExternalContext _context;
         private IExternalTask _task;
 
