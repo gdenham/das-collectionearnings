@@ -35,3 +35,6 @@ DAS Apprenticeship Earnings Funding Calculation Component
  2.2 Log level:
   - key: LogLevel
   - value: one of the following is valid: Fatal, Error, Warn, Info, Debug, Trace, Off
+ 2.3 ILR Collection Year:
+  - key: YearOfCollection
+  - value: 4 characters long string representing the academic year of the ILR connection: 1617, 1718, etc.
