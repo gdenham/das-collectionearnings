@@ -11,6 +11,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.CollectionEarnings.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.CollectionEarnings.DataLock.IntegrationTests", "SFA.DAS.CollectionEarnings.DataLock.IntegrationTests\SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.csproj", "{44D50594-88B7-4573-8C82-9DAB9937A5BB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{5FFE098D-04DD-4C9A-BD31-7867009C8719}"
+	ProjectSection(SolutionItems) = preProject
+		Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Tables.sql = Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Tables.sql
+		Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Views.sql = Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Views.sql
+		SFA.DAS.CollectionEarnings.DataLock.IntegrationTests\Ilr.Transient.DDL.sql = SFA.DAS.CollectionEarnings.DataLock.IntegrationTests\Ilr.Transient.DDL.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
