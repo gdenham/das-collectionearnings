@@ -17,7 +17,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools.Ilr
         public Shredder()
         {
             _connectionString = ConnectionStringFactory.GetTransientConnectionString();
-            _ilrFile = AppDomain.CurrentDomain.BaseDirectory + @"\Tools\Ilr\Files\ILR-10007459-1617-20160505-225627-99.xml";
+            _ilrFile = AppDomain.CurrentDomain.BaseDirectory + @"\Tools\Ilr\Files\IlrMultipleLearners.xml";
         }
 
         public Shredder(string ilrFile)

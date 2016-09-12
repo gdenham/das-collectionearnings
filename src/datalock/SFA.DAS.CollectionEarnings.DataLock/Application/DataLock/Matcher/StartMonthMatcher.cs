@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SFA.DAS.CollectionEarnings.DataLock.Tools.Extensions;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
 {
@@ -8,17 +9,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
         public override string Match(List<Data.Entities.Commitment> commitments, Data.Entities.DasLearner learner)
         {
             var commitmentsToMatch = commitments.Where(c => learner.LearnStartDate.HasValue &&
-                                                            (learner.LearnStartDate.Value.Month - c.StartDate.Month 
-                                                            + 12 * (learner.LearnStartDate.Value.Year - c.StartDate.Year) >= 0)).ToList();
+                                                            learner.LearnStartDate.Value.FirstDayOfMonth() >= c.StartDate.FirstDayOfMonth()).ToList();
 
             if (!commitmentsToMatch.Any())
             {
                 return DataLockErrorCodes.EarlierStartMonth;
             }
-            else
-            {
-                return ExecuteNextHandler(commitmentsToMatch, learner);
-            }
+
+            return ExecuteNextHandler(commitmentsToMatch, learner);
         }
     }
 }

@@ -119,6 +119,7 @@
     <Compile Include="Exceptions\DataLockProcessorException.cs" />
     <Compile Include="Logging\LoggingConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\Extensions\DateTimeDayOfMonthExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

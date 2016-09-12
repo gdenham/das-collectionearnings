@@ -111,7 +111,34 @@
     <Content Include="Tools\Ilr\Files\DPP-222\IlrAcceptanceCriteria1.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tools\Ilr\Files\ILR-10007459-1617-20160505-225627-99.xml">
+    <Content Include="Tools\Ilr\Files\IlrMultipleLearners.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrMultipleMatchingCommitments.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrEarlierStartMonth.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrPriceMismatch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrPathwayMismatch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrProgrammeMismatch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrFrameworkMismatch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrStandardMismatch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrUlnMismatch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrUkprnMismatch.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tools\Ilr\Files\IlrTableMap.xml">

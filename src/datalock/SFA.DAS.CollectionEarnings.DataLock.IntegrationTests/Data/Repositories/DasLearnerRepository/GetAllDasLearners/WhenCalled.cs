@@ -43,7 +43,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Data.Repositories
 
             // Assert
             Assert.IsNotNull(dasLearners);
-            Assert.AreEqual(9, dasLearners.Count());
+            Assert.AreEqual(2, dasLearners.Count());
         }
     }
 }

@@ -14,10 +14,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
             {
                 return DataLockErrorCodes.MismatchingPrice;
             }
-            else
-            {
-                return ExecuteNextHandler(commitmentsToMatch, learner);
-            }
+
+            return ExecuteNextHandler(commitmentsToMatch, learner);
         }
     }
 }
