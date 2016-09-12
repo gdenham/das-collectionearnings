@@ -74,6 +74,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcceptanceCriteria\DPP-222\WhenRunningAcceptanceCriteria1.cs" />
+    <Compile Include="AcceptanceCriteria\DPP-222\WhenRunningAcceptanceCriteria2.cs" />
     <Compile Include="DataLockTask\Execute\WhenCalled.cs" />
     <Compile Include="Data\Repositories\CommitmentRepository\GetAllCommitments\WhenCalled.cs" />
     <Compile Include="Data\Repositories\DasLearnerRepository\GetAllDasLearners\WhenCalled.cs" />
@@ -103,13 +105,47 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Tools\Ilr\Files\ILR-10007459-1617-20160505-225627-99.xml">
+    <Content Include="Tools\Ilr\Files\DPP-222\IlrAcceptanceCriteria2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\DPP-222\IlrAcceptanceCriteria1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrMultipleLearners.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrMultipleMatchingCommitments.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrEarlierStartMonth.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrPriceMismatch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrPathwayMismatch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrProgrammeMismatch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrFrameworkMismatch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrStandardMismatch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrUlnMismatch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Ilr\Files\IlrUkprnMismatch.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tools\Ilr\Files\IlrTableMap.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

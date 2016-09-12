@@ -1,4 +1,5 @@
-﻿using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
+﻿using System;
+using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
 {
@@ -9,11 +10,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
         private long? _uln = 1000000019;
         private string _niNumber = "AB123456C";
         private long? _aimSeqNumber = 1;
-        private long? _stdCode;
-        private long? _progType = 20;
-        private long? _fworkCode = 550;
+        private long? _standardCode;
+        private long? _programmeType = 20;
+        private long? _frameworkCode = 550;
         private long? _pwayCode = 6;
-        private long? _tbFinAmount = 15000;
+        private long? _negotiatedPrice = 15000;
+        private DateTime? _learnStartDate = new DateTime(2016, 9, 1);
 
         public DasLearner Build()
         {
@@ -24,11 +26,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
                 Uln = _uln,
                 NiNumber = _niNumber,
                 AimSeqNumber = _aimSeqNumber,
-                StdCode = _stdCode,
-                ProgType = _progType,
-                FworkCode = _fworkCode,
-                PwayCode = _pwayCode,
-                TbFinAmount = _tbFinAmount
+                StandardCode = _standardCode,
+                ProgrammeType = _programmeType,
+                FrameworkCode = _frameworkCode,
+                PathwayCode = _pwayCode,
+                NegotiatedPrice = _negotiatedPrice,
+                LearnStartDate = _learnStartDate
             };
         }
 
@@ -67,37 +70,44 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
             return this;
         }
 
-        public DasLearnerBuilder WithStdCode(long? stdCode)
+        public DasLearnerBuilder WithStandardCode(long? standardCode)
         {
-            _stdCode = stdCode;
+            _standardCode = standardCode;
 
             return this;
         }
 
-        public DasLearnerBuilder WithProgType(long? progType)
+        public DasLearnerBuilder WithProgrammeType(long? programmeType)
         {
-            _progType = progType;
+            _programmeType = programmeType;
 
             return this;
         }
 
-        public DasLearnerBuilder WithFworkCode(long? fworkCode)
+        public DasLearnerBuilder WithFrameworkCode(long? frameworkCode)
         {
-            _fworkCode = fworkCode;
+            _frameworkCode = frameworkCode;
 
             return this;
         }
 
-        public DasLearnerBuilder WithPwayCode(long? pwayCode)
+        public DasLearnerBuilder WithPathwayCode(long? pathwayCode)
         {
-            _pwayCode = pwayCode;
+            _pwayCode = pathwayCode;
 
             return this;
         }
 
-        public DasLearnerBuilder WithTbFinAmount(long? tbFinAmount)
+        public DasLearnerBuilder WithNegotiatedPrice(long? negotiatedPrice)
         {
-            _tbFinAmount = tbFinAmount;
+            _negotiatedPrice = negotiatedPrice;
+
+            return this;
+        }
+
+        public DasLearnerBuilder WithLearnStartDate(DateTime? learnStartDate)
+        {
+            _learnStartDate = learnStartDate;
 
             return this;
         }

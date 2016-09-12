@@ -24,7 +24,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask.Exec
         [SetUp]
         public void Arrange()
         {
-            SetUpIlrDatabase();
+            Database.Clean(_transientConnectionString);
 
             _task = new DataLock.DataLockTask();
 
@@ -38,43 +38,209 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask.Exec
             };
         }
 
-        private void SetUpIlrDatabase()
+        private void SetupIlrData(string ilrFile)
         {
-            Database.Clean(_transientConnectionString);
-
-            // ILR data
-            var shredder = new Shredder();
+            var shredder = new Shredder(ilrFile);
             shredder.Shred();
+        }
 
-            // Commitment data
-            // Commitment for learner with uln 1000000019 - will pass double lock because all matches
-            Database.AddCommitment(_transientConnectionString, new CommitmentBuilder().WithAgreedCost(2750).Build());
-
-            // Commitment for learner with uln 1000000027 - will fail double lock for not matching the agreed cost
-            Database.AddCommitment(_transientConnectionString, new CommitmentBuilder().WithCommitmentId("C-002").WithUln(1000000027).Build());
-
-            // Commitment for learner with uln 1000000035 - will fail double lock for not matching the framework code
-            Database.AddCommitment(_transientConnectionString, new CommitmentBuilder().WithCommitmentId("C-003").WithUln(1000000035).Build());
+        private void SetupCommitmentData(Commitment commitment)
+        {
+            Database.AddCommitment(_transientConnectionString, commitment);
         }
 
         [Test]
-        public void ThenValidationErrorAddedSuccessfully()
+        public void ThenValidationErrorAddedForMismatchingUkprn()
         {
+            // Arrange
+            SetupIlrData(@"\Tools\Ilr\Files\IlrUkprnMismatch.xml");
+            SetupCommitmentData(new CommitmentBuilder().Build());
+
             // Act
             _task.Execute(_context);
 
-            // Assert - expecting 8 validation errors: 2 for existing commitments with mismatching data and 6 for not having any commitment data
+            // Assert
             using (var connection = new SqlConnection(_transientConnectionString))
             {
                 var errors = connection.Query<ValidationError>(ValidationError.SelectAll).ToList();
 
                 Assert.IsNotNull(errors);
-                Assert.AreEqual(8, errors.Count);
-                Assert.AreEqual(6, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingUln));
-                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingFramework));
-                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingPrice));
+                Assert.AreEqual(1, errors.Count);
+                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingUkprn));
             }
         }
 
+        [Test]
+        public void ThenValidationErrorAddedForMismatchingUln()
+        {
+            // Arrange
+            SetupIlrData(@"\Tools\Ilr\Files\IlrUlnMismatch.xml");
+            SetupCommitmentData(new CommitmentBuilder().Build());
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            using (var connection = new SqlConnection(_transientConnectionString))
+            {
+                var errors = connection.Query<ValidationError>(ValidationError.SelectAll).ToList();
+
+                Assert.IsNotNull(errors);
+                Assert.AreEqual(1, errors.Count);
+                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingUln));
+            }
+        }
+
+        [Test]
+        public void ThenValidationErrorAddedForMismatchingStandard()
+        {
+            // Arrange
+            SetupIlrData(@"\Tools\Ilr\Files\IlrStandardMismatch.xml");
+            SetupCommitmentData(new CommitmentBuilder().WithStandardCode(999).WithProgrammeType(null).WithFrameworkCode(null).WithPathwayCode(null).Build());
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            using (var connection = new SqlConnection(_transientConnectionString))
+            {
+                var errors = connection.Query<ValidationError>(ValidationError.SelectAll).ToList();
+
+                Assert.IsNotNull(errors);
+                Assert.AreEqual(1, errors.Count);
+                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingStandard));
+            }
+        }
+
+        [Test]
+        public void ThenValidationErrorAddedForMismatchingFramework()
+        {
+            // Arrange
+            SetupIlrData(@"\Tools\Ilr\Files\IlrFrameworkMismatch.xml");
+            SetupCommitmentData(new CommitmentBuilder().WithStandardCode(null).WithFrameworkCode(999).Build());
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            using (var connection = new SqlConnection(_transientConnectionString))
+            {
+                var errors = connection.Query<ValidationError>(ValidationError.SelectAll).ToList();
+
+                Assert.IsNotNull(errors);
+                Assert.AreEqual(1, errors.Count);
+                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingFramework));
+            }
+        }
+
+        [Test]
+        public void ThenValidationErrorAddedForMismatchingProgramme()
+        {
+            // Arrange
+            SetupIlrData(@"\Tools\Ilr\Files\IlrProgrammeMismatch.xml");
+            SetupCommitmentData(new CommitmentBuilder().WithStandardCode(null).WithProgrammeType(999).Build());
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            using (var connection = new SqlConnection(_transientConnectionString))
+            {
+                var errors = connection.Query<ValidationError>(ValidationError.SelectAll).ToList();
+
+                Assert.IsNotNull(errors);
+                Assert.AreEqual(1, errors.Count);
+                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingProgramme));
+            }
+        }
+
+        [Test]
+        public void ThenValidationErrorAddedForMismatchingPathway()
+        {
+            // Arrange
+            SetupIlrData(@"\Tools\Ilr\Files\IlrPathwayMismatch.xml");
+            SetupCommitmentData(new CommitmentBuilder().WithStandardCode(null).WithPathwayCode(999).Build());
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            using (var connection = new SqlConnection(_transientConnectionString))
+            {
+                var errors = connection.Query<ValidationError>(ValidationError.SelectAll).ToList();
+
+                Assert.IsNotNull(errors);
+                Assert.AreEqual(1, errors.Count);
+                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingPathway));
+            }
+        }
+
+        [Test]
+        public void ThenValidationErrorsAddedForMismatchingPrice()
+        {
+            // Arrange
+            SetupIlrData(@"\Tools\Ilr\Files\IlrPriceMismatch.xml");
+            SetupCommitmentData(new CommitmentBuilder().WithStandardCode(999).Build());
+            SetupCommitmentData(new CommitmentBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build());
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            using (var connection = new SqlConnection(_transientConnectionString))
+            {
+                var errors = connection.Query<ValidationError>(ValidationError.SelectAll).ToList();
+
+                Assert.IsNotNull(errors);
+                Assert.AreEqual(2, errors.Count);
+                Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingPrice));
+            }
+        }
+
+        [Test]
+        public void ThenValidationErrorsAddedForIlrEarlierStartMonth()
+        {
+            // Arrange
+            SetupIlrData(@"\Tools\Ilr\Files\IlrEarlierStartMonth.xml");
+            SetupCommitmentData(new CommitmentBuilder().WithStandardCode(999).Build());
+            SetupCommitmentData(new CommitmentBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build());
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            using (var connection = new SqlConnection(_transientConnectionString))
+            {
+                var errors = connection.Query<ValidationError>(ValidationError.SelectAll).ToList();
+
+                Assert.IsNotNull(errors);
+                Assert.AreEqual(2, errors.Count);
+                Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartMonth));
+            }
+        }
+
+        [Test]
+        public void ThenValidationErrorsAddedForMultipleMatchingCommitments()
+        {
+            // Arrange
+            SetupIlrData(@"\Tools\Ilr\Files\IlrMultipleMatchingCommitments.xml");
+            SetupCommitmentData(new CommitmentBuilder().WithStandardCode(999).Build());
+            SetupCommitmentData(new CommitmentBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build());
+            SetupCommitmentData(new CommitmentBuilder().WithCommitmentId("C-003").WithStandardCode(999).Build());
+            SetupCommitmentData(new CommitmentBuilder().WithCommitmentId("C-004").WithUln(1000000027).WithStandardCode(null).Build());
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            using (var connection = new SqlConnection(_transientConnectionString))
+            {
+                var errors = connection.Query<ValidationError>(ValidationError.SelectAll).ToList();
+
+                Assert.IsNotNull(errors);
+                Assert.AreEqual(2, errors.Count);
+                Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.MultipleMatches));
+            }
+        }
     }
 }

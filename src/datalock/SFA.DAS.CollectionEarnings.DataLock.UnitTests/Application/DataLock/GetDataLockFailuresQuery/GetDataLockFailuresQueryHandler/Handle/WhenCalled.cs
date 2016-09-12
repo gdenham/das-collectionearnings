@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFailuresQuery;
@@ -16,26 +17,32 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Get
 
         private static readonly object[] LearnersWithMismatchingFramework =
         {
-            new object[] {new DasLearnerBuilder().WithFworkCode(999).Build()},
-            new object[] {new DasLearnerBuilder().WithFworkCode(null).Build()}
+            new object[] {new DasLearnerBuilder().WithFrameworkCode(999).Build()},
+            new object[] {new DasLearnerBuilder().WithFrameworkCode(null).Build()}
         };
 
         private static readonly object[] LearnersWithMismatchingProgramme =
         {
-            new object[] {new DasLearnerBuilder().WithProgType(999).Build()},
-            new object[] {new DasLearnerBuilder().WithProgType(null).Build()}
+            new object[] {new DasLearnerBuilder().WithProgrammeType(999).Build()},
+            new object[] {new DasLearnerBuilder().WithProgrammeType(null).Build()}
         };
 
         private static readonly object[] LearnersWithMismatchingPathway =
         {
-            new object[] {new DasLearnerBuilder().WithPwayCode(999).Build()},
-            new object[] {new DasLearnerBuilder().WithPwayCode(null).Build()}
+            new object[] {new DasLearnerBuilder().WithPathwayCode(999).Build()},
+            new object[] {new DasLearnerBuilder().WithPathwayCode(null).Build()}
         };
 
         private static readonly object[] LearnersWithMismatchingPrice =
         {
-            new object[] {new DasLearnerBuilder().WithTbFinAmount(999).Build()},
-            new object[] {new DasLearnerBuilder().WithTbFinAmount(null).Build()}
+            new object[] {new DasLearnerBuilder().WithNegotiatedPrice(999).Build()},
+            new object[] {new DasLearnerBuilder().WithNegotiatedPrice(null).Build()}
+        };
+
+        private static readonly object[] LearnersWithMismatchingStartDates =
+       {
+            new object[] {new DasLearnerBuilder().WithLearnStartDate(new DateTime(2016, 8, 31)).Build()},
+            new object[] {new DasLearnerBuilder().WithLearnStartDate(null).Build()}
         };
 
         private GetDataLockFailuresQueryRequest _request;
@@ -129,7 +136,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Get
                 },
                 DasLearners = new[]
                 {
-                    new DasLearnerBuilder().WithStdCode(998).Build()
+                    new DasLearnerBuilder().WithStandardCode(998).Build()
                 }
             };
 
@@ -247,6 +254,32 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Get
         }
 
         [Test]
+        [TestCaseSource(nameof(LearnersWithMismatchingStartDates))]
+        public void ThenErrorExpectedForNoStartDateOrEarlierStartDate(Data.Entities.DasLearner dasLearner)
+        {
+            // Arrange
+            _request = new GetDataLockFailuresQueryRequest
+            {
+                Commitments = new[]
+                {
+                    new CommitmentBuilder().Build()
+                },
+                DasLearners = new[]
+                {
+                    dasLearner
+                }
+            };
+
+            // Act
+            var response = _handler.Handle(_request);
+
+            // Assert
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.IsValid);
+            Assert.AreEqual(1, response.Items.Count(ve => ve.RuleId == DataLockErrorCodes.EarlierStartMonth));
+        }
+
+        [Test]
         public void ThenErrorExpectedForMultiplePriceMatchingCommitments()
         {
             // Arrange
@@ -288,15 +321,17 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Get
                     new DasLearnerBuilder().WithLearnRefNumber("Lrn002").WithUkprn(10007458).Build(),
                     new DasLearnerBuilder().WithLearnRefNumber("Lrn003").WithUln(1000000018).Build(),
                     new DasLearnerBuilder().WithLearnRefNumber("Lrn004").WithUln(null).Build(),
-                    new DasLearnerBuilder().WithLearnRefNumber("Lrn005").WithStdCode(998).Build(),
-                    new DasLearnerBuilder().WithLearnRefNumber("Lrn006").WithFworkCode(999).Build(),
-                    new DasLearnerBuilder().WithLearnRefNumber("Lrn007").WithFworkCode(null).Build(),
-                    new DasLearnerBuilder().WithLearnRefNumber("Lrn008").WithProgType(999).Build(),
-                    new DasLearnerBuilder().WithLearnRefNumber("Lrn009").WithProgType(null).Build(),
-                    new DasLearnerBuilder().WithLearnRefNumber("Lrn010").WithPwayCode(999).Build(),
-                    new DasLearnerBuilder().WithLearnRefNumber("Lrn011").WithPwayCode(null).Build(),
-                    new DasLearnerBuilder().WithLearnRefNumber("Lrn012").WithTbFinAmount(999).Build(),
-                    new DasLearnerBuilder().WithLearnRefNumber("Lrn013").WithTbFinAmount(null).Build()
+                    new DasLearnerBuilder().WithLearnRefNumber("Lrn005").WithStandardCode(998).Build(),
+                    new DasLearnerBuilder().WithLearnRefNumber("Lrn006").WithFrameworkCode(999).Build(),
+                    new DasLearnerBuilder().WithLearnRefNumber("Lrn007").WithFrameworkCode(null).Build(),
+                    new DasLearnerBuilder().WithLearnRefNumber("Lrn008").WithProgrammeType(999).Build(),
+                    new DasLearnerBuilder().WithLearnRefNumber("Lrn009").WithProgrammeType(null).Build(),
+                    new DasLearnerBuilder().WithLearnRefNumber("Lrn010").WithPathwayCode(999).Build(),
+                    new DasLearnerBuilder().WithLearnRefNumber("Lrn011").WithPathwayCode(null).Build(),
+                    new DasLearnerBuilder().WithLearnRefNumber("Lrn012").WithNegotiatedPrice(999).Build(),
+                    new DasLearnerBuilder().WithLearnRefNumber("Lrn013").WithNegotiatedPrice(null).Build(),
+                    new DasLearnerBuilder().WithLearnRefNumber("Lrn014").WithLearnStartDate(new DateTime(2016, 8, 31)).Build(),
+                    new DasLearnerBuilder().WithLearnRefNumber("Lrn015").WithLearnStartDate(null).Build()
                 }
             };
 
@@ -306,7 +341,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Get
             // Assert
             Assert.IsNotNull(response);
             Assert.IsTrue(response.IsValid);
-            Assert.AreEqual(12, response.Items.Count());
+            Assert.AreEqual(14, response.Items.Count());
         }
     }
 }

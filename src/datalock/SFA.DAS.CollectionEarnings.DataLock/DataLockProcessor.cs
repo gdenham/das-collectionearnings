@@ -9,7 +9,7 @@ using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
 
 namespace SFA.DAS.CollectionEarnings.DataLock
 {
-    internal class DataLockProcessor
+    public class DataLockProcessor
     {
         private readonly ILogger _logger;
         private readonly IMediator _mediator;
@@ -20,7 +20,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock
             _mediator = mediator;
         }
 
-        public void Process()
+        protected DataLockProcessor()
+        {
+        }
+
+        public virtual void Process()
         {
             _logger.Info("Started Data Lock Processor.");
 
@@ -30,7 +34,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock
 
             if (!commitments.IsValid)
             {
-                throw new DataLockProcessorException("Error while reading commitments.", commitments.Exception);
+                throw new DataLockProcessorException(DataLockExceptionMessages.ErrorReadingCommitments, commitments.Exception);
             }
 
             _logger.Debug("Reading DAS learners.");
@@ -39,7 +43,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock
 
             if (!dasLearners.IsValid)
             {
-                throw new DataLockProcessorException("Error while reading DAS specific learners.", dasLearners.Exception);
+                throw new DataLockProcessorException(DataLockExceptionMessages.ErrorReadingDasLearners, dasLearners.Exception);
             }
 
             if (dasLearners.Items != null && dasLearners.Items.Any())
@@ -57,12 +61,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock
 
                 if (!dataLockValidationErrors.IsValid)
                 {
-                    throw new DataLockProcessorException("Error while performing data lock.", dataLockValidationErrors.Exception);
+                    throw new DataLockProcessorException(DataLockExceptionMessages.ErrorPerformingDataLock, dataLockValidationErrors.Exception);
                 }
 
                 if (dataLockValidationErrors.Items.Any())
                 {
-                    _logger.Debug("Started writing Data Lock Validation Errors");
+                    _logger.Debug("Started writing Data Lock Validation Errors.");
 
                     var writeValidationErrorsResult =
                         _mediator.Send(new AddValidationErrorsCommandRequest
@@ -72,15 +76,15 @@ namespace SFA.DAS.CollectionEarnings.DataLock
 
                     if (!writeValidationErrorsResult.IsValid)
                     {
-                        throw new DataLockProcessorException("Error while writing data lock validation errors.", writeValidationErrorsResult.Exception);
+                        throw new DataLockProcessorException(DataLockExceptionMessages.ErrorWritingDataLockValidationErrors, writeValidationErrorsResult.Exception);
                     }
 
-                    _logger.Debug("Finished writing Data Lock Validation Errors");
+                    _logger.Debug("Finished writing Data Lock Validation Errors.");
                 }
             }
             else
             {
-                _logger.Debug("No DAS learners found.");
+                _logger.Info("No DAS learners found.");
             }
 
             _logger.Info("Finished Data Lock Processor.");
