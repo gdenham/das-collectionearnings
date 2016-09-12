@@ -9,7 +9,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Data.Entities
         public long? Uln { get; set; }
         public string NiNumber { get; set; }
         public long? AimSeqNumber { get; set; }
-        public long? SandardCode { get; set; }
+        public long? StandardCode { get; set; }
         public long? ProgrammeType { get; set; }
         public long? FrameworkCode { get; set; }
         public long? PathwayCode { get; set; }

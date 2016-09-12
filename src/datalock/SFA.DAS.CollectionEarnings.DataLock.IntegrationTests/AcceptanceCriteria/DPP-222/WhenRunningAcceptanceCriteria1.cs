@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using CS.Common.External.Interfaces;
@@ -12,9 +13,9 @@ using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools.Ilr;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
-namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask.Execute
+namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.AcceptanceCriteria
 {
-    public class WhenCalled
+    public class WhenRunningAcceptanceCriteria1
     {
         private readonly string _transientConnectionString = ConnectionStringFactory.GetTransientConnectionString();
 
@@ -43,18 +44,21 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask.Exec
             Database.Clean(_transientConnectionString);
 
             // ILR data
-            var shredder = new Shredder();
+            var shredder = new Shredder(@"\Tools\Ilr\Files\DPP-222\IlrAcceptanceCriteria1.xml");
             shredder.Shred();
 
             // Commitment data
-            // Commitment for learner with uln 1000000019 - will pass double lock because all matches
-            Database.AddCommitment(_transientConnectionString, new CommitmentBuilder().WithAgreedCost(2750).Build());
-
-            // Commitment for learner with uln 1000000027 - will fail double lock for not matching the agreed cost
-            Database.AddCommitment(_transientConnectionString, new CommitmentBuilder().WithCommitmentId("C-002").WithUln(1000000027).Build());
-
-            // Commitment for learner with uln 1000000035 - will fail double lock for not matching the framework code
-            Database.AddCommitment(_transientConnectionString, new CommitmentBuilder().WithCommitmentId("C-003").WithUln(1000000035).Build());
+            Database.AddCommitment(
+                _transientConnectionString,
+                new CommitmentBuilder()
+                    .WithUln(1000000000)
+                    .WithStartDate(new DateTime(2017, 9, 1))
+                    .WithStandardCode(999)
+                    .WithProgrammeType(null)
+                    .WithFrameworkCode(null)
+                    .WithPathwayCode(null)
+                    .WithAgreedCost(3000)
+                    .Build());
         }
 
         [Test]
@@ -63,16 +67,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask.Exec
             // Act
             _task.Execute(_context);
 
-            // Assert - expecting 8 validation errors: 2 for existing commitments with mismatching data and 6 for not having any commitment data
+            // Assert
             using (var connection = new SqlConnection(_transientConnectionString))
             {
                 var errors = connection.Query<ValidationError>(ValidationError.SelectAll).ToList();
 
                 Assert.IsNotNull(errors);
-                Assert.AreEqual(9, errors.Count);
-                Assert.AreEqual(6, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingUln));
-                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingFramework));
-                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingPrice));
+                Assert.AreEqual(1, errors.Count);
                 Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartMonth));
             }
         }

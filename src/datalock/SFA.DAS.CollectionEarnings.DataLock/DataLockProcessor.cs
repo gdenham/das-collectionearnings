@@ -66,7 +66,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock
 
                 if (dataLockValidationErrors.Items.Any())
                 {
-                    _logger.Debug("Started writing Data Lock Validation Errors");
+                    _logger.Debug("Started writing Data Lock Validation Errors.");
 
                     var writeValidationErrorsResult =
                         _mediator.Send(new AddValidationErrorsCommandRequest
@@ -79,7 +79,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock
                         throw new DataLockProcessorException(DataLockExceptionMessages.ErrorWritingDataLockValidationErrors, writeValidationErrorsResult.Exception);
                     }
 
-                    _logger.Debug("Finished writing Data Lock Validation Errors");
+                    _logger.Debug("Finished writing Data Lock Validation Errors.");
                 }
             }
             else

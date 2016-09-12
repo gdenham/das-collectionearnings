@@ -14,7 +14,7 @@ using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor.Process
 {
-    public class WhenCalled
+    public class WhenCalledThenExpectingException
     {
         private static readonly object[] EmptyItems =
         {
@@ -85,7 +85,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor.Proces
         }
 
         [Test]
-        public void ThenExpectingExceptionForGetAllCommitmentsQueryFailure()
+        public void ForGetAllCommitmentsQueryFailure()
         {
             // Arrange
             _mediator
@@ -103,7 +103,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor.Proces
         }
 
         [Test]
-        public void ThenExpectingExceptionForGetAllDasLearnersQueryFailure()
+        public void ForGetAllDasLearnersQueryFailure()
         {
             // Arrange
             _mediator
@@ -121,7 +121,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor.Proces
         }
 
         [Test]
-        public void ThenExpectingExceptionForGetDataLockFailuresQueryFailure()
+        public void ForGetDataLockFailuresQueryFailure()
         {
             // Arrange
             _mediator
@@ -139,7 +139,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor.Proces
         }
 
         [Test]
-        public void ThenExpectingExceptionForAddValidationErrorsCommandRequestFailure()
+        public void ForAddValidationErrorsCommandRequestFailure()
         {
             // Arrange
             _mediator
@@ -154,27 +154,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor.Proces
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
             Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ErrorWritingDataLockValidationErrors));
-        }
-
-        [Test]
-        [TestCaseSource(nameof(EmptyItems))]
-        public void ThenExpectingLogEntryForGetAllDasLearnersQueryNoItems(IEnumerable<DasLearner> items)
-        {
-            // Arrange
-            _mediator
-                .Setup(m => m.Send(It.IsAny<GetAllDasLearnersQueryRequest>()))
-                .Returns(new GetAllDasLearnersQueryResponse
-                {
-                    IsValid = true,
-                    Items = items
-                }
-                );
-
-            // Act
-            _processor.Process();
-
-            // Assert
-            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("No DAS learners found."))), Times.Once);
         }
     }
 }

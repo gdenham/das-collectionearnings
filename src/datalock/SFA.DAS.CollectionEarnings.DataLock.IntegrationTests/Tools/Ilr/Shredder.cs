@@ -20,6 +20,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools.Ilr
             _ilrFile = AppDomain.CurrentDomain.BaseDirectory + @"\Tools\Ilr\Files\ILR-10007459-1617-20160505-225627-99.xml";
         }
 
+        public Shredder(string ilrFile)
+        {
+            _connectionString = ConnectionStringFactory.GetTransientConnectionString();
+            _ilrFile = AppDomain.CurrentDomain.BaseDirectory + ilrFile;
+        }
+
         public void Shred()
         {
             var settings = new XmlToSqlExecutionSettings()

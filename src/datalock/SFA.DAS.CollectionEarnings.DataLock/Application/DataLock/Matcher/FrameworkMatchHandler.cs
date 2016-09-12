@@ -7,7 +7,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
     {
         public override string Match(List<Data.Entities.Commitment> commitments, Data.Entities.DasLearner learner)
         {
-            if (!learner.SandardCode.HasValue)
+            if (!learner.StandardCode.HasValue)
             {
                 var commitmentsToMatch = commitments.Where(c => c.FrameworkCode.HasValue &&
                                                                 learner.FrameworkCode.HasValue &&

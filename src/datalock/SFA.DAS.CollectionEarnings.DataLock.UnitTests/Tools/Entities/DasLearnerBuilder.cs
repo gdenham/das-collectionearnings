@@ -26,7 +26,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
                 Uln = _uln,
                 NiNumber = _niNumber,
                 AimSeqNumber = _aimSeqNumber,
-                SandardCode = _standardCode,
+                StandardCode = _standardCode,
                 ProgrammeType = _programmeType,
                 FrameworkCode = _frameworkCode,
                 PathwayCode = _pwayCode,

@@ -80,7 +80,8 @@
     <Compile Include="Context\ContextWrapper\GetPropertyValue\WhenCalledForKnownProperty.cs" />
     <Compile Include="Context\ContextWrapper\GetPropertyValue\WhenCalledForNullOrEmptyProperty.cs" />
     <Compile Include="Context\ContextWrapper\GetPropertyValue\WhenCalledForUnknownProperty.cs" />
-    <Compile Include="DataLockProcessor\Process\WhenCalled.cs" />
+    <Compile Include="DataLockProcessor\Process\WhenCalledThenExpectingLogEntry.cs" />
+    <Compile Include="DataLockProcessor\Process\WhenCalledThenExpectingException.cs" />
     <Compile Include="DataLockTask\Execute\WhenCalledWithInvalidContext.cs" />
     <Compile Include="DataLockTask\Execute\WhenCalledWithValidContext.cs" />
     <Compile Include="Application\Commitment\GetAllCommitmentsQuery\GetAllCommitmentsQueryHandler\Handle\WhenCalled.cs" />
