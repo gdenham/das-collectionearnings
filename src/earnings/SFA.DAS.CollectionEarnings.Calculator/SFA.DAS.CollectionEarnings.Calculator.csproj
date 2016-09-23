@@ -82,6 +82,7 @@
     <Compile Include="Application\ProcessedLearningDeliveryPeriodisedValues\AddProcessedLearningDeliveryPeriodisedValuesCommand\AddProcessedLearningDeliveryPeriodisedValuesCommandRequest.cs" />
     <Compile Include="Application\ProcessedLearningDeliveryPeriodisedValues\AddProcessedLearningDeliveryPeriodisedValuesCommand\AddProcessedLearningDeliveryPeriodisedValuesCommandResponse.cs" />
     <Compile Include="Application\QueryResponse.cs" />
+    <Compile Include="ApprenticeshipEarningsPassThroughProcessor.cs" />
     <Compile Include="ApprenticeshipEarningsProcessor.cs" />
     <Compile Include="ApprenticeshipEarningsTask.cs" />
     <Compile Include="Context\ContextPropertyKeys.cs" />

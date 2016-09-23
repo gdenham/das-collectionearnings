@@ -37,7 +37,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator
                     );
 
                 _dependencyResolver.Init(
-                    typeof (ApprenticeshipEarningsProcessor),
+                    typeof (ApprenticeshipEarningsPassThroughProcessor),
                     contextWrapper
                     );
 
@@ -48,7 +48,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator
 
                 try
                 {
-                    var processor = _dependencyResolver.GetInstance<ApprenticeshipEarningsProcessor>();
+                    var processor = _dependencyResolver.GetInstance<ApprenticeshipEarningsPassThroughProcessor>();
 
                     processor.Process();
                 }
