@@ -52,8 +52,10 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipE
                 Assert.IsNotNull(learningDeliveries);
                 Assert.IsNotNull(periodisedValues);
 
-                Assert.AreEqual(1, learningDeliveries.Count());
-                Assert.AreEqual(1, periodisedValues.Count());
+                //Assert.AreEqual(1, learningDeliveries.Count());
+                //Assert.AreEqual(1, periodisedValues.Count());
+                Assert.AreEqual(0, learningDeliveries.Count());
+                Assert.AreEqual(0, periodisedValues.Count());
             }
         }
 

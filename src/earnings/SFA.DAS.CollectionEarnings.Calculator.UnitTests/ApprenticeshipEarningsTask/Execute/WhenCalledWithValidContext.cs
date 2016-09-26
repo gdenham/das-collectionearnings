@@ -16,7 +16,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
 
         private Mock<IDependencyResolver> _dependencyResolver;
         private Mock<ILogger> _logger;
-        private Mock<Calculator.ApprenticeshipEarningsProcessor> _processor;
+        private Mock<Calculator.ApprenticeshipEarningsPassThroughProcessor> _processor;
 
         [SetUp]
         public void Arrange()
@@ -33,7 +33,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
 
             _dependencyResolver = new Mock<IDependencyResolver>();
             _logger = new Mock<ILogger>();
-            _processor = new Mock<Calculator.ApprenticeshipEarningsProcessor>();
+            _processor = new Mock<Calculator.ApprenticeshipEarningsPassThroughProcessor>();
 
             _task = new Calculator.ApprenticeshipEarningsTask(_dependencyResolver.Object, _logger.Object);
         }
@@ -43,7 +43,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
         {
             // Arrange
             _dependencyResolver
-                .Setup(dr => dr.GetInstance<Calculator.ApprenticeshipEarningsProcessor>())
+                .Setup(dr => dr.GetInstance<Calculator.ApprenticeshipEarningsPassThroughProcessor>())
                 .Returns(_processor.Object);
 
             // Act
