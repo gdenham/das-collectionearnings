@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{5FFE098D-04D
 		Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Tables.sql = Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Tables.sql
 		Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Views.sql = Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Views.sql
 		SFA.DAS.CollectionEarnings.DataLock.IntegrationTests\Ilr.Transient.DDL.sql = SFA.DAS.CollectionEarnings.DataLock.IntegrationTests\Ilr.Transient.DDL.sql
+		Deploy\sql\ddl\Ilr.Transient.Reference.DDL.Tables.sql = Deploy\sql\ddl\Ilr.Transient.Reference.DDL.Tables.sql
 	EndProjectSection
 EndProject
 Global

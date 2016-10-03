@@ -11,9 +11,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
             NextMatchHandler = nextMatchHandler;
         }
 
-        public abstract string Match(List<Data.Entities.Commitment> commitments, Data.Entities.DasLearner learner);
+        public abstract string Match(List<Infrastructure.Data.Entities.CommitmentEntity> commitments, Infrastructure.Data.Entities.LearnerEntity learner);
 
-        protected string ExecuteNextHandler(List<Data.Entities.Commitment> commitments, Data.Entities.DasLearner learner)
+        protected string ExecuteNextHandler(List<Infrastructure.Data.Entities.CommitmentEntity> commitments, Infrastructure.Data.Entities.LearnerEntity learner)
         {
             return NextMatchHandler?.Match(commitments, learner);
         }

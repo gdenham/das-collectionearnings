@@ -6,7 +6,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Context.ContextWrapper.G
 {
     public class WhenCalledForKnownProperty
     {
-        private DataLock.Context.ContextWrapper _contextWrapper;
+        private Payments.DCFS.Context.ContextWrapper _contextWrapper;
 
         [SetUp]
         public void Arrange()
@@ -19,7 +19,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Context.ContextWrapper.G
                 }
             };
 
-            _contextWrapper = new DataLock.Context.ContextWrapper(context);
+            _contextWrapper = new Payments.DCFS.Context.ContextWrapper(context);
         }
 
         [Test]

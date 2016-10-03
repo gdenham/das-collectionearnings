@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools;
+using SFA.DAS.Payments.DCFS.Context;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Context.ContextWrapper.ContextWrapper
 {
@@ -18,8 +18,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Context.ContextWrapper.C
         {
             // Assert
             // ReSharper disable once ObjectCreationAsStatement
-            var ex = Assert.Throws<DataLockInvalidContextException>(() => new DataLock.Context.ContextWrapper(null));
-            Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ContextNull));
+            var ex = Assert.Throws<InvalidContextException>(() => new Payments.DCFS.Context.ContextWrapper(null));
+            Assert.IsTrue(ex.Message.Contains(InvalidContextException.ContextNullMessage));
         }
 
         [Test]
@@ -31,8 +31,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Context.ContextWrapper.C
 
             // Assert
             // ReSharper disable once ObjectCreationAsStatement
-            var ex = Assert.Throws<DataLockInvalidContextException>(() => new DataLock.Context.ContextWrapper(context));
-            Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ContextNoProperties));
+            var ex = Assert.Throws<InvalidContextException>(() => new Payments.DCFS.Context.ContextWrapper(context));
+            Assert.IsTrue(ex.Message.Contains(InvalidContextException.ContextNoPropertiesMessage));
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
-using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
+using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
 {
-    public class DasLearnerBuilder : IBuilder<DasLearner>
+    public class DasLearnerBuilder : IBuilder<LearnerEntity>
     {
         private long _ukprn = 10007459;
         private string _learnRefNumber = "Lrn001";
@@ -17,9 +17,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
         private long? _negotiatedPrice = 15000;
         private DateTime? _learnStartDate = new DateTime(2016, 9, 1);
 
-        public DasLearner Build()
+        public LearnerEntity Build()
         {
-            return new DasLearner
+            return new LearnerEntity
             {
                 Ukprn = _ukprn,
                 LearnRefNumber = _learnRefNumber,

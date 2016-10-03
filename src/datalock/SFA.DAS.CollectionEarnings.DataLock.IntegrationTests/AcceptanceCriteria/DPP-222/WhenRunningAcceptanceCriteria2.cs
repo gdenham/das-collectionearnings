@@ -6,12 +6,12 @@ using CS.Common.External.Interfaces;
 using Dapper;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
-using SFA.DAS.CollectionEarnings.DataLock.Context;
-using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
+using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
 using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools.Ilr;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
+using SFA.DAS.Payments.DCFS.Context;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.AcceptanceCriteria
 {
@@ -70,7 +70,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.AcceptanceCriteri
             // Assert
             using (var connection = new SqlConnection(_transientConnectionString))
             {
-                var errors = connection.Query<ValidationError>(ValidationError.SelectAll).ToList();
+                var errors = connection.Query<ValidationErrorEntity>(ValidationErrorEntity.SelectAll).ToList();
 
                 Assert.IsNotNull(errors);
                 Assert.AreEqual(1, errors.Count);

@@ -1,15 +1,11 @@
 ﻿using System.Collections.Generic;
 using NLog;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.DataLock.Context;
-using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
-using SFA.DAS.CollectionEarnings.DataLock.DependencyResolution;
+using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data;
+using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.DependencyResolution;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools;
+using SFA.DAS.Payments.DCFS.Context;
 
-/*
- * Unit tests pattern under review. Might be changed in other solutions. Should not be taken as reference.
- */
-//TODO Change test format or remove comments
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DependencyResolution.TaskDependencyResolverTests
 {
     public class WhenInitialising

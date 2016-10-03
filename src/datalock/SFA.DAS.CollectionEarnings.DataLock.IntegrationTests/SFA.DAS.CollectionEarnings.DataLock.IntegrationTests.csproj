@@ -34,32 +34,44 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\Amor.DCFT.BinaryTask.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="CS.Common, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CS.Common.dll</HintPath>
     </Reference>
     <Reference Include="CS.Common.External, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\CS.Common.External.dll</HintPath>
+      <HintPath>..\packages\SFA.DAS.Payments.DCFS.1.0.0.11709\lib\net45\CS.Common.External.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="CS.Common.XmlToSql, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CS.Common.XmlToSql.dll</HintPath>
     </Reference>
-    <Reference Include="Dapper, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.1.50.0\lib\net45\Dapper.dll</HintPath>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net45\Dapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapper.Contrib, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.Contrib.1.50.0\lib\net45\Dapper.Contrib.dll</HintPath>
+    <Reference Include="FastMember, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.1.1.0\lib\net40\FastMember.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Moq, Version=4.5.22.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.5.22\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.3.7\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.3.9\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SFA.DAS.Payments.DCFS, Version=1.0.0.11709, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SFA.DAS.Payments.DCFS.1.0.0.11709\lib\net45\SFA.DAS.Payments.DCFS.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -76,11 +88,14 @@
   <ItemGroup>
     <Compile Include="AcceptanceCriteria\DPP-222\WhenRunningAcceptanceCriteria1.cs" />
     <Compile Include="AcceptanceCriteria\DPP-222\WhenRunningAcceptanceCriteria2.cs" />
-    <Compile Include="DataLockTask\Execute\WhenCalled.cs" />
-    <Compile Include="Data\Repositories\CommitmentRepository\GetAllCommitments\WhenCalled.cs" />
-    <Compile Include="Data\Repositories\DasLearnerRepository\GetAllDasLearners\WhenCalled.cs" />
-    <Compile Include="Data\Repositories\ValidationErrorRepository\AddValidationErrors\WhenCalled.cs" />
-    <Compile Include="Data\Repositories\ValidationErrorRepository\AddValidationError\WhenCalled.cs" />
+    <Compile Include="DataLockTask\WhenExecuteCalled.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\CommitmentRepository\WhenGetAllCommitmentsCalled.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\LearnerRepository\WhenGetAllLearnersCalled.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\ValidationErrorRepository\WhenAddValidationErrorsCalled.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\ValidationErrorRepository\WhenAddValidationErrorCalled.cs" />
+    <Compile Include="GlobalSetup.cs" />
+    <Compile Include="GlobalTestContext.cs" />
+    <Compile Include="GlobalTestContextSetupException.cs" />
     <Compile Include="Tools\ConnectionStringFactory.cs" />
     <Compile Include="Tools\Database.cs" />
     <Compile Include="Tools\Ilr\PreProcessingCallback.cs" />
@@ -105,6 +120,21 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Tables.sql">
+      <Link>DbSetupScripts\Ilr.Transient.DataLock.DDL.Tables.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Views.sql">
+      <Link>DbSetupScripts\Ilr.Transient.DataLock.DDL.Views.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Deploy\sql\ddl\Ilr.Transient.Reference.DDL.Tables.sql">
+      <Link>DbSetupScripts\Ilr.Transient.Reference.DDL.Tables.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DbSetupScripts\Ilr.Transient.DDL.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Tools\Ilr\Files\DPP-222\IlrAcceptanceCriteria2.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

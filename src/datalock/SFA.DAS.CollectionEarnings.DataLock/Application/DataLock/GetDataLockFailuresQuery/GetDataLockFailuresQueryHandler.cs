@@ -39,7 +39,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFa
         {
             try
             {
-                var validationErrors = new ConcurrentBag<Data.Entities.ValidationError>();
+                var validationErrors = new ConcurrentBag<Infrastructure.Data.Entities.ValidationErrorEntity>();
 
                 var learners = message.DasLearners.ToList();
                 var partitioner = Partitioner.Create(0, learners.Count);
@@ -55,8 +55,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFa
 
                         if (!string.IsNullOrEmpty(matchResult))
                         {
-                            validationErrors.Add(new Data.Entities.ValidationError
+                            validationErrors.Add(new Infrastructure.Data.Entities.ValidationErrorEntity
                             {
+                                Ukprn = learner.Ukprn,
                                 LearnRefNumber = learner.LearnRefNumber,
                                 AimSeqNumber = learner.AimSeqNumber,
                                 RuleId = matchResult
@@ -68,7 +69,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFa
                 return new GetDataLockFailuresQueryResponse
                 {
                     IsValid = true,
-                    Items = validationErrors
+                    Items = validationErrors.ToArray()
                 };
             }
             catch (Exception ex)
