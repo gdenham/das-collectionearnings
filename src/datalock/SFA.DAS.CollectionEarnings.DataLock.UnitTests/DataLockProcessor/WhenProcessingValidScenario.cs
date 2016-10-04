@@ -6,6 +6,7 @@ using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerCommitmentsCommand;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetAllLearnersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
@@ -91,6 +92,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                         IsValid = true
                     }
                 );
+
+            _mediator
+                .Setup(m => m.Send(It.IsAny<AddLearnerCommitmentsCommandRequest>()))
+                .Returns(new AddLearnerCommitmentsCommandResponse
+                    {
+                        IsValid = true
+                    }
+                );
         }
 
         [Test]
@@ -111,7 +120,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
             _processor.Process();
 
             // Assert
-            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("No DAS learners found."))), Times.Once);
+            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("No learners found."))), Times.Once);
         }
 
         [Test]
@@ -123,7 +132,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
 
             // Assert
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Reading commitments."))), Times.Once);
-            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Reading DAS learners."))), Times.Once);
+            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Reading learners."))), Times.Once);
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Started Data Lock Validation."))), Times.Once);
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Finished Data Lock Validation."))), Times.Once);
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Started writing Data Lock Validation Errors."))), Times.Once);
@@ -132,7 +141,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Started writing matching Learners and Commitments."))), Times.Once);
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Finished writing matching Learners and Commitments."))), Times.Once);
 
-            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("No DAS learners found."))), Times.Never);
+            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("No learners found."))), Times.Never);
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Finished Data Lock Processor."))), Times.Once);
         }
     }

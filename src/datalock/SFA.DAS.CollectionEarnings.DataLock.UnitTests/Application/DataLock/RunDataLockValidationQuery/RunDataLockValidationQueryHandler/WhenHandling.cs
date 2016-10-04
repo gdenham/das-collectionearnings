@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
@@ -315,7 +314,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
             Assert.IsNotNull(response);
             Assert.IsTrue(response.IsValid);
             Assert.AreEqual(1, response.ValidationErrors.Count(ve => ve.RuleId == DataLockErrorCodes.MultipleMatches));
-            Assert.AreEqual(1, response.LearnerCommitments.Count(l => l.CommitmentId == commitments[0].CommitmentId));
+            Assert.AreEqual(0, response.LearnerCommitments.Length);
         }
 
         [Test]
@@ -365,32 +364,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
                                                                     l.LearnerReferenceNumber == learners[0].LearnRefNumber &&
                                                                     learners[0].AimSeqNumber.HasValue &&
                                                                     l.AimSequenceNumber == learners[0].AimSeqNumber.Value));
-        }
-
-        [Test]
-        public void Bla()
-        {
-            //// Arrange
-            //_request = new RunDataLockValidationQueryRequest
-            //{
-            //    Commitments = new[]
-            //    {
-            //        new CommitmentBuilder().WithCommitmentId("ABCDEFG").WithUln(1000000018).Build(),
-            //        new CommitmentBuilder().Build()
-            //    },
-            //    Learners = new[]
-            //    {
-            //        new LearnerEntityBuilder().Build()
-            //    }
-            //};
-
-            //// Act
-            //var response = _handler.Handle(_request);
-
-            //// Assert
-            //Assert.IsNotNull(response);
-            //Assert.IsTrue(response.IsValid);
-            //Assert.AreEqual(0, response.ValidationErrors.Length);
         }
     }
 }

@@ -11,8 +11,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
             {
                 return new MatchResult
                 {
-                    ErrorCode = DataLockErrorCodes.MultipleMatches,
-                    Commitment = commitments.FirstOrDefault()
+                    ErrorCode = DataLockErrorCodes.MultipleMatches
                 };
             }
 

@@ -6,6 +6,7 @@ using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerCommitmentsCommand;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetAllLearnersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
@@ -44,11 +45,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                 {
                     IsValid = true,
                     Items = new[]
-                        {
-                            new CommitmentBuilder().Build()
-                        }
-                }
-                );
+                    {
+                        new CommitmentBuilder().Build()
+                    }
+                });
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<GetAllLearnersQueryRequest>()))
@@ -56,11 +56,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                 {
                     IsValid = true,
                     Items = new[]
-                        {
-                            new LearnerEntityBuilder().Build()
-                        }
-                }
-                );
+                    {
+                        new LearnerEntityBuilder().Build()
+                    }
+                });
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<RunDataLockValidationQueryRequest>()))
@@ -68,29 +67,34 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                 {
                     IsValid = true,
                     ValidationErrors = new[]
-                        {
-                            new ValidationErrorBuilder().Build()
-                        },
+                    {
+                        new ValidationErrorBuilder().Build()
+                    },
                     LearnerCommitments = new[]
+                    {
+                        new LearnerCommitment
                         {
-                            new LearnerCommitment
-                            {
-                                Ukprn = 10007459,
-                                LearnerReferenceNumber = "Lrn001",
-                                AimSequenceNumber = 1,
-                                CommitmentId = "C-001"
-                            }
+                            Ukprn = 10007459,
+                            LearnerReferenceNumber = "Lrn001",
+                            AimSequenceNumber = 1,
+                            CommitmentId = "C-001"
                         }
-                }
-                );
+                    }
+                });
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddValidationErrorsCommandRequest>()))
                 .Returns(new AddValidationErrorsCommandResponse
                 {
                     IsValid = true
-                }
-                );
+                });
+
+            _mediator
+                .Setup(m => m.Send(It.IsAny<AddLearnerCommitmentsCommandRequest>()))
+                .Returns(new AddLearnerCommitmentsCommandResponse
+                {
+                    IsValid = true
+                });
         }
 
         [Test]
@@ -103,8 +107,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                 {
                     IsValid = false,
                     Exception = new Exception("Error.")
-                }
-                );
+                });
 
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
@@ -121,8 +124,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                 {
                     IsValid = false,
                     Exception = new Exception("Error.")
-                }
-                );
+                });
 
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
@@ -139,8 +141,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                 {
                     IsValid = false,
                     Exception = new Exception("Error.")
-                }
-                );
+                });
 
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
@@ -157,8 +158,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                 {
                     IsValid = false,
                     Exception = new Exception("Error.")
-                }
-                );
+                });
 
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
@@ -168,7 +168,18 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         [Test]
         public void ForAddLearnerCommitmentsCommandRequestFailure()
         {
-            Assert.IsTrue(false);
+            // Arrange
+            _mediator
+                .Setup(m => m.Send(It.IsAny<AddLearnerCommitmentsCommandRequest>()))
+                .Returns(new AddLearnerCommitmentsCommandResponse
+                {
+                    IsValid = false,
+                    Exception = new Exception("Error.")
+                });
+
+            // Assert
+            var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
+            Assert.IsTrue(ex.Message.Contains(DataLockProcessorException.ErrorWritingMatchingLearnersAndCommitmentsMessage));
         }
     }
 }
