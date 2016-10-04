@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using MediatR;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerCommitmentsCommand
 {
-    public class AddLearnerCommitmentsCommandHandler : IRequestHandler<AddLearnerCommitmentsCommandRequest, AddLearnerCommitmentsCommandResponse>
+    public class AddLearnerCommitmentsCommandHandler : IRequestHandler<AddLearnerCommitmentsCommandRequest, Unit>
     {
         private readonly ILearnerCommitmentRepository _learnerCommitmentRepository;
 
@@ -15,36 +14,22 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerComm
             _learnerCommitmentRepository = learnerCommitmentRepository;
         }
 
-        public AddLearnerCommitmentsCommandResponse Handle(AddLearnerCommitmentsCommandRequest message)
+        public Unit Handle(AddLearnerCommitmentsCommandRequest message)
         {
-            try
-            {
-                var learnerCommitmentEntities = message.LearnerCommitments
-                    .Select(
-                        lc => new LearnerCommitmentEntity
-                        {
-                            Ukprn = lc.Ukprn,
-                            LearnRefNumber = lc.LearnerReferenceNumber,
-                            AimSeqNumber = lc.AimSequenceNumber,
-                            CommitmentId = lc.CommitmentId
-                        })
-                    .ToArray();
+            var learnerCommitmentEntities = message.LearnerCommitments
+                .Select(
+                    lc => new LearnerCommitmentEntity
+                    {
+                        Ukprn = lc.Ukprn,
+                        LearnRefNumber = lc.LearnerReferenceNumber,
+                        AimSeqNumber = lc.AimSequenceNumber,
+                        CommitmentId = lc.CommitmentId
+                    })
+                .ToArray();
 
-                _learnerCommitmentRepository.AddLearnerCommitments(learnerCommitmentEntities);
+            _learnerCommitmentRepository.AddLearnerCommitments(learnerCommitmentEntities);
 
-                return new AddLearnerCommitmentsCommandResponse
-                {
-                    IsValid = true
-                };
-            }
-            catch (Exception ex)
-            {
-                return new AddLearnerCommitmentsCommandResponse
-                {
-                    IsValid = false,
-                    Exception = ex
-                };
-            }
+            return Unit.Value;
         }
     }
 }

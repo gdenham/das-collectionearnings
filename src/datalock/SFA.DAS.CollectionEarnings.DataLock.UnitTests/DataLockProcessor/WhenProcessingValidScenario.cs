@@ -84,22 +84,16 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddValidationErrorsCommandRequest>()))
-                .Returns(new AddValidationErrorsCommandResponse
-                {
-                    IsValid = true
-                });
+                .Returns(Unit.Value);
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddLearnerCommitmentsCommandRequest>()))
-                .Returns(new AddLearnerCommitmentsCommandResponse
-                {
-                    IsValid = true
-                });
+                .Returns(Unit.Value);
         }
 
         [Test]
         [TestCaseSource(nameof(EmptyItems))]
-        public void ForGetAllDasLearnersQueryNoItems(LearnerEntity[] items)
+        public void ThenNoDataLockValidationIsExecutedForGetAllDasLearnersQueryResponseWithNoItems(LearnerEntity[] items)
         {
             // Arrange
             _mediator
@@ -119,8 +113,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         }
 
         [Test]
-        [TestCaseSource(nameof(EmptyItems))]
-        public void ForFinishingProcessing(IEnumerable<LearnerEntity> items)
+        public void ThenDataLockValidationIsSuccessfullForGetAllDasLearnersQueryResponseWithItems()
         {
             // Act
             _processor.Process();

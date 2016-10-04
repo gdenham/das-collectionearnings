@@ -19,7 +19,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
             return NextMatchHandler == null
                 ? new MatchResult
                 {
-                    Commitment = commitments.FirstOrDefault()
+                    Commitment = commitments.SingleOrDefault()
                 }
                 : NextMatchHandler.Match(commitments, learner);
         }

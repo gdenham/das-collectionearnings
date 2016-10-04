@@ -47,15 +47,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Learner.AddL
         }
 
         [Test]
-        public void ThenValidAddLearnerCommitmentsCommandResponseReturnedForValidRepositoryResponse()
+        public void ThenSuccessfullForValidRepositoryResponse()
         {
             // Act
             var response = _handler.Handle(_request);
 
             // Assert
             Assert.IsNotNull(response);
-            Assert.IsTrue(response.IsValid);
-            Assert.IsNull(response.Exception);
         }
 
         [Test]
@@ -69,20 +67,15 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Learner.AddL
         }
 
         [Test]
-        public void ThenInvalidAddLearnerCommitmentsCommandResponseReturnedForInvalidRepositoryResponse()
+        public void ThenExceptionIsThrownForInvalidRepositoryResponse()
         {
             // Arrange
             _repository
                 .Setup(ver => ver.AddLearnerCommitments(It.IsAny<LearnerCommitmentEntity[]>()))
                 .Throws<Exception>();
 
-            // Act
-            var response = _handler.Handle(_request);
-
             // Assert
-            Assert.IsNotNull(response);
-            Assert.IsFalse(response.IsValid);
-            Assert.IsNotNull(response.Exception);
+            Assert.Throws<Exception>(() => _handler.Handle(_request));
         }
 
         private bool LearnerCommitmentBatchesMatch(LearnerCommitmentEntity[] entities, LearnerCommitment[] learnerCommitments)

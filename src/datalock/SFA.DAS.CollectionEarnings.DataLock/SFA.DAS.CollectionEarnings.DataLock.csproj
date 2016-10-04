@@ -90,11 +90,9 @@
     <Compile Include="Application\DataLock\Matcher\UlnMatchHandler.cs" />
     <Compile Include="Application\Learner\AddLearnerCommitmentsCommand\AddLearnerCommitmentsCommandHandler.cs" />
     <Compile Include="Application\Learner\AddLearnerCommitmentsCommand\AddLearnerCommitmentsCommandRequest.cs" />
-    <Compile Include="Application\Learner\AddLearnerCommitmentsCommand\AddLearnerCommitmentsCommandResponse.cs" />
     <Compile Include="Application\Learner\LearnerCommitment.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandHandler.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandRequest.cs" />
-    <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandResponse.cs" />
     <Compile Include="DataLockPassThroughProcessor.cs" />
     <Compile Include="DataLockProcessor.cs" />
     <Compile Include="DataLockTask.cs" />
@@ -110,7 +108,6 @@
     <Compile Include="Application\Learner\GetAllLearnersQuery\GetAllLearnersQueryResponse.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorCommand\AddValidationErrorCommandHandler.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorCommand\AddValidationErrorCommandRequest.cs" />
-    <Compile Include="Application\ValidationError\AddValidationErrorCommand\AddValidationErrorCommandResponse.cs" />
     <Compile Include="Infrastructure\Data\ILearnerCommitmentRepository.cs" />
     <Compile Include="Infrastructure\Data\Repositories\CommitmentRepository.cs" />
     <Compile Include="Infrastructure\Data\Repositories\LearnerCommitmentRepository.cs" />

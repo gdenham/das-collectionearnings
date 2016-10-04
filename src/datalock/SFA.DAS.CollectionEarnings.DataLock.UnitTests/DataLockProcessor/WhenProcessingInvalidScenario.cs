@@ -84,17 +84,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddValidationErrorsCommandRequest>()))
-                .Returns(new AddValidationErrorsCommandResponse
-                {
-                    IsValid = true
-                });
+                .Returns(Unit.Value);
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddLearnerCommitmentsCommandRequest>()))
-                .Returns(new AddLearnerCommitmentsCommandResponse
-                {
-                    IsValid = true
-                });
+                .Returns(Unit.Value);
         }
 
         [Test]
@@ -154,11 +148,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
             // Arrange
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddValidationErrorsCommandRequest>()))
-                .Returns(new AddValidationErrorsCommandResponse
-                {
-                    IsValid = false,
-                    Exception = new Exception("Error.")
-                });
+                .Throws<Exception>();
 
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
@@ -171,11 +161,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
             // Arrange
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddLearnerCommitmentsCommandRequest>()))
-                .Returns(new AddLearnerCommitmentsCommandResponse
-                {
-                    IsValid = false,
-                    Exception = new Exception("Error.")
-                });
+                .Throws<Exception>();
 
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());

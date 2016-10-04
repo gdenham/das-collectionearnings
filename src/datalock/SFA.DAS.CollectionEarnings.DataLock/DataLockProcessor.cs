@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System;
+using MediatR;
 using NLog;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
@@ -101,15 +102,16 @@ namespace SFA.DAS.CollectionEarnings.DataLock
             {
                 _logger.Info("Started writing Data Lock Validation Errors.");
 
-                var writeValidationErrorsResult =
+                try
+                {
                     _mediator.Send(new AddValidationErrorsCommandRequest
                     {
                         ValidationErrors = dataLockValidationResponse.ValidationErrors
                     });
-
-                if (!writeValidationErrorsResult.IsValid)
+                }
+                catch (Exception ex)
                 {
-                    throw new DataLockProcessorException(DataLockProcessorException.ErrorWritingDataLockValidationErrorsMessage, writeValidationErrorsResult.Exception);
+                    throw new DataLockProcessorException(DataLockProcessorException.ErrorWritingDataLockValidationErrorsMessage, ex);
                 }
 
                 _logger.Info("Finished writing Data Lock Validation Errors.");
@@ -122,15 +124,16 @@ namespace SFA.DAS.CollectionEarnings.DataLock
             {
                 _logger.Info("Started writing matching Learners and Commitments.");
 
-                var writeMatchingLearnersAndCommitments =
+                try
+                {
                     _mediator.Send(new AddLearnerCommitmentsCommandRequest
                     {
                         LearnerCommitments = dataLockValidationResponse.LearnerCommitments
                     });
-
-                if (!writeMatchingLearnersAndCommitments.IsValid)
+                }
+                catch (Exception ex)
                 {
-                    throw new DataLockProcessorException(DataLockProcessorException.ErrorWritingMatchingLearnersAndCommitmentsMessage, writeMatchingLearnersAndCommitments.Exception);
+                    throw new DataLockProcessorException(DataLockProcessorException.ErrorWritingMatchingLearnersAndCommitmentsMessage, ex);
                 }
 
                 _logger.Info("Finished writing matching Learners and Commitments.");

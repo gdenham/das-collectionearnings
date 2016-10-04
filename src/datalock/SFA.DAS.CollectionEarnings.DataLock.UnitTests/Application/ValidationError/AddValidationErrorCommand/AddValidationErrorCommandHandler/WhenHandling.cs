@@ -28,7 +28,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.ValidationEr
         }
 
         [Test]
-        public void ThenValidResponseReturnedForValidRepositoryResponse()
+        public void ThenSuccessfullForValidRepositoryResponse()
         {
             // Arrange
             _validationErrorRepository
@@ -39,25 +39,18 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.ValidationEr
 
             // Assert
             Assert.IsNotNull(response);
-            Assert.IsTrue(response.IsValid);
-            Assert.IsNull(response.Exception);
         }
 
         [Test]
-        public void ThenInvalidResponseReturnedForInvalidRepositoryResponse()
+        public void ThenExceptionIsThrownForInvalidRepositoryResponse()
         {
             // Arrange
             _validationErrorRepository
                 .Setup(ver => ver.AddValidationError(It.IsAny<Infrastructure.Data.Entities.ValidationErrorEntity>()))
                 .Throws(new Exception("Exception while writing validation error."));
 
-            // Act
-            var response = _handler.Handle(_request);
-
             // Assert
-            Assert.IsNotNull(response);
-            Assert.IsFalse(response.IsValid);
-            Assert.IsNotNull(response.Exception);
+            Assert.Throws<Exception>(() => _handler.Handle(_request));
         }
     }
 }
