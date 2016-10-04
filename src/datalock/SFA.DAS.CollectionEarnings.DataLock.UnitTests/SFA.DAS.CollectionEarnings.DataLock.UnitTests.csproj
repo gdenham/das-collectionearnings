@@ -96,6 +96,7 @@
     <Compile Include="Application\DataLock\Matcher\UkprnMatchHandler\Match\WhenCalled.cs" />
     <Compile Include="Application\DataLock\Matcher\UlnMatchHandler\Match\WhenCalled.cs" />
     <Compile Include="Application\Learner\AddLearnerCommitmentsCommand\AddLearnerCommitmentsCommandHandler\WhenHandling.cs" />
+    <Compile Include="Application\Provider\GetProvidersQuery\GetProvidersQueryHandler\WhenHandling.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandHandler\WhenHandling.cs" />
     <Compile Include="Context\ContextWrapper\ContextWrapper\WhenCalledWithInvalidContext.cs" />
     <Compile Include="Context\ContextWrapper\ContextWrapper\WhenCalledWithValidContext.cs" />
@@ -106,15 +107,16 @@
     <Compile Include="DataLockProcessor\WhenProcessingInvalidScenario.cs" />
     <Compile Include="DataLockTask\WhenExecutingWithInvalidContext.cs" />
     <Compile Include="DataLockTask\WhenExecutingWithValidContext.cs" />
-    <Compile Include="Application\Commitment\GetAllCommitmentsQuery\GetAllCommitmentsQueryHandler\WhenHandling.cs" />
+    <Compile Include="Application\Commitment\GetProviderCommitmentsQuery\GetProviderCommitmentsQueryHandler\WhenHandling.cs" />
     <Compile Include="Application\Learner\GetAllLearnersQuery\GetAllLearnersQueryHandler\WhenHandling.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorCommand\AddValidationErrorCommandHandler\WhenHandling.cs" />
     <Compile Include="DependencyResolution\TaskDependencyResolverTests\WhenInitialising.cs" />
     <Compile Include="Logging\LoggingConfigurationTests\WhenConfiguringLogging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tools\Entities\CommitmentBuilder.cs" />
+    <Compile Include="Tools\Application\CommitmentBuilder.cs" />
+    <Compile Include="Tools\Entities\CommitmentEntityBuilder.cs" />
     <Compile Include="Tools\Entities\LearnerEntityBuilder.cs" />
-    <Compile Include="Tools\Entities\IBuilder.cs" />
+    <Compile Include="Tools\IBuilder.cs" />
     <Compile Include="Tools\Entities\LearnerCommitmentEntityBuilder.cs" />
     <Compile Include="Tools\Entities\ValidationErrorBuilder.cs" />
     <Compile Include="Tools\ExternalContextStub.cs" />

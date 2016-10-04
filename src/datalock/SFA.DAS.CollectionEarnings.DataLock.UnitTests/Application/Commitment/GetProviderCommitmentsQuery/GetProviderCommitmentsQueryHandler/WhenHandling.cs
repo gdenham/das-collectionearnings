@@ -1,28 +1,32 @@
 ﻿using System;
-using System.Linq;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetProviderCommitmentsQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
-namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Commitment.GetAllCommitmentsQuery.GetAllCommitmentsQueryHandler
+namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Commitment.GetProviderCommitmentsQuery.GetProviderCommitmentsQueryHandler
 {
     public class WhenHandling
     {
+        private readonly long _ukprn = 10007459;
+
         private Mock<ICommitmentRepository> _commitmentRepository;
 
-        private GetAllCommitmentsQueryRequest _request;
-        private CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery.GetAllCommitmentsQueryHandler _handler;
+        private GetProviderCommitmentsQueryRequest _request;
+        private CollectionEarnings.DataLock.Application.Commitment.GetProviderCommitmentsQuery.GetProviderCommitmentsQueryHandler _handler;
 
         [SetUp]
         public void Arrange()
         {
             _commitmentRepository = new Mock<ICommitmentRepository>();
 
-            _request = new GetAllCommitmentsQueryRequest();
+            _request = new GetProviderCommitmentsQueryRequest
+            {
+                Ukprn = _ukprn
+            };
 
-            _handler = new CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery.GetAllCommitmentsQueryHandler(_commitmentRepository.Object);
+            _handler = new CollectionEarnings.DataLock.Application.Commitment.GetProviderCommitmentsQuery.GetProviderCommitmentsQueryHandler(_commitmentRepository.Object);
         }
 
         [Test]
@@ -30,8 +34,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Commitment.G
         {
             // Arrange
             _commitmentRepository
-                .Setup(cr => cr.GetAllCommitments())
-                .Returns(new[] {new CommitmentBuilder().Build()});
+                .Setup(cr => cr.GetProviderCommitments(_ukprn))
+                .Returns(new[] {new CommitmentEntityBuilder().Build()});
 
             // Act
             var response = _handler.Handle(_request);
@@ -40,7 +44,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Commitment.G
             Assert.IsNotNull(response);
             Assert.IsTrue(response.IsValid);
             Assert.IsNull(response.Exception);
-            Assert.AreEqual(1, response.Items.Count());
+            Assert.AreEqual(1, response.Items.Length);
         }
 
         [Test]
@@ -48,7 +52,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Commitment.G
         {
             // Arrange
             _commitmentRepository
-                .Setup(cr => cr.GetAllCommitments())
+                .Setup(cr => cr.GetProviderCommitments(_ukprn))
                 .Throws(new Exception("Exception while reading commitments."));
 
             // Act

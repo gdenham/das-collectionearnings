@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
@@ -9,10 +8,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
 {
     public class WhenGetAllCommitmentsCalled
     {
+        private readonly long _ukprn = 10007459;
+        private readonly long _ukprnNoCommitments = 10007458;
+
         private readonly CommitmentEntity[] _commitments =
         {
-            new CommitmentBuilder().Build(),
-            new CommitmentBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithAgreedCost(30000.00m).Build()
+            new CommitmentEntityBuilder().Build(),
+            new CommitmentEntityBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithAgreedCost(30000.00m).Build()
         };
 
         private ICommitmentRepository _commitmentRepository;
@@ -29,11 +31,26 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
         public void ThenNoCommitmentsReturnedNoEntriesInTheDatabase()
         {
             // Act
-            var commitments = _commitmentRepository.GetAllCommitments();
+            var commitments = _commitmentRepository.GetProviderCommitments(_ukprn);
 
             // Assert
             Assert.IsNotNull(commitments);
-            Assert.AreEqual(0, commitments.Count());
+            Assert.AreEqual(0, commitments.Length);
+        }
+
+        [Test]
+        public void ThenNoCommitmentsReturnedForAUkprnWithNoEntriesInTheDatabase()
+        {
+            // Arrange
+            TestDataHelper.AddCommitment(_commitments[0]);
+            TestDataHelper.AddCommitment(_commitments[1]);
+
+            // Act
+            var response = _commitmentRepository.GetProviderCommitments(_ukprnNoCommitments);
+
+            // Assert
+            Assert.IsNotNull(response);
+            Assert.AreEqual(0, response.Length);
         }
 
         [Test]
@@ -43,11 +60,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             TestDataHelper.AddCommitment(_commitments[0]);
 
             // Act
-            var response = _commitmentRepository.GetAllCommitments();
+            var response = _commitmentRepository.GetProviderCommitments(_ukprn);
 
             // Assert
             Assert.IsNotNull(response);
-            Assert.AreEqual(1, response.Count());
+            Assert.AreEqual(1, response.Length);
         }
 
         [Test]
@@ -58,11 +75,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             TestDataHelper.AddCommitment(_commitments[1]);
 
             // Act
-            var response = _commitmentRepository.GetAllCommitments();
+            var response = _commitmentRepository.GetProviderCommitments(_ukprn);
 
             // Assert
             Assert.IsNotNull(response);
-            Assert.AreEqual(2, response.Count());
+            Assert.AreEqual(2, response.Length);
         }
     }
 }

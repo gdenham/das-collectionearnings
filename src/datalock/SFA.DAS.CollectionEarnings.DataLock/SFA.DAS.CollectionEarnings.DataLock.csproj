@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\Commitment\Commitment.cs" />
     <Compile Include="Application\DataLock\DataLockErrorCodes.cs" />
     <Compile Include="Application\DataLock\MatchResult.cs" />
     <Compile Include="Application\DataLock\RunDataLockValidationQuery\RunDataLockValidationQueryHandler.cs" />
@@ -91,6 +92,10 @@
     <Compile Include="Application\Learner\AddLearnerCommitmentsCommand\AddLearnerCommitmentsCommandHandler.cs" />
     <Compile Include="Application\Learner\AddLearnerCommitmentsCommand\AddLearnerCommitmentsCommandRequest.cs" />
     <Compile Include="Application\Learner\LearnerCommitment.cs" />
+    <Compile Include="Application\Provider\GetProvidersQuery\GetProvidersQueryHandler.cs" />
+    <Compile Include="Application\Provider\GetProvidersQuery\GetProvidersQueryRequest.cs" />
+    <Compile Include="Application\Provider\GetProvidersQuery\GetProvidersQueryResponse.cs" />
+    <Compile Include="Application\Provider\Provider.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandHandler.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandRequest.cs" />
     <Compile Include="DataLockPassThroughProcessor.cs" />
@@ -99,17 +104,20 @@
     <Compile Include="Infrastructure\Data\Entities\CommitmentEntity.cs" />
     <Compile Include="Infrastructure\Data\Entities\LearnerCommitmentEntity.cs" />
     <Compile Include="Infrastructure\Data\Entities\LearnerEntity.cs" />
+    <Compile Include="Infrastructure\Data\Entities\ProviderEntity.cs" />
     <Compile Include="Infrastructure\Data\Entities\ValidationErrorEntity.cs" />
-    <Compile Include="Application\Commitment\GetAllCommitmentsQuery\GetAllCommitmentsQueryHandler.cs" />
-    <Compile Include="Application\Commitment\GetAllCommitmentsQuery\GetAllCommitmentsQueryRequest.cs" />
-    <Compile Include="Application\Commitment\GetAllCommitmentsQuery\GetAllCommitmentsQueryResponse.cs" />
+    <Compile Include="Application\Commitment\GetProviderCommitmentsQuery\GetProviderCommitmentsQueryHandler.cs" />
+    <Compile Include="Application\Commitment\GetProviderCommitmentsQuery\GetProviderCommitmentsQueryRequest.cs" />
+    <Compile Include="Application\Commitment\GetProviderCommitmentsQuery\GetProviderCommitmentsQueryResponse.cs" />
     <Compile Include="Application\Learner\GetAllLearnersQuery\GetAllLearnersQueryHandler.cs" />
     <Compile Include="Application\Learner\GetAllLearnersQuery\GetAllLearnersQueryRequest.cs" />
     <Compile Include="Application\Learner\GetAllLearnersQuery\GetAllLearnersQueryResponse.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorCommand\AddValidationErrorCommandHandler.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorCommand\AddValidationErrorCommandRequest.cs" />
     <Compile Include="Infrastructure\Data\ILearnerCommitmentRepository.cs" />
+    <Compile Include="Infrastructure\Data\IProviderRepository.cs" />
     <Compile Include="Infrastructure\Data\Repositories\CommitmentRepository.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\ProviderRepository.cs" />
     <Compile Include="Infrastructure\Data\Repositories\LearnerCommitmentRepository.cs" />
     <Compile Include="Infrastructure\Data\Repositories\LearnerRepository.cs" />
     <Compile Include="Infrastructure\Data\ICommitmentRepository.cs" />

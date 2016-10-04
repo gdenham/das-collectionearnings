@@ -92,6 +92,8 @@
     <Compile Include="Infrastructure\Data\Repositories\CommitmentRepository\WhenGetAllCommitmentsCalled.cs" />
     <Compile Include="Infrastructure\Data\Repositories\LearnerCommitmentRepository\WhenAddLearnerCommitmentsCalled.cs" />
     <Compile Include="Infrastructure\Data\Repositories\LearnerRepository\WhenGetAllLearnersCalled.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\ProviderRepository\WhenGetAllProvidersCalledDuringAnIlrMonthEnd.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\ProviderRepository\WhenGetAllProvidersCalledDuringAnIlrSubmission.cs" />
     <Compile Include="Infrastructure\Data\Repositories\ValidationErrorRepository\WhenAddValidationErrorsCalled.cs" />
     <Compile Include="Infrastructure\Data\Repositories\ValidationErrorRepository\WhenAddValidationErrorCalled.cs" />
     <Compile Include="GlobalSetup.cs" />

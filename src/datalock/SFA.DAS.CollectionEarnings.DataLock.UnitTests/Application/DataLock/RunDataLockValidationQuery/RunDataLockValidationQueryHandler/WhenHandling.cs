@@ -3,6 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.RunDataLockValidationQuery.RunDataLockValidationQueryHandler

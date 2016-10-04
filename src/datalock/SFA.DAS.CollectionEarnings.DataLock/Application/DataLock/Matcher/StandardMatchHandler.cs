@@ -5,7 +5,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
 {
     public class StandardMatchHandler : MatchHandler
     {
-        public override MatchResult Match(List<Infrastructure.Data.Entities.CommitmentEntity> commitments, Infrastructure.Data.Entities.LearnerEntity learner)
+        public override MatchResult Match(List<Commitment.Commitment> commitments, Infrastructure.Data.Entities.LearnerEntity learner)
         {
             if (learner.StandardCode.HasValue)
             {

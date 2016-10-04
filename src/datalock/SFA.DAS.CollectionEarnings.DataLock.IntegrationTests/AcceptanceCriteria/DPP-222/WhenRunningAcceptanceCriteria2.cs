@@ -46,7 +46,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.AcceptanceCriteri
 
             // Commitment data
             TestDataHelper.AddCommitment(
-                new CommitmentBuilder()
+                new CommitmentEntityBuilder()
                     .WithUln(1000000000)
                     .WithStartDate(new DateTime(2017, 9, 1))
                     .WithStandardCode(null)

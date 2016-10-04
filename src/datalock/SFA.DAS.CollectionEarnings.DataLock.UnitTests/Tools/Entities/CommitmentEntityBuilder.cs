@@ -3,7 +3,7 @@ using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
 {
-    public class CommitmentBuilder : IBuilder<CommitmentEntity>
+    public class CommitmentEntityBuilder : IBuilder<CommitmentEntity>
     {
         private string _commitmentId = "C-001";
         private long _uln = 1000000019;
@@ -35,76 +35,76 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
             };
         }
 
-        public CommitmentBuilder WithCommitmentId(string commitmentId)
+        public CommitmentEntityBuilder WithCommitmentId(string commitmentId)
         {
             _commitmentId = commitmentId;
 
             return this;
         }
 
-        public CommitmentBuilder WithUln(long uln)
+        public CommitmentEntityBuilder WithUln(long uln)
         {
             _uln = uln;
 
             return this;
         }
 
-        public CommitmentBuilder Withukprn(long ukprn)
+        public CommitmentEntityBuilder Withukprn(long ukprn)
         {
             _ukprn = ukprn;
 
             return this;
         }
 
-        public CommitmentBuilder WithAccountId(string accountId)
+        public CommitmentEntityBuilder WithAccountId(string accountId)
         {
             _accountId = accountId;
 
             return this;
         }
 
-        public CommitmentBuilder WithStartDate(DateTime startDate)
+        public CommitmentEntityBuilder WithStartDate(DateTime startDate)
         {
             _startDate = startDate;
 
             return this;
         }
 
-        public CommitmentBuilder WithEndDate(DateTime endDate)
+        public CommitmentEntityBuilder WithEndDate(DateTime endDate)
         {
             _endDate = endDate;
 
             return this;
         }
 
-        public CommitmentBuilder WithAgreedCost(decimal agreedCost)
+        public CommitmentEntityBuilder WithAgreedCost(decimal agreedCost)
         {
             _agreedCost = agreedCost;
 
             return this;
         }
 
-        public CommitmentBuilder WithStandardCode(long? standardCode)
+        public CommitmentEntityBuilder WithStandardCode(long? standardCode)
         {
             _standardCode = standardCode;
 
             return this;
         }
 
-        public CommitmentBuilder WithProgrammeType(int? programmeType)
+        public CommitmentEntityBuilder WithProgrammeType(int? programmeType)
         {
             _programmeType = programmeType;
 
             return this;
         }
 
-        public CommitmentBuilder WithFrameworkCode(int? frameworkCode)
+        public CommitmentEntityBuilder WithFrameworkCode(int? frameworkCode)
         {
             _frameworkCode = frameworkCode;
 
             return this;
         }
-        public CommitmentBuilder WithPathwayCode(int? pathwayCode)
+        public CommitmentEntityBuilder WithPathwayCode(int? pathwayCode)
         {
             _pathwayCode = pathwayCode;
 

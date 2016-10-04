@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Matcher.MultipleMatchHandler.Match
@@ -19,7 +20,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
         public void ThenNullReturnedForSingleMatchingDataProvided()
         {
             // Arrange
-            var commitments = new List<Infrastructure.Data.Entities.CommitmentEntity>
+            var commitments = new List<CollectionEarnings.DataLock.Application.Commitment.Commitment>
             {
                 new CommitmentBuilder().Build()
             };
@@ -37,7 +38,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
         public void ThenErrorCodeReturnedForMultipleMatchingDataProvided()
         {
             // Arrange
-            var commitments = new List<Infrastructure.Data.Entities.CommitmentEntity>
+            var commitments = new List<CollectionEarnings.DataLock.Application.Commitment.Commitment>
             {
                 new CommitmentBuilder().Build(),
                 new CommitmentBuilder().WithCommitmentId("C-002").Build()

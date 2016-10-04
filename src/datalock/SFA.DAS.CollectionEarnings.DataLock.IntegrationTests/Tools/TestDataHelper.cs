@@ -68,6 +68,25 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                 });
         }
 
+        internal static void AddProviderIlrSubmission(long ukprn)
+        {
+            Execute("INSERT INTO [Input].[LearningProvider] (LearningProvider_Id, UKPRN) VALUES (@id, @ukprn)",
+                new
+                {
+                    id = ukprn,
+                    ukprn = ukprn
+                });
+        }
+
+        internal static void AddProviderIlrPeriodEnd(long ukprn)
+        {
+            Execute("INSERT INTO [Valid].[LearningProvider] (UKPRN) VALUES (@ukprn)", 
+                new
+                {
+                    ukprn = ukprn
+                });
+        }
+
         internal static LearnerCommitmentEntity[] GetLearnerAndCommitmentMatches()
         {
             return Query<LearnerCommitmentEntity>("SELECT * FROM [DataLock].[DasLearnerCommitment]");

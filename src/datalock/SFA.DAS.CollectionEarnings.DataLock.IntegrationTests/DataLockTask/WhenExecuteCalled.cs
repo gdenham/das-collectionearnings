@@ -52,7 +52,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         {
             // Arrange
             SetupIlrData(@"\Tools\Ilr\Files\IlrUkprnMismatch.xml");
-            SetupCommitmentData(new CommitmentBuilder().Build());
+            SetupCommitmentData(new CommitmentEntityBuilder().Build());
 
             // Act
             _task.Execute(_context);
@@ -70,7 +70,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         {
             // Arrange
             SetupIlrData(@"\Tools\Ilr\Files\IlrUlnMismatch.xml");
-            SetupCommitmentData(new CommitmentBuilder().Build());
+            SetupCommitmentData(new CommitmentEntityBuilder().Build());
 
             // Act
             _task.Execute(_context);
@@ -88,7 +88,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         {
             // Arrange
             SetupIlrData(@"\Tools\Ilr\Files\IlrStandardMismatch.xml");
-            SetupCommitmentData(new CommitmentBuilder().WithStandardCode(999).WithProgrammeType(null).WithFrameworkCode(null).WithPathwayCode(null).Build());
+            SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).WithProgrammeType(null).WithFrameworkCode(null).WithPathwayCode(null).Build());
 
             // Act
             _task.Execute(_context);
@@ -106,7 +106,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         {
             // Arrange
             SetupIlrData(@"\Tools\Ilr\Files\IlrFrameworkMismatch.xml");
-            SetupCommitmentData(new CommitmentBuilder().WithStandardCode(null).WithFrameworkCode(999).Build());
+            SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(null).WithFrameworkCode(999).Build());
 
             // Act
             _task.Execute(_context);
@@ -124,7 +124,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         {
             // Arrange
             SetupIlrData(@"\Tools\Ilr\Files\IlrProgrammeMismatch.xml");
-            SetupCommitmentData(new CommitmentBuilder().WithStandardCode(null).WithProgrammeType(999).Build());
+            SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(null).WithProgrammeType(999).Build());
 
             // Act
             _task.Execute(_context);
@@ -142,7 +142,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         {
             // Arrange
             SetupIlrData(@"\Tools\Ilr\Files\IlrPathwayMismatch.xml");
-            SetupCommitmentData(new CommitmentBuilder().WithStandardCode(null).WithPathwayCode(999).Build());
+            SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(null).WithPathwayCode(999).Build());
 
             // Act
             _task.Execute(_context);
@@ -160,8 +160,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         {
             // Arrange
             SetupIlrData(@"\Tools\Ilr\Files\IlrPriceMismatch.xml");
-            SetupCommitmentData(new CommitmentBuilder().WithStandardCode(999).Build());
-            SetupCommitmentData(new CommitmentBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build());
+            SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).Build());
+            SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build());
 
             // Act
             _task.Execute(_context);
@@ -179,8 +179,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         {
             // Arrange
             SetupIlrData(@"\Tools\Ilr\Files\IlrEarlierStartMonth.xml");
-            SetupCommitmentData(new CommitmentBuilder().WithStandardCode(999).Build());
-            SetupCommitmentData(new CommitmentBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build());
+            SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).Build());
+            SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build());
 
             // Act
             _task.Execute(_context);
@@ -198,10 +198,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         {
             // Arrange
             SetupIlrData(@"\Tools\Ilr\Files\IlrMultipleMatchingCommitments.xml");
-            SetupCommitmentData(new CommitmentBuilder().WithStandardCode(999).Build());
-            SetupCommitmentData(new CommitmentBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build());
-            SetupCommitmentData(new CommitmentBuilder().WithCommitmentId("C-003").WithStandardCode(999).Build());
-            SetupCommitmentData(new CommitmentBuilder().WithCommitmentId("C-004").WithUln(1000000027).WithStandardCode(null).Build());
+            SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).Build());
+            SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build());
+            SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId("C-003").WithStandardCode(999).Build());
+            SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId("C-004").WithUln(1000000027).WithStandardCode(null).Build());
 
             // Act
             _task.Execute(_context);
@@ -220,8 +220,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             // Arrange
             var commitments = new[]
             {
-                new CommitmentBuilder().WithStandardCode(999).Build(),
-                new CommitmentBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build()
+                new CommitmentEntityBuilder().WithStandardCode(999).Build(),
+                new CommitmentEntityBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build()
             };
 
             SetupIlrData(@"\Tools\Ilr\Files\IlrLearnerAndCommitmentMatch.xml");

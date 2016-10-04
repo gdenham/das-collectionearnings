@@ -3,6 +3,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Matcher.UlnMatchHandler.Match
@@ -19,7 +20,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
             _nextMatcher = new Mock<MatchHandler>();
 
             _nextMatcher
-                .Setup(m => m.Match(It.IsAny<List<Infrastructure.Data.Entities.CommitmentEntity>>(), It.IsAny<Infrastructure.Data.Entities.LearnerEntity>()))
+                .Setup(m => m.Match(It.IsAny<List<CollectionEarnings.DataLock.Application.Commitment.Commitment>>(), It.IsAny<Infrastructure.Data.Entities.LearnerEntity>()))
                 .Returns(new MatchResult { ErrorCode = string.Empty });
 
             _matcher.SetNextMatchHandler(_nextMatcher.Object);
@@ -29,7 +30,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
         public void ThenNextMatcherInChainIsExecutedForMatchingDataProvided()
         {
             // Arrange
-            var commitments = new List<Infrastructure.Data.Entities.CommitmentEntity>
+            var commitments = new List<CollectionEarnings.DataLock.Application.Commitment.Commitment>
             {
                 new CommitmentBuilder().Build(),
                 new CommitmentBuilder().WithUln(999).Build()
@@ -44,7 +45,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
             Assert.IsEmpty(matchResult.ErrorCode);
             _nextMatcher.Verify(
                 m =>
-                    m.Match(It.Is<List<Infrastructure.Data.Entities.CommitmentEntity>>(x => x[0].Equals(commitments[0])),
+                    m.Match(It.Is<List<CollectionEarnings.DataLock.Application.Commitment.Commitment>>(x => x[0].Equals(commitments[0])),
                         It.IsAny<Infrastructure.Data.Entities.LearnerEntity>()),
                 Times.Once());
         }
@@ -53,7 +54,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
         public void ThenErrorCodeReturnedForMismatchingDataProvided()
         {
             // Arrange
-            var commitments = new List<Infrastructure.Data.Entities.CommitmentEntity>
+            var commitments = new List<CollectionEarnings.DataLock.Application.Commitment.Commitment>
             {
                 new CommitmentBuilder().WithUln(998).Build(),
                 new CommitmentBuilder().WithUln(999).Build()
@@ -68,7 +69,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
             Assert.AreEqual(DataLockErrorCodes.MismatchingUln, matchResult.ErrorCode);
             _nextMatcher.Verify(
                 m =>
-                    m.Match(It.IsAny<List<Infrastructure.Data.Entities.CommitmentEntity>>(), It.IsAny<Infrastructure.Data.Entities.LearnerEntity>()),
+                    m.Match(It.IsAny<List<CollectionEarnings.DataLock.Application.Commitment.Commitment>>(), It.IsAny<Infrastructure.Data.Entities.LearnerEntity>()),
                 Times.Never());
         }
     }
