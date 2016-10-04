@@ -9,8 +9,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
 {
     public class WhenGetAllCommitmentsCalled
     {
-        private readonly string _transientConnectionString = ConnectionStringFactory.GetTransientConnectionString();
-
         private readonly CommitmentEntity[] _commitments =
         {
             new CommitmentBuilder().Build(),
@@ -22,9 +20,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
         [SetUp]
         public void Arrange()
         {
-            Database.Clean(_transientConnectionString);
+            TestDataHelper.Clean();
 
-            _commitmentRepository = new DataLock.Infrastructure.Data.Repositories.CommitmentRepository(_transientConnectionString);
+            _commitmentRepository = new DataLock.Infrastructure.Data.Repositories.CommitmentRepository(GlobalTestContext.Instance.ConnectionString);
         }
 
         [Test]
@@ -42,7 +40,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
         public void ThenCommitmentReturnedForOneEntryInTheDatabase()
         {
             // Arrange
-            Database.AddCommitment(_transientConnectionString, _commitments[0]);
+            TestDataHelper.AddCommitment(_commitments[0]);
 
             // Act
             var response = _commitmentRepository.GetAllCommitments();
@@ -56,8 +54,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
         public void ThenCommitmentsReturnedForMultipleEntriesInTheDatabase()
         {
             // Arrange
-            Database.AddCommitment(_transientConnectionString, _commitments[0]);
-            Database.AddCommitment(_transientConnectionString, _commitments[1]);
+            TestDataHelper.AddCommitment(_commitments[0]);
+            TestDataHelper.AddCommitment(_commitments[1]);
 
             // Act
             var response = _commitmentRepository.GetAllCommitments();

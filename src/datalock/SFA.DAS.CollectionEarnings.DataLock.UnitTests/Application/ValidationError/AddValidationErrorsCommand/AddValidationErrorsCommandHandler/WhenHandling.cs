@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data;
+using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.ValidationError.AddValidationErrorsCommand.AddValidationErrorsCommandHandler
@@ -38,7 +38,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.ValidationEr
         {
             // Arrange
             _validationErrorRepository
-                .Setup(ver => ver.AddValidationErrors(It.IsAny<IEnumerable<Infrastructure.Data.Entities.ValidationErrorEntity>>()));
+                .Setup(ver => ver.AddValidationErrors(It.IsAny<ValidationErrorEntity[]>()));
 
             // Act
             var response = _handler.Handle(_request);
@@ -54,7 +54,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.ValidationEr
         {
             // Arrange
             _validationErrorRepository
-                .Setup(ver => ver.AddValidationErrors(It.IsAny<IEnumerable<Infrastructure.Data.Entities.ValidationErrorEntity>>()))
+                .Setup(ver => ver.AddValidationErrors(It.IsAny<ValidationErrorEntity[]>()))
                 .Throws(new Exception("Exception while writing validation errors."));
 
             // Act

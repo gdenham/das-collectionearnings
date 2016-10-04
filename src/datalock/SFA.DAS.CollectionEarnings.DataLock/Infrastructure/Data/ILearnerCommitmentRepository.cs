@@ -2,8 +2,8 @@
 
 namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data
 {
-    public interface ICommitmentRepository
+    public interface ILearnerCommitmentRepository
     {
-        CommitmentEntity[] GetAllCommitments();
+        void AddLearnerCommitments(LearnerCommitmentEntity[] learnerCommitments);
     }
 }

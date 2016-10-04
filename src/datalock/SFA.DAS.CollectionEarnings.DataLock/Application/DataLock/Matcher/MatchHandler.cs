@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
 {
@@ -11,11 +12,16 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
             NextMatchHandler = nextMatchHandler;
         }
 
-        public abstract string Match(List<Infrastructure.Data.Entities.CommitmentEntity> commitments, Infrastructure.Data.Entities.LearnerEntity learner);
+        public abstract MatchResult Match(List<Infrastructure.Data.Entities.CommitmentEntity> commitments, Infrastructure.Data.Entities.LearnerEntity learner);
 
-        protected string ExecuteNextHandler(List<Infrastructure.Data.Entities.CommitmentEntity> commitments, Infrastructure.Data.Entities.LearnerEntity learner)
+        protected MatchResult ExecuteNextHandler(List<Infrastructure.Data.Entities.CommitmentEntity> commitments, Infrastructure.Data.Entities.LearnerEntity learner)
         {
-            return NextMatchHandler?.Match(commitments, learner);
+            return NextMatchHandler == null
+                ? new MatchResult
+                {
+                    Commitment = commitments.FirstOrDefault()
+                }
+                : NextMatchHandler.Match(commitments, learner);
         }
     }
 }

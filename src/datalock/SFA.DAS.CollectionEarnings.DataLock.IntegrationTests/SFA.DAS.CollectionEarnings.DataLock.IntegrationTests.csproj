@@ -90,6 +90,7 @@
     <Compile Include="AcceptanceCriteria\DPP-222\WhenRunningAcceptanceCriteria2.cs" />
     <Compile Include="DataLockTask\WhenExecuteCalled.cs" />
     <Compile Include="Infrastructure\Data\Repositories\CommitmentRepository\WhenGetAllCommitmentsCalled.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\LearnerCommitmentRepository\WhenAddLearnerCommitmentsCalled.cs" />
     <Compile Include="Infrastructure\Data\Repositories\LearnerRepository\WhenGetAllLearnersCalled.cs" />
     <Compile Include="Infrastructure\Data\Repositories\ValidationErrorRepository\WhenAddValidationErrorsCalled.cs" />
     <Compile Include="Infrastructure\Data\Repositories\ValidationErrorRepository\WhenAddValidationErrorCalled.cs" />
@@ -97,7 +98,7 @@
     <Compile Include="GlobalTestContext.cs" />
     <Compile Include="GlobalTestContextSetupException.cs" />
     <Compile Include="Tools\ConnectionStringFactory.cs" />
-    <Compile Include="Tools\Database.cs" />
+    <Compile Include="Tools\TestDataHelper.cs" />
     <Compile Include="Tools\Ilr\PreProcessingCallback.cs" />
     <Compile Include="Tools\Ilr\Shredder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

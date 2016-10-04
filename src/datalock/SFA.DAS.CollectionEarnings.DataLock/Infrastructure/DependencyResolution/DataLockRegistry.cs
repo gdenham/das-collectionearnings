@@ -26,6 +26,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.DependencyResolutio
             For<ICommitmentRepository>().Use<CommitmentRepository>();
             For<ILearnerRepository>().Use<LearnerRepository>();
             For<IValidationErrorRepository>().Use<ValidationErrorRepository>();
+            For<ILearnerCommitmentRepository>().Use<LearnerCommitmentRepository>();
 
             For<SingleInstanceFactory>().Use<SingleInstanceFactory>(ctx => t => GetInstance(ctx, t));
             For<MultiInstanceFactory>().Use<MultiInstanceFactory>(ctx => t => GetAllInstances(ctx, t));

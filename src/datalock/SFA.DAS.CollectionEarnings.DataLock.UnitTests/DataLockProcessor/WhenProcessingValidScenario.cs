@@ -4,7 +4,8 @@ using Moq;
 using NLog;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery;
-using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFailuresQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetAllLearnersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
@@ -56,19 +57,29 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                         IsValid = true,
                         Items = new[]
                             {
-                                new DasLearnerBuilder().Build()
+                                new LearnerEntityBuilder().Build()
                             }
                     }
                 );
 
             _mediator
-                .Setup(m => m.Send(It.IsAny<GetDataLockFailuresQueryRequest>()))
-                .Returns(new GetDataLockFailuresQueryResponse
+                .Setup(m => m.Send(It.IsAny<RunDataLockValidationQueryRequest>()))
+                .Returns(new RunDataLockValidationQueryResponse
                     {
                         IsValid = true,
-                        Items = new[]
+                        ValidationErrors = new[]
                             {
                                 new ValidationErrorBuilder().Build()
+                            },
+                        LearnerCommitments = new[]
+                            {
+                                new LearnerCommitment
+                                {
+                                    Ukprn = 10007459,
+                                    LearnerReferenceNumber = "Lrn001",
+                                    AimSequenceNumber = 1,
+                                    CommitmentId = "C-001"
+                                }
                             }
                     }
                 );
@@ -111,12 +122,16 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
             _processor.Process();
 
             // Assert
-            _logger.Verify(l => l.Debug(It.Is<string>(p => p.Equals("Reading commitments."))), Times.Once);
-            _logger.Verify(l => l.Debug(It.Is<string>(p => p.Equals("Reading DAS learners."))), Times.Once);
-            _logger.Verify(l => l.Debug(It.Is<string>(p => p.Equals("Started Data Lock Validation."))), Times.Once);
-            _logger.Verify(l => l.Debug(It.Is<string>(p => p.Equals("Finished Data Lock Validation."))), Times.Once);
-            _logger.Verify(l => l.Debug(It.Is<string>(p => p.Equals("Started writing Data Lock Validation Errors."))), Times.Once);
-            _logger.Verify(l => l.Debug(It.Is<string>(p => p.Equals("Finished writing Data Lock Validation Errors."))), Times.Once);
+            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Reading commitments."))), Times.Once);
+            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Reading DAS learners."))), Times.Once);
+            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Started Data Lock Validation."))), Times.Once);
+            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Finished Data Lock Validation."))), Times.Once);
+            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Started writing Data Lock Validation Errors."))), Times.Once);
+            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Finished writing Data Lock Validation Errors."))), Times.Once);
+
+            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Started writing matching Learners and Commitments."))), Times.Once);
+            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Finished writing matching Learners and Commitments."))), Times.Once);
+
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("No DAS learners found."))), Times.Never);
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Finished Data Lock Processor."))), Times.Once);
         }

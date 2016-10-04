@@ -24,7 +24,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         [SetUp]
         public void Arrange()
         {
-            Database.Clean(_transientConnectionString);
+            TestDataHelper.Clean();
 
             _task = new DataLock.DataLockTask();
 
@@ -46,7 +46,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
 
         private void SetupCommitmentData(CommitmentEntity commitment)
         {
-            Database.AddCommitment(_transientConnectionString, commitment);
+            TestDataHelper.AddCommitment(commitment);
         }
 
         [Test]

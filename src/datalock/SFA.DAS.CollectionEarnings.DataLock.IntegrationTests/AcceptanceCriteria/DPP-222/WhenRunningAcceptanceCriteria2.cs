@@ -41,15 +41,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.AcceptanceCriteri
 
         private void SetUpIlrDatabase()
         {
-            Database.Clean(_transientConnectionString);
+            TestDataHelper.Clean();
 
             // ILR data
             var shredder = new Shredder(@"\Tools\Ilr\Files\DPP-222\IlrAcceptanceCriteria2.xml");
             shredder.Shred();
 
             // Commitment data
-            Database.AddCommitment(
-                _transientConnectionString,
+            TestDataHelper.AddCommitment(
                 new CommitmentBuilder()
                     .WithUln(1000000000)
                     .WithStartDate(new DateTime(2017, 9, 1))

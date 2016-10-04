@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
+﻿using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 using SFA.DAS.Payments.DCFS.Infrastructure.Data;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories
@@ -26,9 +24,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories
             });
         }
 
-        public void AddValidationErrors(IEnumerable<ValidationErrorEntity> validationErrors)
+        public void AddValidationErrors(ValidationErrorEntity[] validationErrors)
         {
-            ExecuteBatch(validationErrors.ToArray(), ValidationErrorDestination);
+            ExecuteBatch(validationErrors, ValidationErrorDestination);
         }
     }
 }

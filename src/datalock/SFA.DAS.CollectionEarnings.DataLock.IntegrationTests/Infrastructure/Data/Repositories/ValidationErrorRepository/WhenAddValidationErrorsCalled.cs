@@ -12,16 +12,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
 {
     public class WhenAddValidationErrorsCalled
     {
-        private readonly string _transientConnectionString = ConnectionStringFactory.GetTransientConnectionString();
-
         private IValidationErrorRepository _validationErrorRepository;
 
         [SetUp]
         public void Arrange()
         {
-            Database.Clean(_transientConnectionString);
+            TestDataHelper.Clean();
 
-            _validationErrorRepository = new DataLock.Infrastructure.Data.Repositories.ValidationErrorRepository(_transientConnectionString);
+            _validationErrorRepository = new DataLock.Infrastructure.Data.Repositories.ValidationErrorRepository(GlobalTestContext.Instance.ConnectionString);
         }
 
         [Test]
@@ -46,7 +44,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             _validationErrorRepository.AddValidationErrors(validationErrors);
 
             // Assert
-            using (var connection = new SqlConnection(_transientConnectionString))
+            using (var connection = new SqlConnection(GlobalTestContext.Instance.ConnectionString))
             {
                 var errors = connection.Query(ValidationErrorEntity.SelectAll);
 

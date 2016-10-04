@@ -4,10 +4,10 @@ using Moq;
 using NLog;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery;
-using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFailuresQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetAllLearnersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
@@ -57,19 +57,29 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                     IsValid = true,
                     Items = new[]
                         {
-                            new DasLearnerBuilder().Build()
+                            new LearnerEntityBuilder().Build()
                         }
                 }
                 );
 
             _mediator
-                .Setup(m => m.Send(It.IsAny<GetDataLockFailuresQueryRequest>()))
-                .Returns(new GetDataLockFailuresQueryResponse
+                .Setup(m => m.Send(It.IsAny<RunDataLockValidationQueryRequest>()))
+                .Returns(new RunDataLockValidationQueryResponse
                 {
                     IsValid = true,
-                    Items = new[]
+                    ValidationErrors = new[]
                         {
                             new ValidationErrorBuilder().Build()
+                        },
+                    LearnerCommitments = new[]
+                        {
+                            new LearnerCommitment
+                            {
+                                Ukprn = 10007459,
+                                LearnerReferenceNumber = "Lrn001",
+                                AimSequenceNumber = 1,
+                                CommitmentId = "C-001"
+                            }
                         }
                 }
                 );
@@ -98,7 +108,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
 
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
-            Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ErrorReadingCommitments));
+            Assert.IsTrue(ex.Message.Contains(DataLockProcessorException.ErrorReadingCommitmentsMessage));
         }
 
         [Test]
@@ -116,7 +126,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
 
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
-            Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ErrorReadingDasLearners));
+            Assert.IsTrue(ex.Message.Contains(DataLockProcessorException.ErrorReadingLearnersMessage));
         }
 
         [Test]
@@ -124,8 +134,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         {
             // Arrange
             _mediator
-                .Setup(m => m.Send(It.IsAny<GetDataLockFailuresQueryRequest>()))
-                .Returns(new GetDataLockFailuresQueryResponse
+                .Setup(m => m.Send(It.IsAny<RunDataLockValidationQueryRequest>()))
+                .Returns(new RunDataLockValidationQueryResponse
                 {
                     IsValid = false,
                     Exception = new Exception("Error.")
@@ -134,7 +144,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
 
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
-            Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ErrorPerformingDataLock));
+            Assert.IsTrue(ex.Message.Contains(DataLockProcessorException.ErrorPerformingDataLockMessage));
         }
 
         [Test]
@@ -152,7 +162,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
 
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
-            Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ErrorWritingDataLockValidationErrors));
+            Assert.IsTrue(ex.Message.Contains(DataLockProcessorException.ErrorWritingDataLockValidationErrorsMessage));
+        }
+
+        [Test]
+        public void ForAddLearnerCommitmentsCommandRequestFailure()
+        {
+            Assert.IsTrue(false);
         }
     }
 }

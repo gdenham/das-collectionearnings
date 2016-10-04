@@ -24,13 +24,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
                 new CommitmentBuilder().Build()
             };
 
-            var learner = new DasLearnerBuilder().Build();
+            var learner = new LearnerEntityBuilder().Build();
 
             // Act
             var matchResult = _matcher.Match(commitments, learner);
 
             // Assert
-            Assert.IsNull(matchResult);
+            Assert.IsNull(matchResult.ErrorCode);
         }
 
         [Test]
@@ -43,13 +43,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
                 new CommitmentBuilder().WithCommitmentId("C-002").Build()
             };
 
-            var learner = new DasLearnerBuilder().Build();
+            var learner = new LearnerEntityBuilder().Build();
 
             // Act
             var matchResult = _matcher.Match(commitments, learner);
 
             // Assert
-            Assert.AreEqual(DataLockErrorCodes.MultipleMatches, matchResult);
+            Assert.AreEqual(DataLockErrorCodes.MultipleMatches, matchResult.ErrorCode);
         }
     }
 }
