@@ -19,7 +19,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
         public void ThenNullReturnedForSingleMatchingDataProvided()
         {
             // Arrange
-            var commitments = new List<Data.Entities.Commitment>
+            var commitments = new List<Infrastructure.Data.Entities.CommitmentEntity>
             {
                 new CommitmentBuilder().Build()
             };
@@ -37,7 +37,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
         public void ThenErrorCodeReturnedForMultipleMatchingDataProvided()
         {
             // Arrange
-            var commitments = new List<Data.Entities.Commitment>
+            var commitments = new List<Infrastructure.Data.Entities.CommitmentEntity>
             {
                 new CommitmentBuilder().Build(),
                 new CommitmentBuilder().WithCommitmentId("C-002").Build()

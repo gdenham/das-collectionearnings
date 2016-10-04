@@ -1,9 +1,9 @@
 ﻿using System;
-using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
+using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
 {
-    public class CommitmentBuilder : IBuilder<Commitment>
+    public class CommitmentBuilder : IBuilder<CommitmentEntity>
     {
         private string _commitmentId = "C-001";
         private long _uln = 1000000019;
@@ -17,9 +17,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
         private int? _frameworkCode = 550;
         private int? _pathwayCode = 6;
 
-        public Commitment Build()
+        public CommitmentEntity Build()
         {
-            return new Commitment
+            return new CommitmentEntity
             {
                 CommitmentId = _commitmentId,
                 Uln = _uln,

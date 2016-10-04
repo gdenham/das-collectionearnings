@@ -1,22 +1,31 @@
 ﻿using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
-using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
+using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
 {
-    public class ValidationErrorBuilder : IBuilder<ValidationError>
+    public class ValidationErrorBuilder : IBuilder<ValidationErrorEntity>
     {
+        private long _ukprn = 10007459;
         private string _learnRefNumber = "Lrn001";
         private long? _aimSeqNumber = 1;
         private string _ruleId = DataLockErrorCodes.MismatchingUkprn;
 
-        public ValidationError Build()
+        public ValidationErrorEntity Build()
         {
-            return new ValidationError
+            return new ValidationErrorEntity
             {
+                Ukprn = _ukprn,
                 LearnRefNumber = _learnRefNumber,
                 AimSeqNumber = _aimSeqNumber,
                 RuleId = _ruleId
             };
+        }
+
+        public ValidationErrorBuilder WithUkprn(long ukprn)
+        {
+            _ukprn = ukprn;
+
+            return this;
         }
 
         public ValidationErrorBuilder WithLearnRefNumber(string learnRefNumber)

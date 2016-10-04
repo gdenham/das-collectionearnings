@@ -5,7 +5,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
 {
     public class PriceMatchHandler : MatchHandler
     {
-        public override string Match(List<Data.Entities.Commitment> commitments, Data.Entities.DasLearner learner)
+        public override string Match(List<Infrastructure.Data.Entities.CommitmentEntity> commitments, Infrastructure.Data.Entities.LearnerEntity learner)
         {
             var commitmentsToMatch = commitments.Where(c => learner.NegotiatedPrice.HasValue &&
                                                             (long) c.AgreedCost == learner.NegotiatedPrice.Value).ToList();

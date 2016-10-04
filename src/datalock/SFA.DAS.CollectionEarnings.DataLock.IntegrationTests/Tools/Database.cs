@@ -1,7 +1,6 @@
 ﻿using System.Data.SqlClient;
 using Dapper;
-using Dapper.Contrib.Extensions;
-using SFA.DAS.CollectionEarnings.DataLock.Data.Entities;
+using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
 {
@@ -27,11 +26,50 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
             }
         }
 
-        public static void AddCommitment(string connectionString, Commitment commitment)
+        public static void AddCommitment(string connectionString, CommitmentEntity commitment)
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                connection.Insert(commitment);
+                connection.Execute(@"
+                    INSERT INTO [Reference].[DasCommitments] (
+                        CommitmentId, 
+                        Uln, 
+                        Ukprn, 
+                        AccountId, 
+                        StartDate, 
+                        EndDate, 
+                        AgreedCost, 
+                        StandardCode, 
+                        ProgrammeType, 
+                        FrameworkCode, 
+                        PathwayCode
+                    ) VALUES (
+                        @CommitmentId, 
+                        @Uln, 
+                        @Ukprn, 
+                        @AccountId, 
+                        @StartDate, 
+                        @EndDate, 
+                        @AgreedCost, 
+                        @StandardCode, 
+                        @ProgrammeType, 
+                        @FrameworkCode, 
+                        @PathwayCode
+                    )",
+                    new
+                    {
+                        CommitmentId = commitment.CommitmentId,
+                        Uln = commitment.Uln,
+                        Ukprn = commitment.Ukprn,
+                        AccountId = commitment.AccountId,
+                        StartDate = commitment.StartDate,
+                        EndDate = commitment.EndDate,
+                        AgreedCost = commitment.AgreedCost,
+                        StandardCode = commitment.StandardCode,
+                        ProgrammeType = commitment.ProgrammeType,
+                        FrameworkCode = commitment.FrameworkCode,
+                        PathwayCode = commitment.PathwayCode
+                    });
             }
         }
     }

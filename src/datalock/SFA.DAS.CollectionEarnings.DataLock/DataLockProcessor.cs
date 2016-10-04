@@ -2,8 +2,8 @@
 using MediatR;
 using NLog;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery;
-using SFA.DAS.CollectionEarnings.DataLock.Application.DasLearner.GetAllDasLearnersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFailuresQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetAllLearnersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
 using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
 
@@ -39,7 +39,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock
 
             _logger.Debug("Reading DAS learners.");
 
-            var dasLearners = _mediator.Send(new GetAllDasLearnersQueryRequest());
+            var dasLearners = _mediator.Send(new GetAllLearnersQueryRequest());
 
             if (!dasLearners.IsValid)
             {

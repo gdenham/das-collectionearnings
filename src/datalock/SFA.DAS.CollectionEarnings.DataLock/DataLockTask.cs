@@ -1,78 +1,34 @@
-﻿using System;
-using CS.Common.External.Interfaces;
-using NLog;
-using SFA.DAS.CollectionEarnings.DataLock.Context;
-using SFA.DAS.CollectionEarnings.DataLock.DependencyResolution;
-using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
-using SFA.DAS.CollectionEarnings.DataLock.Logging;
+﻿using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.DependencyResolution;
+using SFA.DAS.Payments.DCFS;
+using SFA.DAS.Payments.DCFS.Context;
+using SFA.DAS.Payments.DCFS.Infrastructure.DependencyResolution;
 
 namespace SFA.DAS.CollectionEarnings.DataLock
 {
-    public class DataLockTask : IExternalTask
+    public class DataLockTask : DcfsTask
     {
-        private readonly IDependencyResolver _dependencyResolver;
-        private ILogger _logger;
+        private IDependencyResolver _dependencyResolver;
+        private const string DataLockSchema = "DataLock";
 
         public DataLockTask()
+            : base(DataLockSchema)
         {
             _dependencyResolver = new TaskDependencyResolver();
         }
 
-        internal DataLockTask(IDependencyResolver dependencyResolver, ILogger logger)
+        public DataLockTask(IDependencyResolver dependencyResolver)
+            : base(DataLockSchema)
         {
             _dependencyResolver = dependencyResolver;
-            _logger = logger;
         }
 
-        public void Execute(IExternalContext context)
+        protected override void Execute(ContextWrapper context)
         {
-            var contextWrapper = new ContextWrapper(context);
+            _dependencyResolver.Init(typeof(DataLockProcessor), context);
 
-            if (IsValidContext(contextWrapper))
-            {
+            var processor = _dependencyResolver.GetInstance<DataLockProcessor>();
 
-                LoggingConfig.ConfigureLogging(
-                    contextWrapper.GetPropertyValue(ContextPropertyKeys.TransientDatabaseConnectionString),
-                    contextWrapper.GetPropertyValue(ContextPropertyKeys.LogLevel)
-                    );
-
-                _dependencyResolver.Init(
-                    typeof (DataLockProcessor),
-                    contextWrapper
-                    );
-
-                if (_logger == null)
-                {
-                    _logger = LogManager.GetCurrentClassLogger();
-                }
-
-                try
-                {
-                    var processor = _dependencyResolver.GetInstance<DataLockProcessor>();
-
-                    processor.Process();
-                }
-                catch (Exception ex)
-                {
-                    _logger.Fatal(ex, ex.Message);
-                    throw;
-                }
-            }
-        }
-
-        private static bool IsValidContext(ContextWrapper contextWrapper)
-        {
-            if (string.IsNullOrEmpty(contextWrapper.GetPropertyValue(ContextPropertyKeys.TransientDatabaseConnectionString)))
-            {
-                throw new DataLockInvalidContextException(DataLockExceptionMessages.ContextPropertiesNoConnectionString);
-            }
-
-            if (string.IsNullOrEmpty(contextWrapper.GetPropertyValue(ContextPropertyKeys.LogLevel)))
-            {
-                throw new DataLockInvalidContextException(DataLockExceptionMessages.ContextPropertiesNoLogLevel);
-            }
-
-            return true;
+            processor.Process();
         }
     }
 }

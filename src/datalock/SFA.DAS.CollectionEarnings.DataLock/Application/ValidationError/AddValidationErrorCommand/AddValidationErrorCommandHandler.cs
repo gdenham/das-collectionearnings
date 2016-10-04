@@ -1,6 +1,6 @@
 ﻿using System;
 using MediatR;
-using SFA.DAS.CollectionEarnings.DataLock.Data.Repositories;
+using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorCommand
 {

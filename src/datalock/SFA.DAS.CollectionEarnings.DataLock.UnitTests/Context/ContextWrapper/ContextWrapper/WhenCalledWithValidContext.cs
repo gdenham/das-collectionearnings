@@ -18,7 +18,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Context.ContextWrapper.C
             };
 
             // Act
-            var contextWrapper = new DataLock.Context.ContextWrapper(context);
+            var contextWrapper = new Payments.DCFS.Context.ContextWrapper(context);
 
             // Assert
             Assert.IsNotNull(contextWrapper);
