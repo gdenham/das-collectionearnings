@@ -98,7 +98,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         }
 
         [Test]
-        public void ForGetAllCommitmentsQueryFailure()
+        public void ThenExpectingExceptionForGetAllCommitmentsQueryFailure()
         {
             // Arrange
             _mediator
@@ -115,7 +115,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         }
 
         [Test]
-        public void ForGetAllDasLearnersQueryFailure()
+        public void ThenExpectingExceptionForGetAllDasLearnersQueryFailure()
         {
             // Arrange
             _mediator
@@ -132,7 +132,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         }
 
         [Test]
-        public void ForGetDataLockFailuresQueryFailure()
+        public void ThenExpectingExceptionForGetDataLockFailuresQueryFailure()
         {
             // Arrange
             _mediator
@@ -149,7 +149,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         }
 
         [Test]
-        public void ForAddValidationErrorsCommandRequestFailure()
+        public void ThenExpectingExceptionForAddValidationErrorsCommandRequestFailure()
         {
             // Arrange
             _mediator
@@ -166,7 +166,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         }
 
         [Test]
-        public void ForAddLearnerCommitmentsCommandRequestFailure()
+        public void ThenExpectingExceptionForAddLearnerCommitmentsCommandRequestFailure()
         {
             // Arrange
             _mediator

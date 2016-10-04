@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using MediatR;
+﻿using MediatR;
 using NLog;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
-using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerCommitmentsCommand;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetAllLearnersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
@@ -35,24 +33,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock
 
             if (learners.HasAnyItems())
             {
-                _logger.Info("Started Data Lock Validation.");
+                var dataLockValidationResult = ReturnDataLockValidationResultOrThrow(commitments, learners.Items);
 
-                var dataLockValidationResult =
-                    _mediator.Send(new RunDataLockValidationQueryRequest
-                    {
-                        Commitments = commitments,
-                        Learners = learners.Items
-                    });
-
-                _logger.Info("Finished Data Lock Validation.");
-
-                if (!dataLockValidationResult.IsValid)
-                {
-                    throw new DataLockProcessorException(DataLockProcessorException.ErrorPerformingDataLockMessage, dataLockValidationResult.Exception);
-                }
-
-                WriteDataLockValidationErrorsOrThrow(dataLockValidationResult.ValidationErrors);
-                WriteDataLockMatchingLearnersAndCommitments(dataLockValidationResult.LearnerCommitments);
+                WriteDataLockValidationErrorsOrThrow(dataLockValidationResult);
+                WriteDataLockMatchingLearnersAndCommitments(dataLockValidationResult);
             }
             else
             {
@@ -90,16 +74,37 @@ namespace SFA.DAS.CollectionEarnings.DataLock
             return learnersQueryResponse;
         }
 
-        private void WriteDataLockValidationErrorsOrThrow(ValidationErrorEntity[] errors)
+        private RunDataLockValidationQueryResponse ReturnDataLockValidationResultOrThrow(CommitmentEntity[] commitments, LearnerEntity[] learners)
         {
-            if (errors.Any())
+            _logger.Info("Started Data Lock Validation.");
+
+            var dataLockValidationResult =
+                _mediator.Send(new RunDataLockValidationQueryRequest
+                {
+                    Commitments = commitments,
+                    Learners = learners
+                });
+
+            _logger.Info("Finished Data Lock Validation.");
+
+            if (!dataLockValidationResult.IsValid)
+            {
+                throw new DataLockProcessorException(DataLockProcessorException.ErrorPerformingDataLockMessage, dataLockValidationResult.Exception);
+            }
+
+            return dataLockValidationResult;
+        }
+
+        private void WriteDataLockValidationErrorsOrThrow(RunDataLockValidationQueryResponse dataLockValidationResponse)
+        {
+            if (dataLockValidationResponse.HasAnyValidationErrors())
             {
                 _logger.Info("Started writing Data Lock Validation Errors.");
 
                 var writeValidationErrorsResult =
                     _mediator.Send(new AddValidationErrorsCommandRequest
                     {
-                        ValidationErrors = errors
+                        ValidationErrors = dataLockValidationResponse.ValidationErrors
                     });
 
                 if (!writeValidationErrorsResult.IsValid)
@@ -111,16 +116,16 @@ namespace SFA.DAS.CollectionEarnings.DataLock
             }
         }
 
-        private void WriteDataLockMatchingLearnersAndCommitments(LearnerCommitment[] matchingLearnersAndCommitments)
+        private void WriteDataLockMatchingLearnersAndCommitments(RunDataLockValidationQueryResponse dataLockValidationResponse)
         {
-            if (matchingLearnersAndCommitments.Any())
+            if (dataLockValidationResponse.HasAnyMatchingLearnersAndCommitments())
             {
                 _logger.Info("Started writing matching Learners and Commitments.");
 
                 var writeMatchingLearnersAndCommitments =
                     _mediator.Send(new AddLearnerCommitmentsCommandRequest
                     {
-                        LearnerCommitments = matchingLearnersAndCommitments
+                        LearnerCommitments = dataLockValidationResponse.LearnerCommitments
                     });
 
                 if (!writeMatchingLearnersAndCommitments.IsValid)

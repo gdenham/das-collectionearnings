@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using CS.Common.External.Interfaces;
-using Dapper;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
@@ -60,14 +58,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             _task.Execute(_context);
 
             // Assert
-            using (var connection = new SqlConnection(_transientConnectionString))
-            {
-                var errors = connection.Query<ValidationErrorEntity>(ValidationErrorEntity.SelectAll).ToList();
+            var errors = TestDataHelper.GetValidationErrors();
 
-                Assert.IsNotNull(errors);
-                Assert.AreEqual(1, errors.Count);
-                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingUkprn));
-            }
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(1, errors.Length);
+            Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingUkprn));
         }
 
         [Test]
@@ -81,14 +76,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             _task.Execute(_context);
 
             // Assert
-            using (var connection = new SqlConnection(_transientConnectionString))
-            {
-                var errors = connection.Query<ValidationErrorEntity>(ValidationErrorEntity.SelectAll).ToList();
+            var errors = TestDataHelper.GetValidationErrors();
 
-                Assert.IsNotNull(errors);
-                Assert.AreEqual(1, errors.Count);
-                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingUln));
-            }
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(1, errors.Length);
+            Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingUln));
         }
 
         [Test]
@@ -102,14 +94,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             _task.Execute(_context);
 
             // Assert
-            using (var connection = new SqlConnection(_transientConnectionString))
-            {
-                var errors = connection.Query<ValidationErrorEntity>(ValidationErrorEntity.SelectAll).ToList();
+            var errors = TestDataHelper.GetValidationErrors();
 
-                Assert.IsNotNull(errors);
-                Assert.AreEqual(1, errors.Count);
-                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingStandard));
-            }
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(1, errors.Length);
+            Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingStandard));
         }
 
         [Test]
@@ -123,14 +112,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             _task.Execute(_context);
 
             // Assert
-            using (var connection = new SqlConnection(_transientConnectionString))
-            {
-                var errors = connection.Query<ValidationErrorEntity>(ValidationErrorEntity.SelectAll).ToList();
+            var errors = TestDataHelper.GetValidationErrors();
 
-                Assert.IsNotNull(errors);
-                Assert.AreEqual(1, errors.Count);
-                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingFramework));
-            }
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(1, errors.Length);
+            Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingFramework));
         }
 
         [Test]
@@ -144,14 +130,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             _task.Execute(_context);
 
             // Assert
-            using (var connection = new SqlConnection(_transientConnectionString))
-            {
-                var errors = connection.Query<ValidationErrorEntity>(ValidationErrorEntity.SelectAll).ToList();
+            var errors = TestDataHelper.GetValidationErrors();
 
-                Assert.IsNotNull(errors);
-                Assert.AreEqual(1, errors.Count);
-                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingProgramme));
-            }
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(1, errors.Length);
+            Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingProgramme));
         }
 
         [Test]
@@ -165,14 +148,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             _task.Execute(_context);
 
             // Assert
-            using (var connection = new SqlConnection(_transientConnectionString))
-            {
-                var errors = connection.Query<ValidationErrorEntity>(ValidationErrorEntity.SelectAll).ToList();
+            var errors = TestDataHelper.GetValidationErrors();
 
-                Assert.IsNotNull(errors);
-                Assert.AreEqual(1, errors.Count);
-                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingPathway));
-            }
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(1, errors.Length);
+            Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingPathway));
         }
 
         [Test]
@@ -187,14 +167,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             _task.Execute(_context);
 
             // Assert
-            using (var connection = new SqlConnection(_transientConnectionString))
-            {
-                var errors = connection.Query<ValidationErrorEntity>(ValidationErrorEntity.SelectAll).ToList();
+            var errors = TestDataHelper.GetValidationErrors();
 
-                Assert.IsNotNull(errors);
-                Assert.AreEqual(2, errors.Count);
-                Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingPrice));
-            }
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(2, errors.Length);
+            Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingPrice));
         }
 
         [Test]
@@ -209,14 +186,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             _task.Execute(_context);
 
             // Assert
-            using (var connection = new SqlConnection(_transientConnectionString))
-            {
-                var errors = connection.Query<ValidationErrorEntity>(ValidationErrorEntity.SelectAll).ToList();
+            var errors = TestDataHelper.GetValidationErrors();
 
-                Assert.IsNotNull(errors);
-                Assert.AreEqual(2, errors.Count);
-                Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartMonth));
-            }
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(2, errors.Length);
+            Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartMonth));
         }
 
         [Test]
@@ -233,14 +207,40 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             _task.Execute(_context);
 
             // Assert
-            using (var connection = new SqlConnection(_transientConnectionString))
-            {
-                var errors = connection.Query<ValidationErrorEntity>(ValidationErrorEntity.SelectAll).ToList();
+            var errors = TestDataHelper.GetValidationErrors();
 
-                Assert.IsNotNull(errors);
-                Assert.AreEqual(2, errors.Count);
-                Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.MultipleMatches));
-            }
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(2, errors.Length);
+            Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.MultipleMatches));
+        }
+
+        [Test]
+        public void ThenMatchingLearnerAndCommitmentAddedForMatchFound()
+        {
+            // Arrange
+            var commitments = new[]
+            {
+                new CommitmentBuilder().WithStandardCode(999).Build(),
+                new CommitmentBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build()
+            };
+
+            SetupIlrData(@"\Tools\Ilr\Files\IlrLearnerAndCommitmentMatch.xml");
+            SetupCommitmentData(commitments[0]);
+            SetupCommitmentData(commitments[1]);
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            var learnerAndCommitmentMatches = TestDataHelper.GetLearnerAndCommitmentMatches();
+            var errors = TestDataHelper.GetValidationErrors();
+
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(0, errors.Length);
+            Assert.IsNotNull(learnerAndCommitmentMatches);
+            Assert.AreEqual(2, learnerAndCommitmentMatches.Length);
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[0].CommitmentId));
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[1].CommitmentId));
         }
     }
 }

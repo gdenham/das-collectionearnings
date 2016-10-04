@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
 {

@@ -68,9 +68,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                 });
         }
 
-        internal static LearnerCommitmentEntity[] GetLearnerCommitmentEntities()
+        internal static LearnerCommitmentEntity[] GetLearnerAndCommitmentMatches()
         {
             return Query<LearnerCommitmentEntity>("SELECT * FROM [DataLock].[DasLearnerCommitment]");
+        }
+
+        internal static ValidationErrorEntity[] GetValidationErrors()
+        {
+            return Query<ValidationErrorEntity>("SELECT * FROM [DataLock].[ValidationError]");
         }
 
         private static void Execute(string command, object param = null)

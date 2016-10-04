@@ -32,7 +32,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             _learnerCommitmentRepository.AddLearnerCommitments(learnerCommitments);
 
             // Assert
-            var learnerCommitmentEntities = TestDataHelper.GetLearnerCommitmentEntities();
+            var learnerCommitmentEntities = TestDataHelper.GetLearnerAndCommitmentMatches();
 
             Assert.IsNotNull(learnerCommitmentEntities);
             Assert.AreEqual(3, learnerCommitmentEntities.Length);

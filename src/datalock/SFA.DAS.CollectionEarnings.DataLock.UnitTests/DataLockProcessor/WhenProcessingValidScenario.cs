@@ -42,64 +42,59 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
             _mediator
                 .Setup(m => m.Send(It.IsAny<GetAllCommitmentsQueryRequest>()))
                 .Returns(new GetAllCommitmentsQueryResponse
+                {
+                    IsValid = true,
+                    Items = new[]
                     {
-                        IsValid = true,
-                        Items = new[]
-                            {
-                                new CommitmentBuilder().Build()
-                            }
+                        new CommitmentBuilder().Build()
                     }
-                );
+                });
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<GetAllLearnersQueryRequest>()))
                 .Returns(new GetAllLearnersQueryResponse
+                {
+                    IsValid = true,
+                    Items = new[]
                     {
-                        IsValid = true,
-                        Items = new[]
-                            {
-                                new LearnerEntityBuilder().Build()
-                            }
+                        new LearnerEntityBuilder().Build()
                     }
-                );
+                });
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<RunDataLockValidationQueryRequest>()))
                 .Returns(new RunDataLockValidationQueryResponse
+                {
+                    IsValid = true,
+                    ValidationErrors = new[]
                     {
-                        IsValid = true,
-                        ValidationErrors = new[]
-                            {
-                                new ValidationErrorBuilder().Build()
-                            },
-                        LearnerCommitments = new[]
-                            {
-                                new LearnerCommitment
-                                {
-                                    Ukprn = 10007459,
-                                    LearnerReferenceNumber = "Lrn001",
-                                    AimSequenceNumber = 1,
-                                    CommitmentId = "C-001"
-                                }
-                            }
+                        new ValidationErrorBuilder().Build()
+                    },
+                    LearnerCommitments = new[]
+                    {
+                        new LearnerCommitment
+                        {
+                            Ukprn = 10007459,
+                            LearnerReferenceNumber = "Lrn001",
+                            AimSequenceNumber = 1,
+                            CommitmentId = "C-001"
+                        }
                     }
-                );
+                });
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddValidationErrorsCommandRequest>()))
                 .Returns(new AddValidationErrorsCommandResponse
-                    {
-                        IsValid = true
-                    }
-                );
+                {
+                    IsValid = true
+                });
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddLearnerCommitmentsCommandRequest>()))
                 .Returns(new AddLearnerCommitmentsCommandResponse
-                    {
-                        IsValid = true
-                    }
-                );
+                {
+                    IsValid = true
+                });
         }
 
         [Test]
@@ -137,10 +132,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Finished Data Lock Validation."))), Times.Once);
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Started writing Data Lock Validation Errors."))), Times.Once);
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Finished writing Data Lock Validation Errors."))), Times.Once);
-
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Started writing matching Learners and Commitments."))), Times.Once);
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Finished writing matching Learners and Commitments."))), Times.Once);
-
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("No learners found."))), Times.Never);
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Finished Data Lock Processor."))), Times.Once);
         }

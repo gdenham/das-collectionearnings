@@ -1,10 +1,6 @@
-﻿using System.Data.SqlClient;
-using System.Linq;
-using Dapper;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data;
-using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
@@ -44,13 +40,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             _validationErrorRepository.AddValidationErrors(validationErrors);
 
             // Assert
-            using (var connection = new SqlConnection(GlobalTestContext.Instance.ConnectionString))
-            {
-                var errors = connection.Query(ValidationErrorEntity.SelectAll);
+            var errors = TestDataHelper.GetValidationErrors();
 
-                Assert.IsNotNull(errors);
-                Assert.AreEqual(7, errors.ToList().Count);
-            }
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(7, errors.Length);
         }
     }
 }
