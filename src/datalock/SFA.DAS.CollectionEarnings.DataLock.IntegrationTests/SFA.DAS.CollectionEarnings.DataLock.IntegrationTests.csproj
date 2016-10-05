@@ -89,9 +89,9 @@
     <Compile Include="AcceptanceCriteria\DPP-222\WhenRunningAcceptanceCriteria1.cs" />
     <Compile Include="AcceptanceCriteria\DPP-222\WhenRunningAcceptanceCriteria2.cs" />
     <Compile Include="DataLockTask\WhenExecuteCalled.cs" />
-    <Compile Include="Infrastructure\Data\Repositories\CommitmentRepository\WhenGetAllCommitmentsCalled.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\CommitmentRepository\WhenGetProviderCommitmentsCalled.cs" />
     <Compile Include="Infrastructure\Data\Repositories\LearnerCommitmentRepository\WhenAddLearnerCommitmentsCalled.cs" />
-    <Compile Include="Infrastructure\Data\Repositories\LearnerRepository\WhenGetAllLearnersCalled.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\LearnerRepository\WhenGetProviderLearnersCalled.cs" />
     <Compile Include="Infrastructure\Data\Repositories\ProviderRepository\WhenGetAllProvidersCalledDuringAnIlrMonthEnd.cs" />
     <Compile Include="Infrastructure\Data\Repositories\ProviderRepository\WhenGetAllProvidersCalledDuringAnIlrSubmission.cs" />
     <Compile Include="Infrastructure\Data\Repositories\ValidationErrorRepository\WhenAddValidationErrorsCalled.cs" />

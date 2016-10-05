@@ -4,6 +4,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data
 {
     public interface ILearnerRepository
     {
-        LearnerEntity[] GetAllLearners();
+        LearnerEntity[] GetProviderLearners(long ukprn);
     }
 }

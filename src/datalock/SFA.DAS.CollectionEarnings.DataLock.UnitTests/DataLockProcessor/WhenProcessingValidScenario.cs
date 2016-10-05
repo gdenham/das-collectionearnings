@@ -6,11 +6,10 @@ using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetProviderComm
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerCommitmentsCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetAllLearnersQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetProviderLearnersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Provider;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Provider.GetProvidersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
@@ -21,7 +20,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         private static readonly object[] EmptyItems =
         {
             new object[] {null},
-            new object[] {new LearnerEntity[] {}}
+            new object[] {new Learner[] {}}
         };
 
         private DataLock.DataLockProcessor _processor;
@@ -67,13 +66,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                 });
 
             _mediator
-                .Setup(m => m.Send(It.IsAny<GetAllLearnersQueryRequest>()))
-                .Returns(new GetAllLearnersQueryResponse
+                .Setup(m => m.Send(It.IsAny<GetProviderLearnersQueryRequest>()))
+                .Returns(new GetProviderLearnersQueryResponse
                 {
                     IsValid = true,
                     Items = new[]
                     {
-                        new LearnerEntityBuilder().Build()
+                        new LearnerBuilder().Build()
                     }
                 });
 
@@ -109,12 +108,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
 
         [Test]
         [TestCaseSource(nameof(EmptyItems))]
-        public void ThenNoDataLockValidationIsExecutedForGetAllDasLearnersQueryResponseWithNoItems(LearnerEntity[] items)
+        public void ThenNoDataLockValidationIsExecutedForGetAllDasLearnersQueryResponseWithNoItems(Learner[] items)
         {
             // Arrange
             _mediator
-                .Setup(m => m.Send(It.IsAny<GetAllLearnersQueryRequest>()))
-                .Returns(new GetAllLearnersQueryResponse
+                .Setup(m => m.Send(It.IsAny<GetProviderLearnersQueryRequest>()))
+                .Returns(new GetProviderLearnersQueryResponse
                     {
                         IsValid = true,
                         Items = items

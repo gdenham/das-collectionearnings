@@ -60,8 +60,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockVa
                             validationErrors.Add(new Infrastructure.Data.Entities.ValidationErrorEntity
                             {
                                 Ukprn = learner.Ukprn,
-                                LearnRefNumber = learner.LearnRefNumber,
-                                AimSeqNumber = learner.AimSeqNumber,
+                                LearnRefNumber = learner.LearnerReferenceNumber,
+                                AimSeqNumber = learner.AimSequenceNumber,
                                 RuleId = matchResult.ErrorCode
                             });
                         }
@@ -71,8 +71,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockVa
                             learnerCommitments.Add(new LearnerCommitment
                             {
                                 Ukprn = learner.Ukprn,
-                                LearnerReferenceNumber = learner.LearnRefNumber,
-                                AimSequenceNumber = learner.AimSeqNumber ?? -1,
+                                LearnerReferenceNumber = learner.LearnerReferenceNumber,
+                                AimSequenceNumber = learner.AimSequenceNumber ?? -1,
                                 CommitmentId = matchResult.Commitment.CommitmentId
                             });
                         }

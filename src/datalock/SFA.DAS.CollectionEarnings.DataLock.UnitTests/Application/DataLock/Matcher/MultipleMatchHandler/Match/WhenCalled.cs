@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application;
-using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Matcher.MultipleMatchHandler.Match
 {
@@ -25,7 +24,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
                 new CommitmentBuilder().Build()
             };
 
-            var learner = new LearnerEntityBuilder().Build();
+            var learner = new LearnerBuilder().Build();
 
             // Act
             var matchResult = _matcher.Match(commitments, learner);
@@ -44,7 +43,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
                 new CommitmentBuilder().WithCommitmentId("C-002").Build()
             };
 
-            var learner = new LearnerEntityBuilder().Build();
+            var learner = new LearnerBuilder().Build();
 
             // Act
             var matchResult = _matcher.Match(commitments, learner);

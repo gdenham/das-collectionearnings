@@ -91,6 +91,7 @@
     <Compile Include="Application\DataLock\Matcher\UlnMatchHandler.cs" />
     <Compile Include="Application\Learner\AddLearnerCommitmentsCommand\AddLearnerCommitmentsCommandHandler.cs" />
     <Compile Include="Application\Learner\AddLearnerCommitmentsCommand\AddLearnerCommitmentsCommandRequest.cs" />
+    <Compile Include="Application\Learner\Learner.cs" />
     <Compile Include="Application\Learner\LearnerCommitment.cs" />
     <Compile Include="Application\Provider\GetProvidersQuery\GetProvidersQueryHandler.cs" />
     <Compile Include="Application\Provider\GetProvidersQuery\GetProvidersQueryRequest.cs" />
@@ -109,9 +110,9 @@
     <Compile Include="Application\Commitment\GetProviderCommitmentsQuery\GetProviderCommitmentsQueryHandler.cs" />
     <Compile Include="Application\Commitment\GetProviderCommitmentsQuery\GetProviderCommitmentsQueryRequest.cs" />
     <Compile Include="Application\Commitment\GetProviderCommitmentsQuery\GetProviderCommitmentsQueryResponse.cs" />
-    <Compile Include="Application\Learner\GetAllLearnersQuery\GetAllLearnersQueryHandler.cs" />
-    <Compile Include="Application\Learner\GetAllLearnersQuery\GetAllLearnersQueryRequest.cs" />
-    <Compile Include="Application\Learner\GetAllLearnersQuery\GetAllLearnersQueryResponse.cs" />
+    <Compile Include="Application\Learner\GetProviderLearnersQuery\GetProviderLearnersQueryHandler.cs" />
+    <Compile Include="Application\Learner\GetProviderLearnersQuery\GetProviderLearnersQueryRequest.cs" />
+    <Compile Include="Application\Learner\GetProviderLearnersQuery\GetProviderLearnersQueryResponse.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorCommand\AddValidationErrorCommandHandler.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorCommand\AddValidationErrorCommandRequest.cs" />
     <Compile Include="Infrastructure\Data\ILearnerCommitmentRepository.cs" />

@@ -6,7 +6,7 @@ using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Data.Repositories.CommitmentRepository
 {
-    public class WhenGetAllCommitmentsCalled
+    public class WhenGetProviderCommitmentsCalled
     {
         private readonly long _ukprn = 10007459;
         private readonly long _ukprnNoCommitments = 10007458;

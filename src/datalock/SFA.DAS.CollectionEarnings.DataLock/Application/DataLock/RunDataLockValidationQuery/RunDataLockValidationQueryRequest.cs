@@ -6,6 +6,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockVa
     public class RunDataLockValidationQueryRequest : IRequest<RunDataLockValidationQueryResponse>
     {
          public IEnumerable<Commitment.Commitment> Commitments { get; set; }
-        public IEnumerable<Infrastructure.Data.Entities.LearnerEntity> Learners { get; set; }  
+        public IEnumerable<Learner.Learner> Learners { get; set; }  
     }
 }

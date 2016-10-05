@@ -4,11 +4,11 @@ using NLog;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetProviderCommitmentsQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerCommitmentsCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetAllLearnersQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetProviderLearnersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Provider.GetProvidersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock
 {
@@ -40,7 +40,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock
                     _logger.Info($"Performing Data Lock Validation for provider with ukprn {provider.Ukprn}.");
 
                     var commitments = ReturnProviderCommitmentsOrThrow(provider.Ukprn);
-                    var learners = ReturnValidGetAllLearnersQueryResponseOrThrow();
+                    var learners = ReturnValidGetProviderLearnersQueryResponseOrThrow(provider.Ukprn);
 
                     if (learners.HasAnyItems())
                     {
@@ -93,11 +93,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock
             return commitments.Items;
         }
 
-        private GetAllLearnersQueryResponse ReturnValidGetAllLearnersQueryResponseOrThrow()
+        private GetProviderLearnersQueryResponse ReturnValidGetProviderLearnersQueryResponseOrThrow(long ukprn)
         {
-            _logger.Info("Reading learners.");
+            _logger.Info($"Reading learners for provider with ukprn {ukprn}.");
 
-            var learnersQueryResponse = _mediator.Send(new GetAllLearnersQueryRequest());
+            var learnersQueryResponse = _mediator.Send(new GetProviderLearnersQueryRequest
+            {
+                Ukprn = ukprn
+            });
 
             if (!learnersQueryResponse.IsValid)
             {
@@ -107,7 +110,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock
             return learnersQueryResponse;
         }
 
-        private RunDataLockValidationQueryResponse ReturnDataLockValidationResultOrThrow(Commitment[] commitments, LearnerEntity[] learners)
+        private RunDataLockValidationQueryResponse ReturnDataLockValidationResultOrThrow(Commitment[] commitments, Learner[] learners)
         {
             _logger.Info("Started Data Lock Validation.");
 
