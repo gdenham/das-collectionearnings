@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
+﻿using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 using SFA.DAS.Payments.DCFS.Infrastructure.Data;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories

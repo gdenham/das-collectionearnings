@@ -74,9 +74,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\DataLock\DataLockErrorCodes.cs" />
-    <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryHandler.cs" />
-    <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryRequest.cs" />
-    <Compile Include="Application\DataLock\GetDataLockFailuresQuery\GetDataLockFailuresQueryResponse.cs" />
+    <Compile Include="Application\DataLock\MatchResult.cs" />
+    <Compile Include="Application\DataLock\RunDataLockValidationQuery\RunDataLockValidationQueryHandler.cs" />
+    <Compile Include="Application\DataLock\RunDataLockValidationQuery\RunDataLockValidationQueryRequest.cs" />
+    <Compile Include="Application\DataLock\RunDataLockValidationQuery\RunDataLockValidationQueryResponse.cs" />
     <Compile Include="Application\DataLock\Matcher\FrameworkMatchHandler.cs" />
     <Compile Include="Application\DataLock\Matcher\MatchHandler.cs" />
     <Compile Include="Application\DataLock\Matcher\MultipleMatchHandler.cs" />
@@ -87,13 +88,16 @@
     <Compile Include="Application\DataLock\Matcher\StartMonthMatcher.cs" />
     <Compile Include="Application\DataLock\Matcher\UkprnMatchHandler.cs" />
     <Compile Include="Application\DataLock\Matcher\UlnMatchHandler.cs" />
+    <Compile Include="Application\Learner\AddLearnerCommitmentsCommand\AddLearnerCommitmentsCommandHandler.cs" />
+    <Compile Include="Application\Learner\AddLearnerCommitmentsCommand\AddLearnerCommitmentsCommandRequest.cs" />
+    <Compile Include="Application\Learner\LearnerCommitment.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandHandler.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandRequest.cs" />
-    <Compile Include="Application\ValidationError\AddValidationErrorsCommand\AddValidationErrorsCommandResponse.cs" />
     <Compile Include="DataLockPassThroughProcessor.cs" />
     <Compile Include="DataLockProcessor.cs" />
     <Compile Include="DataLockTask.cs" />
     <Compile Include="Infrastructure\Data\Entities\CommitmentEntity.cs" />
+    <Compile Include="Infrastructure\Data\Entities\LearnerCommitmentEntity.cs" />
     <Compile Include="Infrastructure\Data\Entities\LearnerEntity.cs" />
     <Compile Include="Infrastructure\Data\Entities\ValidationErrorEntity.cs" />
     <Compile Include="Application\Commitment\GetAllCommitmentsQuery\GetAllCommitmentsQueryHandler.cs" />
@@ -104,8 +108,9 @@
     <Compile Include="Application\Learner\GetAllLearnersQuery\GetAllLearnersQueryResponse.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorCommand\AddValidationErrorCommandHandler.cs" />
     <Compile Include="Application\ValidationError\AddValidationErrorCommand\AddValidationErrorCommandRequest.cs" />
-    <Compile Include="Application\ValidationError\AddValidationErrorCommand\AddValidationErrorCommandResponse.cs" />
+    <Compile Include="Infrastructure\Data\ILearnerCommitmentRepository.cs" />
     <Compile Include="Infrastructure\Data\Repositories\CommitmentRepository.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\LearnerCommitmentRepository.cs" />
     <Compile Include="Infrastructure\Data\Repositories\LearnerRepository.cs" />
     <Compile Include="Infrastructure\Data\ICommitmentRepository.cs" />
     <Compile Include="Infrastructure\Data\ILearnerRepository.cs" />
@@ -113,8 +118,7 @@
     <Compile Include="Infrastructure\Data\Repositories\ValidationErrorRepository.cs" />
     <Compile Include="Infrastructure\DependencyResolution\DataLockRegistry.cs" />
     <Compile Include="Infrastructure\DependencyResolution\TaskDependencyResolver.cs" />
-    <Compile Include="Exceptions\DataLockExceptionMessages.cs" />
-    <Compile Include="Exceptions\DataLockProcessorException.cs" />
+    <Compile Include="DataLockProcessorException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Extensions\DateTimeDayOfMonthExtensions.cs" />
   </ItemGroup>

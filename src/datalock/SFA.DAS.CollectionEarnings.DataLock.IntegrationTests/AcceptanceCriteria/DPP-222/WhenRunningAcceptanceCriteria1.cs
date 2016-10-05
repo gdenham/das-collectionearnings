@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
 using CS.Common.External.Interfaces;
-using Dapper;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
-using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
 using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools.Ilr;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 using SFA.DAS.Payments.DCFS.Context;
+using System.Linq;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.AcceptanceCriteria
 {
@@ -41,15 +38,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.AcceptanceCriteri
 
         private void SetUpIlrDatabase()
         {
-            Database.Clean(_transientConnectionString);
+            TestDataHelper.Clean();
 
             // ILR data
             var shredder = new Shredder(@"\Tools\Ilr\Files\DPP-222\IlrAcceptanceCriteria1.xml");
             shredder.Shred();
 
             // Commitment data
-            Database.AddCommitment(
-                _transientConnectionString,
+            TestDataHelper.AddCommitment(
                 new CommitmentBuilder()
                     .WithUln(1000000000)
                     .WithStartDate(new DateTime(2017, 9, 1))
@@ -68,14 +64,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.AcceptanceCriteri
             _task.Execute(_context);
 
             // Assert
-            using (var connection = new SqlConnection(_transientConnectionString))
-            {
-                var errors = connection.Query<ValidationErrorEntity>(ValidationErrorEntity.SelectAll).ToList();
+            var errors = TestDataHelper.GetValidationErrors();
 
-                Assert.IsNotNull(errors);
-                Assert.AreEqual(1, errors.Count);
-                Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartMonth));
-            }
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(1, errors.Length);
+            Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartMonth));
         }
     }
 }

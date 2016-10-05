@@ -8,16 +8,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
 {
     public class WhenGetAllLearnersCalled
     {
-        private readonly string _transientConnectionString = ConnectionStringFactory.GetTransientConnectionString();
-
         private ILearnerRepository _dasLearnerRepository;
 
         [SetUp]
         public void Arrange()
         {
-            Database.Clean(_transientConnectionString);
+            TestDataHelper.Clean();
 
-            _dasLearnerRepository = new DataLock.Infrastructure.Data.Repositories.LearnerRepository(_transientConnectionString);
+            _dasLearnerRepository = new DataLock.Infrastructure.Data.Repositories.LearnerRepository(GlobalTestContext.Instance.ConnectionString);
         }
 
         [Test]

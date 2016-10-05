@@ -31,7 +31,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Learner.GetA
             // Arrange
             _dasLearnerRepository
                 .Setup(dlr => dlr.GetAllLearners())
-                .Returns(new[] {new DasLearnerBuilder().Build()});
+                .Returns(new[] {new LearnerEntityBuilder().Build()});
 
             // Act
             var response = _handler.Handle(_request);

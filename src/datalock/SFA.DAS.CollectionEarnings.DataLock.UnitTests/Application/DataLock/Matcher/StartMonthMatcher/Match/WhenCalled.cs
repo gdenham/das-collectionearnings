@@ -21,7 +21,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
 
             _nextMatcher
                 .Setup(m => m.Match(It.IsAny<List<Infrastructure.Data.Entities.CommitmentEntity>>(), It.IsAny<Infrastructure.Data.Entities.LearnerEntity>()))
-                .Returns(string.Empty);
+                .Returns(new MatchResult { ErrorCode = string.Empty });
 
             _matcher.SetNextMatchHandler(_nextMatcher.Object);
         }
@@ -36,13 +36,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
                 new CommitmentBuilder().WithStartDate(new DateTime(2016, 10, 1)).Build()
             };
 
-            var learner = new DasLearnerBuilder().Build();
+            var learner = new LearnerEntityBuilder().Build();
 
             // Act
             var matchResult = _matcher.Match(commitments, learner);
 
             // Assert
-            Assert.IsEmpty(matchResult);
+            Assert.IsEmpty(matchResult.ErrorCode);
             _nextMatcher.Verify(
                 m =>
                     m.Match(It.Is<List<Infrastructure.Data.Entities.CommitmentEntity>>(x => x[0].Equals(commitments[0])),
@@ -60,13 +60,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
                 new CommitmentBuilder().WithStartDate(new DateTime(2016, 11, 1)).Build()
             };
 
-            var learner = new DasLearnerBuilder().Build();
+            var learner = new LearnerEntityBuilder().Build();
 
             // Act
             var matchResult = _matcher.Match(commitments, learner);
 
             // Assert
-            Assert.AreEqual(DataLockErrorCodes.EarlierStartMonth, matchResult);
+            Assert.AreEqual(DataLockErrorCodes.EarlierStartMonth, matchResult.ErrorCode);
             _nextMatcher.Verify(
                 m =>
                     m.Match(It.IsAny<List<Infrastructure.Data.Entities.CommitmentEntity>>(), It.IsAny<Infrastructure.Data.Entities.LearnerEntity>()),

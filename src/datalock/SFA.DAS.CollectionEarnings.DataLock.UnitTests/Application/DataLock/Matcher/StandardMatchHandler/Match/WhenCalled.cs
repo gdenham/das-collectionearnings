@@ -20,7 +20,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
 
             _nextMatcher
                 .Setup(m => m.Match(It.IsAny<List<Infrastructure.Data.Entities.CommitmentEntity>>(), It.IsAny<Infrastructure.Data.Entities.LearnerEntity>()))
-                .Returns(string.Empty);
+                .Returns(new MatchResult { ErrorCode = string.Empty });
 
             _matcher.SetNextMatchHandler(_nextMatcher.Object);
         }
@@ -35,13 +35,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
                 new CommitmentBuilder().WithStandardCode(999).WithProgrammeType(null).WithFrameworkCode(null).WithPathwayCode(null).Build()
             };
 
-            var learner = new DasLearnerBuilder().WithStandardCode(1).WithProgrammeType(null).WithFrameworkCode(null).WithPathwayCode(null).Build();
+            var learner = new LearnerEntityBuilder().WithStandardCode(1).WithProgrammeType(null).WithFrameworkCode(null).WithPathwayCode(null).Build();
 
             // Act
             var matchResult = _matcher.Match(commitments, learner);
 
             // Assert
-            Assert.IsEmpty(matchResult);
+            Assert.IsEmpty(matchResult.ErrorCode);
             _nextMatcher.Verify(
                 m =>
                     m.Match(It.Is<List<Infrastructure.Data.Entities.CommitmentEntity>>(x => x[0].Equals(commitments[0])),
@@ -59,13 +59,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
                 new CommitmentBuilder().WithStandardCode(999).WithProgrammeType(null).WithFrameworkCode(null).WithPathwayCode(null).Build()
             };
 
-            var learner = new DasLearnerBuilder().WithStandardCode(1).WithProgrammeType(null).WithFrameworkCode(null).WithPathwayCode(null).Build();
+            var learner = new LearnerEntityBuilder().WithStandardCode(1).WithProgrammeType(null).WithFrameworkCode(null).WithPathwayCode(null).Build();
 
             // Act
             var matchResult = _matcher.Match(commitments, learner);
 
             // Assert
-            Assert.AreEqual(DataLockErrorCodes.MismatchingStandard, matchResult);
+            Assert.AreEqual(DataLockErrorCodes.MismatchingStandard, matchResult.ErrorCode);
             _nextMatcher.Verify(
                 m =>
                     m.Match(It.IsAny<List<Infrastructure.Data.Entities.CommitmentEntity>>(), It.IsAny<Infrastructure.Data.Entities.LearnerEntity>()),

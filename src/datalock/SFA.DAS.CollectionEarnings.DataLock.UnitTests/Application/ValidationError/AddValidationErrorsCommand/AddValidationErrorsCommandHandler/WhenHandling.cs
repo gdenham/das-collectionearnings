@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data;
+using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.ValidationError.AddValidationErrorsCommand.AddValidationErrorsCommandHandler
@@ -34,36 +34,29 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.ValidationEr
         }
 
         [Test]
-        public void ThenValidResponseReturnedForValidRepositoryResponse()
+        public void ThenSuccessfullForValidRepositoryResponse()
         {
             // Arrange
             _validationErrorRepository
-                .Setup(ver => ver.AddValidationErrors(It.IsAny<IEnumerable<Infrastructure.Data.Entities.ValidationErrorEntity>>()));
+                .Setup(ver => ver.AddValidationErrors(It.IsAny<ValidationErrorEntity[]>()));
 
             // Act
             var response = _handler.Handle(_request);
 
             // Assert
             Assert.IsNotNull(response);
-            Assert.IsTrue(response.IsValid);
-            Assert.IsNull(response.Exception);
         }
 
         [Test]
-        public void ThenInvalidResponseReturnedForInvalidRepositoryResponse()
+        public void ThenExceptionIsThrownForInvalidRepositoryResponse()
         {
             // Arrange
             _validationErrorRepository
-                .Setup(ver => ver.AddValidationErrors(It.IsAny<IEnumerable<Infrastructure.Data.Entities.ValidationErrorEntity>>()))
+                .Setup(ver => ver.AddValidationErrors(It.IsAny<ValidationErrorEntity[]>()))
                 .Throws(new Exception("Exception while writing validation errors."));
 
-            // Act
-            var response = _handler.Handle(_request);
-
             // Assert
-            Assert.IsNotNull(response);
-            Assert.IsFalse(response.IsValid);
-            Assert.IsNotNull(response.Exception);
+            Assert.Throws<Exception>(() => _handler.Handle(_request));
         }
     }
 }

@@ -4,10 +4,11 @@ using Moq;
 using NLog;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery;
-using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFailuresQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerCommitmentsCommand;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetAllLearnersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
@@ -44,11 +45,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                 {
                     IsValid = true,
                     Items = new[]
-                        {
-                            new CommitmentBuilder().Build()
-                        }
-                }
-                );
+                    {
+                        new CommitmentBuilder().Build()
+                    }
+                });
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<GetAllLearnersQueryRequest>()))
@@ -56,35 +56,43 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                 {
                     IsValid = true,
                     Items = new[]
-                        {
-                            new DasLearnerBuilder().Build()
-                        }
-                }
-                );
+                    {
+                        new LearnerEntityBuilder().Build()
+                    }
+                });
 
             _mediator
-                .Setup(m => m.Send(It.IsAny<GetDataLockFailuresQueryRequest>()))
-                .Returns(new GetDataLockFailuresQueryResponse
+                .Setup(m => m.Send(It.IsAny<RunDataLockValidationQueryRequest>()))
+                .Returns(new RunDataLockValidationQueryResponse
                 {
                     IsValid = true,
-                    Items = new[]
+                    ValidationErrors = new[]
+                    {
+                        new ValidationErrorBuilder().Build()
+                    },
+                    LearnerCommitments = new[]
+                    {
+                        new LearnerCommitment
                         {
-                            new ValidationErrorBuilder().Build()
+                            Ukprn = 10007459,
+                            LearnerReferenceNumber = "Lrn001",
+                            AimSequenceNumber = 1,
+                            CommitmentId = "C-001"
                         }
-                }
-                );
+                    }
+                });
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddValidationErrorsCommandRequest>()))
-                .Returns(new AddValidationErrorsCommandResponse
-                {
-                    IsValid = true
-                }
-                );
+                .Returns(Unit.Value);
+
+            _mediator
+                .Setup(m => m.Send(It.IsAny<AddLearnerCommitmentsCommandRequest>()))
+                .Returns(Unit.Value);
         }
 
         [Test]
-        public void ForGetAllCommitmentsQueryFailure()
+        public void ThenExpectingExceptionForGetAllCommitmentsQueryFailure()
         {
             // Arrange
             _mediator
@@ -93,16 +101,15 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                 {
                     IsValid = false,
                     Exception = new Exception("Error.")
-                }
-                );
+                });
 
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
-            Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ErrorReadingCommitments));
+            Assert.IsTrue(ex.Message.Contains(DataLockProcessorException.ErrorReadingCommitmentsMessage));
         }
 
         [Test]
-        public void ForGetAllDasLearnersQueryFailure()
+        public void ThenExpectingExceptionForGetAllDasLearnersQueryFailure()
         {
             // Arrange
             _mediator
@@ -111,48 +118,54 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                 {
                     IsValid = false,
                     Exception = new Exception("Error.")
-                }
-                );
+                });
 
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
-            Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ErrorReadingDasLearners));
+            Assert.IsTrue(ex.Message.Contains(DataLockProcessorException.ErrorReadingLearnersMessage));
         }
 
         [Test]
-        public void ForGetDataLockFailuresQueryFailure()
+        public void ThenExpectingExceptionForGetDataLockFailuresQueryFailure()
         {
             // Arrange
             _mediator
-                .Setup(m => m.Send(It.IsAny<GetDataLockFailuresQueryRequest>()))
-                .Returns(new GetDataLockFailuresQueryResponse
+                .Setup(m => m.Send(It.IsAny<RunDataLockValidationQueryRequest>()))
+                .Returns(new RunDataLockValidationQueryResponse
                 {
                     IsValid = false,
                     Exception = new Exception("Error.")
-                }
-                );
+                });
 
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
-            Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ErrorPerformingDataLock));
+            Assert.IsTrue(ex.Message.Contains(DataLockProcessorException.ErrorPerformingDataLockMessage));
         }
 
         [Test]
-        public void ForAddValidationErrorsCommandRequestFailure()
+        public void ThenExpectingExceptionForAddValidationErrorsCommandRequestFailure()
         {
             // Arrange
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddValidationErrorsCommandRequest>()))
-                .Returns(new AddValidationErrorsCommandResponse
-                {
-                    IsValid = false,
-                    Exception = new Exception("Error.")
-                }
-                );
+                .Throws<Exception>();
 
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
-            Assert.IsTrue(ex.Message.Contains(DataLockExceptionMessages.ErrorWritingDataLockValidationErrors));
+            Assert.IsTrue(ex.Message.Contains(DataLockProcessorException.ErrorWritingDataLockValidationErrorsMessage));
+        }
+
+        [Test]
+        public void ThenExpectingExceptionForAddLearnerCommitmentsCommandRequestFailure()
+        {
+            // Arrange
+            _mediator
+                .Setup(m => m.Send(It.IsAny<AddLearnerCommitmentsCommandRequest>()))
+                .Throws<Exception>();
+
+            // Assert
+            var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
+            Assert.IsTrue(ex.Message.Contains(DataLockProcessorException.ErrorWritingMatchingLearnersAndCommitmentsMessage));
         }
     }
 }

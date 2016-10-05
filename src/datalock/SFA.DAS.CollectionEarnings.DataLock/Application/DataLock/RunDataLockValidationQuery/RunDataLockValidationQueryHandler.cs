@@ -4,14 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
 
-namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFailuresQuery
+namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery
 {
-    public class GetDataLockFailuresQueryHandler : IRequestHandler<GetDataLockFailuresQueryRequest, GetDataLockFailuresQueryResponse>
+    public class RunDataLockValidationQueryHandler : IRequestHandler<RunDataLockValidationQueryRequest, RunDataLockValidationQueryResponse>
     {
         private readonly MatchHandler _initialHandler;
 
-        public GetDataLockFailuresQueryHandler()
+        public RunDataLockValidationQueryHandler()
         {
             var ukprnMatcher = new UkprnMatchHandler();
             var ulnMatcher = new UlnMatchHandler();
@@ -35,13 +36,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFa
             _initialHandler = ukprnMatcher;
         }
 
-        public GetDataLockFailuresQueryResponse Handle(GetDataLockFailuresQueryRequest message)
+        public RunDataLockValidationQueryResponse Handle(RunDataLockValidationQueryRequest message)
         {
             try
             {
                 var validationErrors = new ConcurrentBag<Infrastructure.Data.Entities.ValidationErrorEntity>();
+                var learnerCommitments = new ConcurrentBag<LearnerCommitment>();
 
-                var learners = message.DasLearners.ToList();
+                var learners = message.Learners.ToList();
                 var partitioner = Partitioner.Create(0, learners.Count);
 
                 Parallel.ForEach(partitioner, range =>
@@ -53,28 +55,40 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFa
                         // Execute the matching chain
                         var matchResult = _initialHandler.Match(message.Commitments.ToList(), learner);
 
-                        if (!string.IsNullOrEmpty(matchResult))
+                        if (!string.IsNullOrEmpty(matchResult.ErrorCode))
                         {
                             validationErrors.Add(new Infrastructure.Data.Entities.ValidationErrorEntity
                             {
                                 Ukprn = learner.Ukprn,
                                 LearnRefNumber = learner.LearnRefNumber,
                                 AimSeqNumber = learner.AimSeqNumber,
-                                RuleId = matchResult
+                                RuleId = matchResult.ErrorCode
+                            });
+                        }
+
+                        if (matchResult.Commitment != null)
+                        {
+                            learnerCommitments.Add(new LearnerCommitment
+                            {
+                                Ukprn = learner.Ukprn,
+                                LearnerReferenceNumber = learner.LearnRefNumber,
+                                AimSequenceNumber = learner.AimSeqNumber ?? -1,
+                                CommitmentId = matchResult.Commitment.CommitmentId
                             });
                         }
                     }
                 });
 
-                return new GetDataLockFailuresQueryResponse
+                return new RunDataLockValidationQueryResponse
                 {
                     IsValid = true,
-                    Items = validationErrors.ToArray()
+                    ValidationErrors = validationErrors.ToArray(),
+                    LearnerCommitments = learnerCommitments.ToArray()
                 };
             }
             catch (Exception ex)
             {
-                return new GetDataLockFailuresQueryResponse
+                return new RunDataLockValidationQueryResponse
                 {
                     IsValid = false,
                     Exception = ex

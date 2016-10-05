@@ -1,11 +1,12 @@
-﻿using System.Linq;
+﻿using System;
 using MediatR;
 using NLog;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery;
-using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.GetDataLockFailuresQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerCommitmentsCommand;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetAllLearnersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Exceptions;
+using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock
 {
@@ -28,66 +29,115 @@ namespace SFA.DAS.CollectionEarnings.DataLock
         {
             _logger.Info("Started Data Lock Processor.");
 
-            _logger.Debug("Reading commitments.");
+            var commitments = ReturnCommitmentsOrThrow();
+            var learners = ReturnValidGetAllLearnersQueryResponseOrThrow();
+
+            if (learners.HasAnyItems())
+            {
+                var dataLockValidationResult = ReturnDataLockValidationResultOrThrow(commitments, learners.Items);
+
+                WriteDataLockValidationErrorsOrThrow(dataLockValidationResult);
+                WriteDataLockMatchingLearnersAndCommitments(dataLockValidationResult);
+            }
+            else
+            {
+                _logger.Info("No learners found.");
+            }
+
+            _logger.Info("Finished Data Lock Processor.");
+        }
+
+        private CommitmentEntity[] ReturnCommitmentsOrThrow()
+        {
+            _logger.Info("Reading commitments.");
 
             var commitments = _mediator.Send(new GetAllCommitmentsQueryRequest());
 
             if (!commitments.IsValid)
             {
-                throw new DataLockProcessorException(DataLockExceptionMessages.ErrorReadingCommitments, commitments.Exception);
+                throw new DataLockProcessorException(DataLockProcessorException.ErrorReadingCommitmentsMessage, commitments.Exception);
             }
 
-            _logger.Debug("Reading DAS learners.");
+            return commitments.Items;
+        }
 
-            var dasLearners = _mediator.Send(new GetAllLearnersQueryRequest());
+        private GetAllLearnersQueryResponse ReturnValidGetAllLearnersQueryResponseOrThrow()
+        {
+            _logger.Info("Reading learners.");
 
-            if (!dasLearners.IsValid)
+            var learnersQueryResponse = _mediator.Send(new GetAllLearnersQueryRequest());
+
+            if (!learnersQueryResponse.IsValid)
             {
-                throw new DataLockProcessorException(DataLockExceptionMessages.ErrorReadingDasLearners, dasLearners.Exception);
+                throw new DataLockProcessorException(DataLockProcessorException.ErrorReadingLearnersMessage, learnersQueryResponse.Exception);
             }
 
-            if (dasLearners.Items != null && dasLearners.Items.Any())
-            {
-                _logger.Debug("Started Data Lock Validation.");
+            return learnersQueryResponse;
+        }
 
-                var dataLockValidationErrors =
-                    _mediator.Send(new GetDataLockFailuresQueryRequest
+        private RunDataLockValidationQueryResponse ReturnDataLockValidationResultOrThrow(CommitmentEntity[] commitments, LearnerEntity[] learners)
+        {
+            _logger.Info("Started Data Lock Validation.");
+
+            var dataLockValidationResult =
+                _mediator.Send(new RunDataLockValidationQueryRequest
+                {
+                    Commitments = commitments,
+                    Learners = learners
+                });
+
+            _logger.Info("Finished Data Lock Validation.");
+
+            if (!dataLockValidationResult.IsValid)
+            {
+                throw new DataLockProcessorException(DataLockProcessorException.ErrorPerformingDataLockMessage, dataLockValidationResult.Exception);
+            }
+
+            return dataLockValidationResult;
+        }
+
+        private void WriteDataLockValidationErrorsOrThrow(RunDataLockValidationQueryResponse dataLockValidationResponse)
+        {
+            if (dataLockValidationResponse.HasAnyValidationErrors())
+            {
+                _logger.Info("Started writing Data Lock Validation Errors.");
+
+                try
+                {
+                    _mediator.Send(new AddValidationErrorsCommandRequest
                     {
-                        Commitments = commitments.Items,
-                        DasLearners = dasLearners.Items
+                        ValidationErrors = dataLockValidationResponse.ValidationErrors
                     });
-
-                _logger.Debug("Finished Data Lock Validation.");
-
-                if (!dataLockValidationErrors.IsValid)
+                }
+                catch (Exception ex)
                 {
-                    throw new DataLockProcessorException(DataLockExceptionMessages.ErrorPerformingDataLock, dataLockValidationErrors.Exception);
+                    throw new DataLockProcessorException(DataLockProcessorException.ErrorWritingDataLockValidationErrorsMessage, ex);
                 }
 
-                if (dataLockValidationErrors.Items.Any())
-                {
-                    _logger.Debug("Started writing Data Lock Validation Errors.");
-
-                    var writeValidationErrorsResult =
-                        _mediator.Send(new AddValidationErrorsCommandRequest
-                        {
-                            ValidationErrors = dataLockValidationErrors.Items
-                        });
-
-                    if (!writeValidationErrorsResult.IsValid)
-                    {
-                        throw new DataLockProcessorException(DataLockExceptionMessages.ErrorWritingDataLockValidationErrors, writeValidationErrorsResult.Exception);
-                    }
-
-                    _logger.Debug("Finished writing Data Lock Validation Errors.");
-                }
+                _logger.Info("Finished writing Data Lock Validation Errors.");
             }
-            else
+        }
+
+        private void WriteDataLockMatchingLearnersAndCommitments(RunDataLockValidationQueryResponse dataLockValidationResponse)
+        {
+            if (dataLockValidationResponse.HasAnyMatchingLearnersAndCommitments())
             {
-                _logger.Info("No DAS learners found.");
-            }
+                _logger.Info("Started writing matching Learners and Commitments.");
 
-            _logger.Info("Finished Data Lock Processor.");
+                try
+                {
+                    _mediator.Send(new AddLearnerCommitmentsCommandRequest
+                    {
+                        LearnerCommitments = dataLockValidationResponse.LearnerCommitments
+                    });
+                }
+                catch (Exception ex)
+                {
+                    throw new DataLockProcessorException(DataLockProcessorException.ErrorWritingMatchingLearnersAndCommitmentsMessage, ex);
+                }
+
+                _logger.Info("Finished writing matching Learners and Commitments.");
+            }
         }
     }
 }
