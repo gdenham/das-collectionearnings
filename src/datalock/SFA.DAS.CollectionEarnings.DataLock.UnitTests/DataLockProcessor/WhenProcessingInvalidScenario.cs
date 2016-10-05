@@ -19,12 +19,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
 {
     public class WhenProcessingInvalidScenario
     {
-        private static readonly object[] EmptyItems =
-        {
-            new object[] {null},
-            new object[] {new LearnerEntity[] {}}
-        };
-
         private DataLock.DataLockProcessor _processor;
         private Mock<ILogger> _logger;
         private Mock<IMediator> _mediator;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetProviderLearnersQuery;
