@@ -5,16 +5,16 @@ using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Data.Repositories.ProviderRepository
 {
-    public class WhenGetAllProvidersCalledDuringAnIlrSubmission
+    public class WhenGetAllProvidersCalledDuringAnIlrPeriodEnd
     {
         private IProviderRepository _providerRepository;
 
         [SetUp]
         public void Arrange()
         {
-            TestDataHelper.Clean();
+            TestDataHelper.PeriodEndClean();
 
-            _providerRepository = new DataLock.Infrastructure.Data.Repositories.ProviderRepository(GlobalTestContext.Instance.SubmissionConnectionString);
+            _providerRepository = new DataLock.Infrastructure.Data.Repositories.ProviderRepository(GlobalTestContext.Instance.PeriodEndConnectionString);
         }
 
         [Test]
@@ -32,8 +32,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
         public void ThenDasLearnersReturnedForMultipleEntriesInTheDatabase()
         {
             // Arrange
-            TestDataHelper.AddProviderIlrSubmission(12345678);
-            TestDataHelper.AddProviderIlrSubmission(87654321);
+            TestDataHelper.AddProviderIlrPeriodEnd(12345678);
+            TestDataHelper.AddProviderIlrPeriodEnd(87654321);
 
             // Act
             var providers = _providerRepository.GetAllProviders();

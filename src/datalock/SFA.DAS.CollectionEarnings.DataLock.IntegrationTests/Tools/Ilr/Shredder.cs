@@ -14,15 +14,15 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools.Ilr
         private readonly TableMap _ilrTableMap = new TableMap(AppDomain.CurrentDomain.BaseDirectory + @"\Tools\Ilr\Files\IlrTableMap.xml");
         private readonly ISeedGenerator _seedGenerator = new SeedGenerator();
 
-        public Shredder()
+        public Shredder(string connectionString)
         {
-            _connectionString = ConnectionStringFactory.GetTransientConnectionString();
+            _connectionString = connectionString;
             _ilrFile = AppDomain.CurrentDomain.BaseDirectory + @"\Tools\Ilr\Files\IlrMultipleLearners.xml";
         }
 
-        public Shredder(string ilrFile)
+        public Shredder(string connectionString, string ilrFile)
         {
-            _connectionString = ConnectionStringFactory.GetTransientConnectionString();
+            _connectionString = connectionString;
             _ilrFile = AppDomain.CurrentDomain.BaseDirectory + ilrFile;
         }
 

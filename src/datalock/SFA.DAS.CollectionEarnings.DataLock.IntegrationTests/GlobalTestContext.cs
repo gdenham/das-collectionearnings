@@ -6,15 +6,17 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
 {
     internal class GlobalTestContext
     {
-        private const string ConnectionStringKey = "TransientConnectionString";
+        private const string SubmissionConnectionStringKey = "SubmissionConnectionString";
+        private const string PeriodEndConnectionStringKey = "PeriodEndConnectionString";
 
         private GlobalTestContext()
         {
             try
             {
-                SetupConnectionString();
-                SetupDatabaseName();
-                SetupBracketedDatabaseName();
+                SetupConnectionStrings();
+                SetupSubmissionDatabaseName();
+                SetupPeriodEndDatabaseName();
+                SetupBracketedDatabaseNames();
                 SetupAsseblyDirectory();
             }
             catch (Exception ex)
@@ -23,42 +25,71 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
             }
         }
 
-        public string ConnectionString { get; private set; }
-        public string DatabaseName { get; private set; }
-        public string BracketedDatabaseName { get; private set; }
+        public string SubmissionConnectionString { get; private set; }
+        public string PeriodEndConnectionString { get; private set; }
+        public string SubmissionDatabaseName { get; private set; }
+        public string PeriodEndDatabaseName { get; private set; }
+        public string BracketedSubmissionDatabaseName { get; private set; }
+        public string BracketedPeriodEndDatabaseName { get; private set; }
         public string AssemblyDirectory { get; private set; }
 
-        private void SetupConnectionString()
+        private void SetupConnectionStrings()
         {
-            ConnectionString = Environment.GetEnvironmentVariable(ConnectionStringKey);
-            if (string.IsNullOrEmpty(ConnectionString))
+            SubmissionConnectionString = Environment.GetEnvironmentVariable(SubmissionConnectionStringKey);
+            if (string.IsNullOrEmpty(SubmissionConnectionString))
             {
-                ConnectionString = ConfigurationManager.AppSettings[ConnectionStringKey];
+                SubmissionConnectionString = ConfigurationManager.AppSettings[SubmissionConnectionStringKey];
+            }
+
+            PeriodEndConnectionString = Environment.GetEnvironmentVariable(PeriodEndConnectionStringKey);
+            if (string.IsNullOrEmpty(PeriodEndConnectionString))
+            {
+                PeriodEndConnectionString = ConfigurationManager.AppSettings[PeriodEndConnectionStringKey];
             }
         }
 
-        private void SetupDatabaseName()
+        private void SetupSubmissionDatabaseName()
         {
-            var match = Regex.Match(ConnectionString, @"database=([A-Z0-9\-_]{1,});", RegexOptions.IgnoreCase);
+            var match = Regex.Match(SubmissionConnectionString, @"database=([A-Z0-9\-_]{1,});", RegexOptions.IgnoreCase);
             if (match.Success)
             {
-                DatabaseName = match.Groups[1].Value;
+                SubmissionDatabaseName = match.Groups[1].Value;
                 return;
             }
 
-            match = Regex.Match(ConnectionString, @"initial catalog=([A-Z0-9\-_]{1,});", RegexOptions.IgnoreCase);
+            match = Regex.Match(SubmissionConnectionString, @"initial catalog=([A-Z0-9\-_]{1,});", RegexOptions.IgnoreCase);
             if (match.Success)
             {
-                DatabaseName = match.Groups[1].Value;
+                SubmissionDatabaseName = match.Groups[1].Value;
                 return;
             }
 
-            throw new Exception("Cannot extract database name from connection");
+            throw new Exception("Cannot extract ilr submission database name from connection");
         }
 
-        private void SetupBracketedDatabaseName()
+        private void SetupPeriodEndDatabaseName()
         {
-            BracketedDatabaseName = $"[{DatabaseName}]";
+            var match = Regex.Match(PeriodEndConnectionString, @"database=([A-Z0-9\-_]{1,});", RegexOptions.IgnoreCase);
+            if (match.Success)
+            {
+                PeriodEndDatabaseName = match.Groups[1].Value;
+                return;
+            }
+
+            match = Regex.Match(PeriodEndConnectionString, @"initial catalog=([A-Z0-9\-_]{1,});", RegexOptions.IgnoreCase);
+            if (match.Success)
+            {
+                PeriodEndDatabaseName = match.Groups[1].Value;
+                return;
+            }
+
+            throw new Exception("Cannot extract period end database name from connection");
+        }
+
+        private void SetupBracketedDatabaseNames()
+        {
+            BracketedSubmissionDatabaseName = $"[{SubmissionDatabaseName}]";
+            BracketedPeriodEndDatabaseName = $"[{PeriodEndDatabaseName}]";
         }
 
         private void SetupAsseblyDirectory()

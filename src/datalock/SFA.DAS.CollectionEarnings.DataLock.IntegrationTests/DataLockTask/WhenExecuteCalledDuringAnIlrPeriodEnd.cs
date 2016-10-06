@@ -5,16 +5,15 @@ using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
-using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools.Ilr;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 using SFA.DAS.Payments.DCFS.Context;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
 {
-    public class WhenExecuteCalled
+    public class WhenExecuteCalledDuringAnIlrPeriodEnd
     {
-        private readonly string _transientConnectionString = ConnectionStringFactory.GetTransientConnectionString();
+        private readonly string _transientConnectionString = GlobalTestContext.Instance.PeriodEndConnectionString;
 
         private IExternalTask _task;
         private IExternalContext _context;
@@ -22,7 +21,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         [SetUp]
         public void Arrange()
         {
-            TestDataHelper.Clean();
+            TestDataHelper.PeriodEndClean();
 
             _task = new DataLock.DataLockTask();
 
@@ -36,29 +35,23 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             };
         }
 
-        private void SetupIlrData(string ilrFile)
-        {
-            var shredder = new Shredder(ilrFile);
-            shredder.Shred();
-        }
-
         private void SetupCommitmentData(CommitmentEntity commitment)
         {
-            TestDataHelper.AddCommitment(commitment);
+            TestDataHelper.PeriodEndAddCommitment(commitment);
         }
 
         [Test]
         public void ThenValidationErrorAddedForMismatchingUkprn()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrUkprnMismatch.xml");
-            SetupCommitmentData(new CommitmentEntityBuilder().Build());
+            TestDataHelper.PeriodEndExecuteScript("PeriodEndUkprnMismatch.sql");
+            SetupCommitmentData(new CommitmentEntityBuilder().Withukprn(999).Build());
 
             // Act
             _task.Execute(_context);
 
             // Assert
-            var errors = TestDataHelper.GetValidationErrors();
+            var errors = TestDataHelper.PeriodEndGetValidationErrors();
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(1, errors.Length);
@@ -69,14 +62,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void ThenValidationErrorAddedForMismatchingUln()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrUlnMismatch.xml");
-            SetupCommitmentData(new CommitmentEntityBuilder().Build());
+            TestDataHelper.PeriodEndExecuteScript("PeriodEndUlnMismatch.sql");
+            SetupCommitmentData(new CommitmentEntityBuilder().WithUln(999).Build());
 
             // Act
             _task.Execute(_context);
 
             // Assert
-            var errors = TestDataHelper.GetValidationErrors();
+            var errors = TestDataHelper.PeriodEndGetValidationErrors();
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(1, errors.Length);
@@ -87,14 +80,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void ThenValidationErrorAddedForMismatchingStandard()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrStandardMismatch.xml");
+            TestDataHelper.PeriodEndExecuteScript("PeriodEndStandardMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).WithProgrammeType(null).WithFrameworkCode(null).WithPathwayCode(null).Build());
 
             // Act
             _task.Execute(_context);
 
             // Assert
-            var errors = TestDataHelper.GetValidationErrors();
+            var errors = TestDataHelper.PeriodEndGetValidationErrors();
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(1, errors.Length);
@@ -105,14 +98,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void ThenValidationErrorAddedForMismatchingFramework()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrFrameworkMismatch.xml");
+            TestDataHelper.PeriodEndExecuteScript("PeriodEndFrameworkMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(null).WithFrameworkCode(999).Build());
 
             // Act
             _task.Execute(_context);
 
             // Assert
-            var errors = TestDataHelper.GetValidationErrors();
+            var errors = TestDataHelper.PeriodEndGetValidationErrors();
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(1, errors.Length);
@@ -123,14 +116,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void ThenValidationErrorAddedForMismatchingProgramme()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrProgrammeMismatch.xml");
+            TestDataHelper.PeriodEndExecuteScript("PeriodEndProgrammeMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(null).WithProgrammeType(999).Build());
 
             // Act
             _task.Execute(_context);
 
             // Assert
-            var errors = TestDataHelper.GetValidationErrors();
+            var errors = TestDataHelper.PeriodEndGetValidationErrors();
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(1, errors.Length);
@@ -141,14 +134,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void ThenValidationErrorAddedForMismatchingPathway()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrPathwayMismatch.xml");
+            TestDataHelper.PeriodEndExecuteScript("PeriodEndPathwayMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(null).WithPathwayCode(999).Build());
 
             // Act
             _task.Execute(_context);
 
             // Assert
-            var errors = TestDataHelper.GetValidationErrors();
+            var errors = TestDataHelper.PeriodEndGetValidationErrors();
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(1, errors.Length);
@@ -159,15 +152,15 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void ThenValidationErrorsAddedForMismatchingPrice()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrPriceMismatch.xml");
-            SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).Build());
+            TestDataHelper.PeriodEndExecuteScript("PeriodEndPriceMismatch.sql");
+            SetupCommitmentData(new CommitmentEntityBuilder().WithUln(1000000000).WithStandardCode(999).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build());
 
             // Act
             _task.Execute(_context);
 
             // Assert
-            var errors = TestDataHelper.GetValidationErrors();
+            var errors = TestDataHelper.PeriodEndGetValidationErrors();
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(2, errors.Length);
@@ -178,15 +171,15 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void ThenValidationErrorsAddedForIlrEarlierStartMonth()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrEarlierStartMonth.xml");
-            SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).Build());
+            TestDataHelper.PeriodEndExecuteScript("PeriodEndEarlierStartMonth.sql");
+            SetupCommitmentData(new CommitmentEntityBuilder().WithUln(1000000000).WithStandardCode(999).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build());
 
             // Act
             _task.Execute(_context);
 
             // Assert
-            var errors = TestDataHelper.GetValidationErrors();
+            var errors = TestDataHelper.PeriodEndGetValidationErrors();
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(2, errors.Length);
@@ -197,17 +190,17 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void ThenValidationErrorsAddedForMultipleMatchingCommitments()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrMultipleMatchingCommitments.xml");
-            SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).Build());
+            TestDataHelper.PeriodEndExecuteScript("PeriodEndMultipleMatches.sql");
+            SetupCommitmentData(new CommitmentEntityBuilder().WithUln(1000000000).WithStandardCode(999).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build());
-            SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId("C-003").WithStandardCode(999).Build());
+            SetupCommitmentData(new CommitmentEntityBuilder().WithUln(1000000000).WithCommitmentId("C-003").WithStandardCode(999).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId("C-004").WithUln(1000000027).WithStandardCode(null).Build());
 
             // Act
             _task.Execute(_context);
 
             // Assert
-            var errors = TestDataHelper.GetValidationErrors();
+            var errors = TestDataHelper.PeriodEndGetValidationErrors();
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(2, errors.Length);
@@ -220,11 +213,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             // Arrange
             var commitments = new[]
             {
-                new CommitmentEntityBuilder().WithStandardCode(999).Build(),
+                new CommitmentEntityBuilder().WithUln(1000000000).WithStandardCode(999).Build(),
                 new CommitmentEntityBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithStandardCode(null).Build()
             };
 
-            SetupIlrData(@"\Tools\Ilr\Files\IlrLearnerAndCommitmentMatch.xml");
+            TestDataHelper.PeriodEndExecuteScript("PeriodEndMatchFound.sql");
             SetupCommitmentData(commitments[0]);
             SetupCommitmentData(commitments[1]);
 
@@ -232,8 +225,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             _task.Execute(_context);
 
             // Assert
-            var learnerAndCommitmentMatches = TestDataHelper.GetLearnerAndCommitmentMatches();
-            var errors = TestDataHelper.GetValidationErrors();
+            var learnerAndCommitmentMatches = TestDataHelper.PeriodEndGetLearnerAndCommitmentMatches();
+            var errors = TestDataHelper.PeriodEndGetValidationErrors();
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(0, errors.Length);

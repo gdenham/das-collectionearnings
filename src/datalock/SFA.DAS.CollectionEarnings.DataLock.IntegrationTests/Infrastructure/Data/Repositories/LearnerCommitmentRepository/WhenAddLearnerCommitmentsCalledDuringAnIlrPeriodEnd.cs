@@ -5,16 +5,16 @@ using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Data.Repositories.LearnerCommitmentRepository
 {
-    public class WhenAddLearnerCommitmentsCalled
+    public class WhenAddLearnerCommitmentsCalledDuringAnIlrPeriodEnd
     {
         private ILearnerCommitmentRepository _learnerCommitmentRepository;
 
         [SetUp]
         public void Arrange()
         {
-            TestDataHelper.Clean();
+            TestDataHelper.PeriodEndClean();
 
-            _learnerCommitmentRepository = new DataLock.Infrastructure.Data.Repositories.LearnerCommitmentRepository(GlobalTestContext.Instance.ConnectionString);
+            _learnerCommitmentRepository = new DataLock.Infrastructure.Data.Repositories.LearnerCommitmentRepository(GlobalTestContext.Instance.PeriodEndConnectionString);
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             _learnerCommitmentRepository.AddLearnerCommitments(learnerCommitments);
 
             // Assert
-            var learnerCommitmentEntities = TestDataHelper.GetLearnerAndCommitmentMatches();
+            var learnerCommitmentEntities = TestDataHelper.PeriodEndGetLearnerAndCommitmentMatches();
 
             Assert.IsNotNull(learnerCommitmentEntities);
             Assert.AreEqual(3, learnerCommitmentEntities.Length);

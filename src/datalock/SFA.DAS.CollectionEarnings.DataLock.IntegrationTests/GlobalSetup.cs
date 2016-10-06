@@ -12,24 +12,25 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
         [OneTimeSetUp]
         public void BeforeAllTests()
         {
-            SetupDatabase();
+            SetupSubmissionDatabase();
+            SetupPeriodEndDatabase();
         }
 
-        private void SetupDatabase()
+        private void SetupSubmissionDatabase()
         {
-            using (var connection = new SqlConnection(GlobalTestContext.Instance.ConnectionString))
+            using (var connection = new SqlConnection(GlobalTestContext.Instance.SubmissionConnectionString))
             {
                 connection.Open();
 
                 try
                 {
                     // Pre-req scripts
-                    RunSqlScript(@"Ilr.Transient.DDL.sql", connection);
+                    RunSqlScript(@"Ilr.Transient.DDL.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
 
                     // Component scripts
-                    RunSqlScript(@"Ilr.Transient.Reference.DDL.Tables.sql", connection);
-                    RunSqlScript(@"Ilr.Transient.DataLock.DDL.Tables.sql", connection);
-                    RunSqlScript(@"Ilr.Transient.DataLock.DDL.Views.sql", connection);
+                    RunSqlScript(@"Ilr.Transient.Reference.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
+                    RunSqlScript(@"Ilr.Transient.DataLock.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
+                    RunSqlScript(@"Ilr.Transient.DataLock.DDL.Views.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
                 }
                 finally
                 {
@@ -38,10 +39,33 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
             }
         }
 
-        private void RunSqlScript(string fileName, SqlConnection connection)
+        private void SetupPeriodEndDatabase()
+        {
+            using (var connection = new SqlConnection(GlobalTestContext.Instance.PeriodEndConnectionString))
+            {
+                connection.Open();
+
+                try
+                {
+                    // Pre-req scripts
+                    RunSqlScript(@"Ilr.Deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);
+
+                    // Component scripts
+                    RunSqlScript(@"PeriodEnd.Transient.Reference.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);
+                    RunSqlScript(@"PeriodEnd.Transient.DataLock.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);
+                    RunSqlScript(@"PeriodEnd.Transient.DataLock.DDL.Views.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
+        private void RunSqlScript(string fileName, SqlConnection connection, string databaseName)
         {
             var path = Path.Combine(GlobalTestContext.Instance.AssemblyDirectory, "DbSetupScripts", fileName);
-            var sql = ReplaceSqlTokens(File.ReadAllText(path));
+            var sql = ReplaceSqlTokens(File.ReadAllText(path), databaseName);
             var commands = sql.Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var command in commands)
@@ -50,13 +74,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
             }
         }
 
-        private string ReplaceSqlTokens(string sql)
+        private string ReplaceSqlTokens(string sql, string databaseName)
         {
-            //return sql.Replace("${ILR_Current.FQ}", GlobalTestContext.Instance.BracketedDatabaseName)
-            //          .Replace("${ILR_Summarisation.FQ}", GlobalTestContext.Instance.BracketedDatabaseName)
-            //          .Replace("${DAS_Commitments.FQ}", GlobalTestContext.Instance.BracketedDatabaseName);
-
-            return sql;
+            return sql.Replace("${ILR_Current.FQ}", databaseName)
+                      .Replace("${ILR_Summarisation.FQ}", databaseName)
+                      .Replace("${DAS_Commitments.FQ}", databaseName);
         }
     }
 }

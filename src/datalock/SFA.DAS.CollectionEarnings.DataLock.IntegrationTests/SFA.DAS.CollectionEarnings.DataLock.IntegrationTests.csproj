@@ -88,18 +88,23 @@
   <ItemGroup>
     <Compile Include="AcceptanceCriteria\DPP-222\WhenRunningAcceptanceCriteria1.cs" />
     <Compile Include="AcceptanceCriteria\DPP-222\WhenRunningAcceptanceCriteria2.cs" />
-    <Compile Include="DataLockTask\WhenExecuteCalled.cs" />
-    <Compile Include="Infrastructure\Data\Repositories\CommitmentRepository\WhenGetProviderCommitmentsCalled.cs" />
-    <Compile Include="Infrastructure\Data\Repositories\LearnerCommitmentRepository\WhenAddLearnerCommitmentsCalled.cs" />
-    <Compile Include="Infrastructure\Data\Repositories\LearnerRepository\WhenGetProviderLearnersCalled.cs" />
-    <Compile Include="Infrastructure\Data\Repositories\ProviderRepository\WhenGetAllProvidersCalledDuringAnIlrMonthEnd.cs" />
+    <Compile Include="DataLockTask\WhenExecuteCalledDuringAnIlrPeriodEnd.cs" />
+    <Compile Include="DataLockTask\WhenExecuteCalledDuringAnIlrSubmission.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\CommitmentRepository\WhenGetProviderCommitmentsCalledDuringAnIlrPeriodEnd.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\CommitmentRepository\WhenGetProviderCommitmentsCalledDuringAnIlrSubmission.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\LearnerCommitmentRepository\WhenAddLearnerCommitmentsCalledDuringAnIlrPeriodEnd.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\LearnerCommitmentRepository\WhenAddLearnerCommitmentsCalledDuringAnIlrSubmission.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\LearnerRepository\WhenGetProviderLearnersCalledDuringAnIlrPeriodEnd.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\LearnerRepository\WhenGetProviderLearnersCalledDuringAnIlrSubmission.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\ProviderRepository\WhenGetAllProvidersCalledDuringAnIlrPeriodEnd.cs" />
     <Compile Include="Infrastructure\Data\Repositories\ProviderRepository\WhenGetAllProvidersCalledDuringAnIlrSubmission.cs" />
-    <Compile Include="Infrastructure\Data\Repositories\ValidationErrorRepository\WhenAddValidationErrorsCalled.cs" />
-    <Compile Include="Infrastructure\Data\Repositories\ValidationErrorRepository\WhenAddValidationErrorCalled.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\ValidationErrorRepository\WhenAddValidationErrorCalledDuringAnIlrPeriodEnd.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\ValidationErrorRepository\WhenAddValidationErrorsCalledDuringAnIlrPeriodEnd.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\ValidationErrorRepository\WhenAddValidationErrorsCalledDuringAnIlrSubmission.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\ValidationErrorRepository\WhenAddValidationErrorCalledDuringAnIlrSubmission.cs" />
     <Compile Include="GlobalSetup.cs" />
     <Compile Include="GlobalTestContext.cs" />
     <Compile Include="GlobalTestContextSetupException.cs" />
-    <Compile Include="Tools\ConnectionStringFactory.cs" />
     <Compile Include="Tools\TestDataHelper.cs" />
     <Compile Include="Tools\Ilr\PreProcessingCallback.cs" />
     <Compile Include="Tools\Ilr\Shredder.cs" />
@@ -123,6 +128,18 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.DataLock.DDL.Tables.sql">
+      <Link>DbSetupScripts\PeriodEnd.Transient.DataLock.DDL.Tables.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.DataLock.DDL.Views.sql">
+      <Link>DbSetupScripts\PeriodEnd.Transient.DataLock.DDL.Views.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.Reference.DDL.Tables.sql">
+      <Link>DbSetupScripts\PeriodEnd.Transient.Reference.DDL.Tables.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Tables.sql">
       <Link>DbSetupScripts\Ilr.Transient.DataLock.DDL.Tables.sql</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -133,6 +150,9 @@
     </Content>
     <Content Include="..\Deploy\sql\ddl\Ilr.Transient.Reference.DDL.Tables.sql">
       <Link>DbSetupScripts\Ilr.Transient.Reference.DDL.Tables.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DbSetupScripts\Ilr.Deds.DDL.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DbSetupScripts\Ilr.Transient.DDL.sql">
@@ -178,6 +198,39 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tools\Ilr\Files\IlrTableMap.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Sql\PeriodEndMatchFound.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Sql\PeriodEndMultipleMatches.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Sql\PeriodEndPathwayMismatch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Sql\PeriodEndEarlierStartMonth.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Sql\PeriodEndProgrammeMismatch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Sql\PeriodEndPriceMismatch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Sql\PeriodEndStandardMismatch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Sql\PeriodEndFrameworkMismatch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Sql\PeriodEndUlnMismatch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Sql\PeriodEndUkprnMismatch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Sql\PeriodEndMultipleLearningDeliveries.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

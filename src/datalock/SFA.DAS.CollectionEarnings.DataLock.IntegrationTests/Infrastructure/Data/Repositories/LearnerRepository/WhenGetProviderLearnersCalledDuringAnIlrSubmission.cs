@@ -6,7 +6,7 @@ using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools.Ilr;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Data.Repositories.LearnerRepository
 {
-    public class WhenGetProviderLearnersCalled
+    public class WhenGetProviderLearnersCalledDuringAnIlrSubmission
     {
         private readonly long _ukprn = 10007459;
         private readonly long _ukprnNoLearners = 10007458;
@@ -18,48 +18,48 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
         {
             TestDataHelper.Clean();
 
-            _learnerRepository = new DataLock.Infrastructure.Data.Repositories.LearnerRepository(GlobalTestContext.Instance.ConnectionString);
+            _learnerRepository = new DataLock.Infrastructure.Data.Repositories.LearnerRepository(GlobalTestContext.Instance.SubmissionConnectionString);
         }
 
         [Test]
         public void ThenNoLearnersReturnedForNoEntriesInTheDatabase()
         {
             // Act
-            var dasLearners = _learnerRepository.GetProviderLearners(_ukprn);
+            var learners = _learnerRepository.GetProviderLearners(_ukprn);
 
             // Assert
-            Assert.IsNotNull(dasLearners);
-            Assert.AreEqual(0, dasLearners.Count());
+            Assert.IsNotNull(learners);
+            Assert.AreEqual(0, learners.Count());
         }
 
         [Test]
         public void ThenNoLearnersReturnedForAUkprnWithNoEntriesInTheDatabase()
         {
             // Arrange
-            var shredder = new Shredder();
+            var shredder = new Shredder(GlobalTestContext.Instance.SubmissionConnectionString);
             shredder.Shred();
 
             // Act
-            var response = _learnerRepository.GetProviderLearners(_ukprnNoLearners);
+            var learners = _learnerRepository.GetProviderLearners(_ukprnNoLearners);
 
             // Assert
-            Assert.IsNotNull(response);
-            Assert.AreEqual(0, response.Length);
+            Assert.IsNotNull(learners);
+            Assert.AreEqual(0, learners.Length);
         }
 
         [Test]
         public void ThenLearnersReturnedForMultipleEntriesInTheDatabase()
         {
             // Arrange
-            var shredder = new Shredder();
+            var shredder = new Shredder(GlobalTestContext.Instance.SubmissionConnectionString);
             shredder.Shred();
 
             // Act
-            var dasLearners = _learnerRepository.GetProviderLearners(_ukprn);
+            var learners = _learnerRepository.GetProviderLearners(_ukprn);
 
             // Assert
-            Assert.IsNotNull(dasLearners);
-            Assert.AreEqual(2, dasLearners.Count());
+            Assert.IsNotNull(learners);
+            Assert.AreEqual(2, learners.Count());
         }
     }
 }

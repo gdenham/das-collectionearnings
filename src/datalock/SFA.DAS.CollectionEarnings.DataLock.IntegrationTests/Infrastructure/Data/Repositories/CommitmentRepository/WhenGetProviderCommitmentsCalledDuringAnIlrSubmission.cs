@@ -6,7 +6,7 @@ using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Data.Repositories.CommitmentRepository
 {
-    public class WhenGetProviderCommitmentsCalled
+    public class WhenGetProviderCommitmentsCalledDuringAnIlrSubmission
     {
         private readonly long _ukprn = 10007459;
         private readonly long _ukprnNoCommitments = 10007458;
@@ -24,7 +24,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
         {
             TestDataHelper.Clean();
 
-            _commitmentRepository = new DataLock.Infrastructure.Data.Repositories.CommitmentRepository(GlobalTestContext.Instance.ConnectionString);
+            _commitmentRepository = new DataLock.Infrastructure.Data.Repositories.CommitmentRepository(GlobalTestContext.Instance.SubmissionConnectionString);
         }
 
         [Test]

@@ -5,16 +5,16 @@ using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Data.Repositories.ValidationErrorRepository
 {
-    public class WhenAddValidationErrorCalled
+    public class WhenAddValidationErrorCalledDuringAnIlrPeriodEnd
     {
         private IValidationErrorRepository _validationErrorRepository;
 
         [SetUp]
         public void Arrange()
         {
-            TestDataHelper.Clean();
+            TestDataHelper.PeriodEndClean();
 
-            _validationErrorRepository = new DataLock.Infrastructure.Data.Repositories.ValidationErrorRepository(GlobalTestContext.Instance.ConnectionString);
+            _validationErrorRepository = new DataLock.Infrastructure.Data.Repositories.ValidationErrorRepository(GlobalTestContext.Instance.PeriodEndConnectionString);
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             _validationErrorRepository.AddValidationError(validationError);
 
             // Assert
-            var errors = TestDataHelper.GetValidationErrors();
+            var errors = TestDataHelper.PeriodEndGetValidationErrors();
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(1, errors.Length);
