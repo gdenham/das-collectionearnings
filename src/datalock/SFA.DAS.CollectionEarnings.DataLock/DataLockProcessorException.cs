@@ -4,6 +4,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock
 {
     public class DataLockProcessorException : Exception
     {
+        public const string ErrorReadingProviders = "Error while reading providers.";
         public const string ErrorReadingCommitmentsMessage = "Error while reading commitments.";
         public const string ErrorReadingLearnersMessage = "Error while reading DAS specific learners.";
         public const string ErrorPerformingDataLockMessage = "Error while performing data lock.";

@@ -18,15 +18,16 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories
                                                  "FrameworkCode," +
                                                  "PathwayCode";
         private const string SelectCommitments = "SELECT " + CommitmentColumns + " FROM " + CommitmentSource;
+        private const string SelectProviderCommitments = SelectCommitments + " WHERE Ukprn = @Ukprn";
 
         public CommitmentRepository(string connectionString)
             : base(connectionString)
         {
         }
 
-        public CommitmentEntity[] GetAllCommitments()
+        public CommitmentEntity[] GetProviderCommitments(long ukprn)
         {
-            return Query<CommitmentEntity>(SelectCommitments);
+            return Query<CommitmentEntity>(SelectProviderCommitments, new { ukprn });
         }
     }
 }

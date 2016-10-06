@@ -18,15 +18,16 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories
                                               "LearnStartDate," +
                                               "NegotiatedPrice";
         private const string SelectLearners = "SELECT " + LearnerColumns + " FROM " + LearnerSource;
+        private const string SelectProviderLearners = SelectLearners + " WHERE Ukprn = @Ukprn";
 
         public LearnerRepository(string connectionString)
             : base(connectionString)
         {
         }
 
-        public LearnerEntity[] GetAllLearners()
+        public LearnerEntity[] GetProviderLearners(long ukprn)
         {
-            return Query<LearnerEntity>(SelectLearners);
+            return Query<LearnerEntity>(SelectProviderLearners, new { ukprn });
         }
     }
 }

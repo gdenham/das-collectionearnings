@@ -9,7 +9,8 @@ This solution represents the code base relating to the Data Lock DC component an
 ## Running Database Integration Tests Locally
 
 To successfully run the database integration tests you need:
-* Create a database named 'DataLockIntegrationTests'.
+* Create a database named 'DataLockSubmissionIntegrationTests'.
+* Create a database named 'DataLockPeriodEndIntegrationTests'.
 
 ### Prerequisites
 

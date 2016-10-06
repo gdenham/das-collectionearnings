@@ -4,6 +4,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data
 {
     public interface ICommitmentRepository
     {
-        CommitmentEntity[] GetAllCommitments();
+        CommitmentEntity[] GetProviderCommitments(long ukprn);
     }
 }

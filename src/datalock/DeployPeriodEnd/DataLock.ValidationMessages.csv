@@ -1,0 +1,10 @@
+RuleID,Severity,ErrorMessage
+DLOCK_01,E,No matching commitment found for the UKPRN
+DLOCK_02,E,No matching commitment found  for the ULN
+DLOCK_03,E,No matching commitment found for the Standard code
+DLOCK_04,E,No matching commitment found for the Framework code
+DLOCK_05,E,No matching commitment found for the Programme type
+DLOCK_06,E,No matching commitment found for the Pathway code
+DLOCK_07,E,No matching commitment found for the Negociated Price
+DLOCK_08,E,Multiple matching commitments found
+DLOCK_09,E,The commitment start month is after the ILR learning delivery start month

@@ -1,4 +1,6 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using Dapper;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
@@ -9,8 +11,18 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
     {
         internal static void Clean()
         {
-            Execute(@"
-                    DECLARE @SQL NVARCHAR(MAX) = ''
+            Clean(GlobalTestContext.Instance.SubmissionConnectionString);
+        }
+
+        internal static void PeriodEndClean()
+        {
+            Clean(GlobalTestContext.Instance.PeriodEndConnectionString);
+        }
+
+        private static void Clean(string connectionString)
+        {
+            Execute(connectionString,
+                @"DECLARE @SQL NVARCHAR(MAX) = ''
 
                     SELECT @SQL = (
                         SELECT 'TRUNCATE TABLE [' + s.name + '].[' + o.name + ']' + CHAR(13)
@@ -26,8 +38,18 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
 
         internal static void AddCommitment(CommitmentEntity commitment)
         {
-            Execute(@"
-                    INSERT INTO [Reference].[DasCommitments] (
+            AddCommitment(GlobalTestContext.Instance.SubmissionConnectionString, commitment);
+        }
+
+        internal static void PeriodEndAddCommitment(CommitmentEntity commitment)
+        {
+            AddCommitment(GlobalTestContext.Instance.PeriodEndConnectionString, commitment);
+        }
+
+        private static void AddCommitment(string connectionString, CommitmentEntity commitment)
+        {
+            Execute(connectionString,
+                @"INSERT INTO [Reference].[DasCommitments] (
                         CommitmentId, 
                         Uln, 
                         Ukprn, 
@@ -68,19 +90,67 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                 });
         }
 
+        internal static void AddProviderIlrSubmission(long ukprn)
+        {
+            Execute(GlobalTestContext.Instance.SubmissionConnectionString,
+                "INSERT INTO [Input].[LearningProvider] (LearningProvider_Id, UKPRN) VALUES (@id, @ukprn)",
+                new
+                {
+                    id = ukprn,
+                    ukprn = ukprn
+                });
+        }
+
+        internal static void AddProviderIlrPeriodEnd(long ukprn)
+        {
+            Execute(GlobalTestContext.Instance.PeriodEndConnectionString,
+                "INSERT INTO [Valid].[LearningProvider] (UKPRN) VALUES (@ukprn)", 
+                new
+                {
+                    ukprn = ukprn
+                });
+        }
+
         internal static LearnerCommitmentEntity[] GetLearnerAndCommitmentMatches()
         {
-            return Query<LearnerCommitmentEntity>("SELECT * FROM [DataLock].[DasLearnerCommitment]");
+            return GetLearnerAndCommitmentMatches(GlobalTestContext.Instance.SubmissionConnectionString);
+        }
+
+        internal static LearnerCommitmentEntity[] PeriodEndGetLearnerAndCommitmentMatches()
+        {
+            return GetLearnerAndCommitmentMatches(GlobalTestContext.Instance.PeriodEndConnectionString);
+        }
+
+        private static LearnerCommitmentEntity[] GetLearnerAndCommitmentMatches(string connectionString)
+        {
+            return Query<LearnerCommitmentEntity>(connectionString, "SELECT * FROM [DataLock].[DasLearnerCommitment]");
         }
 
         internal static ValidationErrorEntity[] GetValidationErrors()
         {
-            return Query<ValidationErrorEntity>("SELECT * FROM [DataLock].[ValidationError]");
+            return GetValidationErrors(GlobalTestContext.Instance.SubmissionConnectionString);
         }
 
-        private static void Execute(string command, object param = null)
+        internal static ValidationErrorEntity[] PeriodEndGetValidationErrors()
         {
-            using (var connection = new SqlConnection(GlobalTestContext.Instance.ConnectionString))
+            return GetValidationErrors(GlobalTestContext.Instance.PeriodEndConnectionString);
+        }
+
+        private static ValidationErrorEntity[] GetValidationErrors(string connectionString)
+        {
+            return Query<ValidationErrorEntity>(connectionString, "SELECT * FROM [DataLock].[ValidationError]");
+        }
+
+        internal static void PeriodEndExecuteScript(string script)
+        {
+            var scriptCommand = File.ReadAllText($@"{AppDomain.CurrentDomain.BaseDirectory}\Tools\Sql\{script}");
+
+            Execute(GlobalTestContext.Instance.PeriodEndConnectionString, scriptCommand);
+        }
+
+        private static void Execute(string connectionString, string command, object param = null)
+        {
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 try
@@ -94,9 +164,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
             }
         }
 
-        private static T[] Query<T>(string command, object param = null)
+        private static T[] Query<T>(string connectionString, string command, object param = null)
         {
-            using (var connection = new SqlConnection(GlobalTestContext.Instance.ConnectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 try

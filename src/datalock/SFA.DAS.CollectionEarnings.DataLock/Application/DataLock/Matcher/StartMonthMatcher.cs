@@ -6,10 +6,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
 {
     public class StartMonthMatcher : MatchHandler
     {
-        public override MatchResult Match(List<Infrastructure.Data.Entities.CommitmentEntity> commitments, Infrastructure.Data.Entities.LearnerEntity learner)
+        public override MatchResult Match(List<Commitment.Commitment> commitments, Learner.Learner learner)
         {
-            var commitmentsToMatch = commitments.Where(c => learner.LearnStartDate.HasValue &&
-                                                            learner.LearnStartDate.Value.FirstDayOfMonth() >= c.StartDate.FirstDayOfMonth()).ToList();
+            var commitmentsToMatch = commitments.Where(c => learner.LearningStartDate.HasValue &&
+                                                            learner.LearningStartDate.Value.FirstDayOfMonth() >= c.StartDate.FirstDayOfMonth()).ToList();
 
             if (!commitmentsToMatch.Any())
             {

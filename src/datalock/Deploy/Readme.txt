@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------------
-DAS Data Lock Component
+DAS Data Lock Component - ILR Submission
 -------------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------------
@@ -7,12 +7,13 @@ DAS Data Lock Component
 ------------------------------------------------------------------------------------- 
  1.1 DLLs:
   - component\CS.Common.External.dll
-  - component\Dapper.Contrib.dll
   - component\Dapper.dll
   - component\FastMember.dll
   - component\MediatR.dll
   - component\NLog.dll
   - component\SFA.DAS.CollectionEarnings.DataLock.dll
+  - component\SFA.DAS.Payments.DCFS.dll
+  - component\SFA.DAS.Payments.DCFS.StructureMap.dll
   - component\StructureMap.dll
  
  1.2 SQL scripts:
@@ -20,6 +21,10 @@ DAS Data Lock Component
    - transient database tables that need to be present when the component is executed
   - sql\ddl\Ilr.Transient.DataLock.DDL.Views.sql:
    - transient database views that need to be present when the component is executed
+  - sql\ddl\Ilr.Transient.Reference.DDL.Tables.sql:
+   - transient database tables that need to be present when the component is executed
+  - sql\ddl\Ilr.Deds.DataLock.DDL.Tables.sql:
+   - deds database tables that need to be present when the component is executed
  
  1.3 Test results:
   - test-results\TestResult.xml

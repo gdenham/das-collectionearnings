@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
-using MediatR;
+﻿using MediatR;
 using Moq;
 using NLog;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetProviderCommitmentsQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerCommitmentsCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetAllLearnersQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetProviderLearnersQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Provider;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Provider.GetProvidersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
@@ -19,7 +20,19 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         private static readonly object[] EmptyItems =
         {
             new object[] {null},
-            new object[] {new LearnerEntity[] {}}
+            new object[] {new Learner[] {}}
+        };
+
+        private static readonly Provider[] Providers =
+        {
+            new Provider
+            {
+                Ukprn = 10007459
+            },
+            new Provider
+            {
+                Ukprn = 10007458
+            }
         };
 
         private DataLock.DataLockProcessor _processor;
@@ -40,8 +53,22 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         private void MediatorSetup()
         {
             _mediator
-                .Setup(m => m.Send(It.IsAny<GetAllCommitmentsQueryRequest>()))
-                .Returns(new GetAllCommitmentsQueryResponse
+                .Setup(m => m.Send(It.IsAny<GetProvidersQueryRequest>()))
+                .Returns(new GetProvidersQueryResponse
+                {
+                    IsValid = true,
+                    Items = new[]
+                    {
+                        new Provider
+                        {
+                            Ukprn = 10007459
+                        }
+                    }
+                });
+
+            _mediator
+                .Setup(m => m.Send(It.IsAny<GetProviderCommitmentsQueryRequest>()))
+                .Returns(new GetProviderCommitmentsQueryResponse
                 {
                     IsValid = true,
                     Items = new[]
@@ -51,13 +78,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                 });
 
             _mediator
-                .Setup(m => m.Send(It.IsAny<GetAllLearnersQueryRequest>()))
-                .Returns(new GetAllLearnersQueryResponse
+                .Setup(m => m.Send(It.IsAny<GetProviderLearnersQueryRequest>()))
+                .Returns(new GetProviderLearnersQueryResponse
                 {
                     IsValid = true,
                     Items = new[]
                     {
-                        new LearnerEntityBuilder().Build()
+                        new LearnerBuilder().Build()
                     }
                 });
 
@@ -92,43 +119,147 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         }
 
         [Test]
-        [TestCaseSource(nameof(EmptyItems))]
-        public void ThenNoDataLockValidationIsExecutedForGetAllDasLearnersQueryResponseWithNoItems(LearnerEntity[] items)
+        public void ThenItShouldCallGetProviderCommitmentsQueryMultipleTimesForMultipleProviders()
         {
             // Arrange
             _mediator
-                .Setup(m => m.Send(It.IsAny<GetAllLearnersQueryRequest>()))
-                .Returns(new GetAllLearnersQueryResponse
-                    {
-                        IsValid = true,
-                        Items = items
-                    }
+                .Setup(m => m.Send(It.IsAny<GetProvidersQueryRequest>()))
+                .Returns(new GetProvidersQueryResponse
+                {
+                    IsValid = true,
+                    Items = Providers
+                });
+
+            // Act
+            _processor.Process();
+
+            // Assert
+            _mediator.Verify(m => m.Send(It.IsAny<GetProviderCommitmentsQueryRequest>()), Times.Exactly(2));
+            _mediator.Verify(m => m.Send(It.Is<GetProviderCommitmentsQueryRequest>(it => it.Ukprn == Providers[0].Ukprn)), Times.Once);
+            _mediator.Verify(m => m.Send(It.Is<GetProviderCommitmentsQueryRequest>(it => it.Ukprn == Providers[1].Ukprn)), Times.Once);
+        }
+
+        [Test]
+        public void ThenItShouldCallGetProviderLearnersQueryMultipleTimesForMultipleProviders()
+        {
+            // Arrange
+
+            _mediator
+                .Setup(m => m.Send(It.IsAny<GetProvidersQueryRequest>()))
+                .Returns(new GetProvidersQueryResponse
+                {
+                    IsValid = true,
+                    Items = Providers
+                });
+
+            // Act
+            _processor.Process();
+
+            // Assert
+            _mediator.Verify(m => m.Send(It.IsAny<GetProviderLearnersQueryRequest>()), Times.Exactly(2));
+            _mediator.Verify(m => m.Send(It.Is<GetProviderLearnersQueryRequest>(it => it.Ukprn == Providers[0].Ukprn)), Times.Once);
+            _mediator.Verify(m => m.Send(It.Is<GetProviderLearnersQueryRequest>(it => it.Ukprn == Providers[1].Ukprn)), Times.Once);
+        }
+
+        [Test]
+        public void ThenItShouldRunDataLockValidationQueryMultipleTimesForMultipleProviders()
+        {
+            // Arrange
+
+            _mediator
+                .Setup(m => m.Send(It.IsAny<GetProvidersQueryRequest>()))
+                .Returns(new GetProvidersQueryResponse
+                {
+                    IsValid = true,
+                    Items = Providers
+                });
+
+            // Act
+            _processor.Process();
+
+            // Assert
+            _mediator.Verify(m => m.Send(It.IsAny<RunDataLockValidationQueryRequest>()), Times.Exactly(2));
+        }
+
+        [Test]
+        public void ThenItShouldCallAddValidationErrorsCommandMultipleTimesForMultipleProviders()
+        {
+            // Arrange
+            _mediator
+                .Setup(m => m.Send(It.IsAny<GetProvidersQueryRequest>()))
+                .Returns(new GetProvidersQueryResponse
+                {
+                    IsValid = true,
+                    Items = Providers
+                });
+
+            // Act
+            _processor.Process();
+
+            // Assert
+            _mediator.Verify(m => m.Send(It.IsAny<AddValidationErrorsCommandRequest>()), Times.Exactly(2));
+        }
+
+        [Test]
+        public void ThenItShouldCallAddLearnerCommitmentsCommandMultipleTimesForMultipleProviders()
+        {
+            // Arrange
+            _mediator
+                .Setup(m => m.Send(It.IsAny<GetProvidersQueryRequest>()))
+                .Returns(new GetProvidersQueryResponse
+                {
+                    IsValid = true,
+                    Items = Providers
+                });
+
+            // Act
+            _processor.Process();
+
+            // Assert
+            _mediator.Verify(m => m.Send(It.IsAny<AddLearnerCommitmentsCommandRequest>()), Times.Exactly(2));
+        }
+
+        [Test]
+        [TestCaseSource(nameof(EmptyItems))]
+        public void ThenNoDataLockValidationIsExecutedForGetProviderLearnersQueryResponseWithNoItems(Learner[] items)
+        {
+            // Arrange
+            _mediator
+                .Setup(m => m.Send(It.IsAny<GetProviderLearnersQueryRequest>()))
+                .Returns(new GetProviderLearnersQueryResponse
+                {
+                    IsValid = true,
+                    Items = items
+                }
                 );
 
             // Act
             _processor.Process();
 
             // Assert
-            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("No learners found."))), Times.Once);
+            _logger.Verify(l => l.Info(It.IsRegex("No learners found.")), Times.Once);
         }
 
         [Test]
-        public void ThenDataLockValidationIsSuccessfullForGetAllDasLearnersQueryResponseWithItems()
+        public void ThenOutputsCorrectLogMessagesForGetProviderLearnersQueryResponseWithItems()
         {
             // Act
             _processor.Process();
 
             // Assert
-            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Reading commitments."))), Times.Once);
-            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Reading learners."))), Times.Once);
-            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Started Data Lock Validation."))), Times.Once);
-            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Finished Data Lock Validation."))), Times.Once);
-            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Started writing Data Lock Validation Errors."))), Times.Once);
-            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Finished writing Data Lock Validation Errors."))), Times.Once);
-            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Started writing matching Learners and Commitments."))), Times.Once);
-            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Finished writing matching Learners and Commitments."))), Times.Once);
-            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("No learners found."))), Times.Never);
-            _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Finished Data Lock Processor."))), Times.Once);
+            _logger.Verify(l => l.Info(It.IsRegex("Started Data Lock Processor.")), Times.Once);
+            _logger.Verify(l => l.Info(It.IsRegex("Performing Data Lock Validation for provider with ukprn")), Times.Once);
+            _logger.Verify(l => l.Info(It.IsRegex("Reading commitments for provider with ukprn")), Times.Once);
+            _logger.Verify(l => l.Info(It.IsRegex("Reading learners for provider with ukprn")), Times.Once);
+            _logger.Verify(l => l.Info(It.IsRegex("Started Data Lock Validation.")), Times.Once);
+            _logger.Verify(l => l.Info(It.IsRegex("Finished Data Lock Validation.")), Times.Once);
+            _logger.Verify(l => l.Info(It.IsRegex("Started writing Data Lock Validation Errors.")), Times.Once);
+            _logger.Verify(l => l.Info(It.IsRegex("Finished writing Data Lock Validation Errors.")), Times.Once);
+            _logger.Verify(l => l.Info(It.IsRegex("Started writing matching Learners and Commitments.")), Times.Once);
+            _logger.Verify(l => l.Info(It.IsRegex("Finished writing matching Learners and Commitments.")), Times.Once);
+            _logger.Verify(l => l.Info(It.IsRegex("Finished Data Lock Processor.")), Times.Once);
+
+            _logger.Verify(l => l.Info(It.IsRegex("No learners found.")), Times.Never);
         }
     }
 }

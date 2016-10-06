@@ -1,12 +1,14 @@
 ﻿using System;
 using MediatR;
 using NLog;
-using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetAllCommitmentsQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetProviderCommitmentsQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerCommitmentsCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetAllLearnersQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetProviderLearnersQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.Provider.GetProvidersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock
 {
@@ -29,29 +31,59 @@ namespace SFA.DAS.CollectionEarnings.DataLock
         {
             _logger.Info("Started Data Lock Processor.");
 
-            var commitments = ReturnCommitmentsOrThrow();
-            var learners = ReturnValidGetAllLearnersQueryResponseOrThrow();
+            var providersQueryResponse = ReturnValidGetProvidersQueryResponseOrThrow();
 
-            if (learners.HasAnyItems())
+            if (providersQueryResponse.HasAnyItems())
             {
-                var dataLockValidationResult = ReturnDataLockValidationResultOrThrow(commitments, learners.Items);
+                foreach (var provider in providersQueryResponse.Items)
+                {
+                    _logger.Info($"Performing Data Lock Validation for provider with ukprn {provider.Ukprn}.");
 
-                WriteDataLockValidationErrorsOrThrow(dataLockValidationResult);
-                WriteDataLockMatchingLearnersAndCommitments(dataLockValidationResult);
+                    var commitments = ReturnProviderCommitmentsOrThrow(provider.Ukprn);
+                    var learners = ReturnValidGetProviderLearnersQueryResponseOrThrow(provider.Ukprn);
+
+                    if (learners.HasAnyItems())
+                    {
+                        var dataLockValidationResult = ReturnDataLockValidationResultOrThrow(commitments, learners.Items);
+
+                        WriteDataLockValidationErrorsOrThrow(dataLockValidationResult);
+                        WriteDataLockMatchingLearnersAndCommitments(dataLockValidationResult);
+                    }
+                    else
+                    {
+                        _logger.Info("No learners found.");
+                    }
+                }
             }
             else
             {
-                _logger.Info("No learners found.");
+                _logger.Info("No providers found to process.");
             }
 
             _logger.Info("Finished Data Lock Processor.");
         }
 
-        private CommitmentEntity[] ReturnCommitmentsOrThrow()
+        private GetProvidersQueryResponse ReturnValidGetProvidersQueryResponseOrThrow()
         {
-            _logger.Info("Reading commitments.");
+            var providersQueryResponse = _mediator.Send(new GetProvidersQueryRequest());
 
-            var commitments = _mediator.Send(new GetAllCommitmentsQueryRequest());
+            if (!providersQueryResponse.IsValid)
+            {
+                throw new DataLockProcessorException(DataLockProcessorException.ErrorReadingProviders, providersQueryResponse.Exception);
+            }
+
+            return providersQueryResponse;
+        }
+
+        private Commitment[] ReturnProviderCommitmentsOrThrow(long ukprn)
+        {
+            _logger.Info($"Reading commitments for provider with ukprn {ukprn}.");
+
+            var commitments =
+                _mediator.Send(new GetProviderCommitmentsQueryRequest
+                {
+                    Ukprn = ukprn
+                });
 
             if (!commitments.IsValid)
             {
@@ -61,11 +93,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock
             return commitments.Items;
         }
 
-        private GetAllLearnersQueryResponse ReturnValidGetAllLearnersQueryResponseOrThrow()
+        private GetProviderLearnersQueryResponse ReturnValidGetProviderLearnersQueryResponseOrThrow(long ukprn)
         {
-            _logger.Info("Reading learners.");
+            _logger.Info($"Reading learners for provider with ukprn {ukprn}.");
 
-            var learnersQueryResponse = _mediator.Send(new GetAllLearnersQueryRequest());
+            var learnersQueryResponse = _mediator.Send(new GetProviderLearnersQueryRequest
+            {
+                Ukprn = ukprn
+            });
 
             if (!learnersQueryResponse.IsValid)
             {
@@ -75,7 +110,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock
             return learnersQueryResponse;
         }
 
-        private RunDataLockValidationQueryResponse ReturnDataLockValidationResultOrThrow(CommitmentEntity[] commitments, LearnerEntity[] learners)
+        private RunDataLockValidationQueryResponse ReturnDataLockValidationResultOrThrow(Commitment[] commitments, Learner[] learners)
         {
             _logger.Info("Started Data Lock Validation.");
 

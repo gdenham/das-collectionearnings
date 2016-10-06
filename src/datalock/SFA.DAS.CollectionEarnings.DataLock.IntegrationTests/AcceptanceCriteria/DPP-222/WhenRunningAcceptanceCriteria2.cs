@@ -14,7 +14,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.AcceptanceCriteri
 {
     public class WhenRunningAcceptanceCriteria2
     {
-        private readonly string _transientConnectionString = ConnectionStringFactory.GetTransientConnectionString();
+        private readonly string _transientConnectionString = GlobalTestContext.Instance.SubmissionConnectionString;
 
         private IExternalTask _task;
         private IExternalContext _context;
@@ -41,12 +41,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.AcceptanceCriteri
             TestDataHelper.Clean();
 
             // ILR data
-            var shredder = new Shredder(@"\Tools\Ilr\Files\DPP-222\IlrAcceptanceCriteria2.xml");
+            var shredder = new Shredder(GlobalTestContext.Instance.SubmissionConnectionString, @"\Tools\Ilr\Files\DPP-222\IlrAcceptanceCriteria2.xml");
             shredder.Shred();
 
             // Commitment data
             TestDataHelper.AddCommitment(
-                new CommitmentBuilder()
+                new CommitmentEntityBuilder()
                     .WithUln(1000000000)
                     .WithStartDate(new DateTime(2017, 9, 1))
                     .WithStandardCode(null)
