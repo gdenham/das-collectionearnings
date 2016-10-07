@@ -18,7 +18,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Context.ContextWrapper
             };
 
             // Act
-            var contextWrapper = new Calculator.Context.ContextWrapper(context);
+            var contextWrapper = new Payments.DCFS.Context.ContextWrapper(context);
 
             // Assert
             Assert.IsNotNull(contextWrapper);

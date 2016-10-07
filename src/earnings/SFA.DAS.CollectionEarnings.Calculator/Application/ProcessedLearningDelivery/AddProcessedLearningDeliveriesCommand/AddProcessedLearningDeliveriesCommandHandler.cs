@@ -1,10 +1,9 @@
-﻿using System;
-using MediatR;
-using SFA.DAS.CollectionEarnings.Calculator.Data.Repositories;
+﻿using MediatR;
+using SFA.DAS.CollectionEarnings.Calculator.Data;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDelivery.AddProcessedLearningDeliveriesCommand
 {
-    public class AddProcessedLearningDeliveriesCommandHandler : IRequestHandler<AddProcessedLearningDeliveriesCommandRequest, AddProcessedLearningDeliveriesCommandResponse>
+    public class AddProcessedLearningDeliveriesCommandHandler : IRequestHandler<AddProcessedLearningDeliveriesCommandRequest, Unit>
     {
         private readonly IProcessedLearningDeliveryRepository _repository;
 
@@ -13,25 +12,11 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDel
             _repository = repository;
         }
 
-        public AddProcessedLearningDeliveriesCommandResponse Handle(AddProcessedLearningDeliveriesCommandRequest message)
+        public Unit Handle(AddProcessedLearningDeliveriesCommandRequest message)
         {
-            try
-            {
-                _repository.AddProcessedLearningDeliveries(message.LearningDeliveries);
+            _repository.AddProcessedLearningDeliveries(message.LearningDeliveries);
 
-                return new AddProcessedLearningDeliveriesCommandResponse
-                {
-                    IsValid = true
-                };
-            }
-            catch (Exception ex)
-            {
-                return new AddProcessedLearningDeliveriesCommandResponse
-                {
-                    IsValid = false,
-                    Exception = ex
-                };
-            }
+            return Unit.Value;
         }
     }
 }

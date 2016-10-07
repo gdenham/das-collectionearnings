@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using NUnit.Framework;
+using SFA.DAS.CollectionEarnings.Calculator.Data;
 using SFA.DAS.CollectionEarnings.Calculator.Data.Entities;
-using SFA.DAS.CollectionEarnings.Calculator.Data.Repositories;
 using SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities;
 
@@ -102,7 +101,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Data.Repositori
 
         [Test]
         [TestCaseSource(nameof(InvalidProcessedLearningDeliveriesWithExpectedExceptionTypes))]
-        public void ThenExpectingExceptionForAddProcessedLearningDeliveriesWithInvalidInput(IEnumerable<ProcessedLearningDelivery> deliveries, Type exceptionType)
+        public void ThenExpectingExceptionForAddProcessedLearningDeliveriesWithInvalidInput(ProcessedLearningDelivery[] deliveries, Type exceptionType)
         {
             // Assert
             Assert.Throws(exceptionType, () => _repository.AddProcessedLearningDeliveries(deliveries));

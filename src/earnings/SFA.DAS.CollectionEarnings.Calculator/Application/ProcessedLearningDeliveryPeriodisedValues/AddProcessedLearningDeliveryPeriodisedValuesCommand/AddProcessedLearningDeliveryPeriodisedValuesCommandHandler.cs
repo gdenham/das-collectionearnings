@@ -1,10 +1,9 @@
-﻿using System;
-using MediatR;
-using SFA.DAS.CollectionEarnings.Calculator.Data.Repositories;
+﻿using MediatR;
+using SFA.DAS.CollectionEarnings.Calculator.Data;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriodisedValues.AddProcessedLearningDeliveryPeriodisedValuesCommand
 {
-    public class AddProcessedLearningDeliveryPeriodisedValuesCommandHandler : IRequestHandler<AddProcessedLearningDeliveryPeriodisedValuesCommandRequest, AddProcessedLearningDeliveryPeriodisedValuesCommandResponse>
+    public class AddProcessedLearningDeliveryPeriodisedValuesCommandHandler : IRequestHandler<AddProcessedLearningDeliveryPeriodisedValuesCommandRequest, Unit>
     {
         private readonly IProcessedLearningDeliveryPeriodisedValuesRepository _repository;
 
@@ -13,25 +12,11 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDel
             _repository = repository;
         }
 
-        public AddProcessedLearningDeliveryPeriodisedValuesCommandResponse Handle(AddProcessedLearningDeliveryPeriodisedValuesCommandRequest message)
+        public Unit Handle(AddProcessedLearningDeliveryPeriodisedValuesCommandRequest message)
         {
-            try
-            {
-                _repository.AddProcessedLearningDeliveryPeriodisedValues(message.PeriodisedValues);
+            _repository.AddProcessedLearningDeliveryPeriodisedValues(message.PeriodisedValues);
 
-                return new AddProcessedLearningDeliveryPeriodisedValuesCommandResponse
-                {
-                    IsValid = true
-                };
-            }
-            catch (Exception ex)
-            {
-                return new AddProcessedLearningDeliveryPeriodisedValuesCommandResponse
-                {
-                    IsValid = false,
-                    Exception = ex
-                };
-            }
+            return Unit.Value;
         }
     }
 }

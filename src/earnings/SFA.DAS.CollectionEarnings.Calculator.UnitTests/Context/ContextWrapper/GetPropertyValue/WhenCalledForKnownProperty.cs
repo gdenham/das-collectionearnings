@@ -6,7 +6,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Context.ContextWrapper
 {
     public class WhenCalledForKnownProperty
     {
-        private Calculator.Context.ContextWrapper _contextWrapper;
+        Payments.DCFS.Context.ContextWrapper _contextWrapper;
 
         [SetUp]
         public void Arrange()
@@ -19,7 +19,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Context.ContextWrapper
                 }
             };
 
-            _contextWrapper = new Calculator.Context.ContextWrapper(context);
+            _contextWrapper = new Payments.DCFS.Context.ContextWrapper(context);
         }
 
         [Test]

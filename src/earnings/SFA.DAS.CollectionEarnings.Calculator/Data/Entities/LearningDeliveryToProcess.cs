@@ -19,7 +19,5 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Data.Entities
         public DateTime? LearnActEndDate { get; set; }
         public int? CompletionStatus { get; set; }
         public int NegotiatedPrice { get; set; }
-
-        public const string SelectAll = "SELECT * FROM [Rulebase].[vw_AE_LearningDeliveriesToProcess]";
     }
 }

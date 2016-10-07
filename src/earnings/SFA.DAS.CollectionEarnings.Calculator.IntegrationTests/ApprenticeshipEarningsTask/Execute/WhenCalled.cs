@@ -8,6 +8,7 @@ using SFA.DAS.CollectionEarnings.Calculator.Context;
 using SFA.DAS.CollectionEarnings.Calculator.Data.Entities;
 using SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools;
+using SFA.DAS.Payments.DCFS.Context;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipEarningsTask.Execute
 {
@@ -32,7 +33,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipE
                 {
                     {ContextPropertyKeys.TransientDatabaseConnectionString, _transientConnectionString},
                     {ContextPropertyKeys.LogLevel, "Trace"},
-                    {ContextPropertyKeys.YearOfCollection, "1718"}
+                    {EarningsContextPropertyKeys.YearOfCollection, "1718"}
                 }
             };
         }

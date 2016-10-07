@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using SFA.DAS.CollectionEarnings.Calculator.Context;
+using SFA.DAS.Payments.DCFS.Context;
 using StructureMap;
 using StructureMap.Pipeline;
 
@@ -21,7 +22,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.DependencyResolution
 
             if (parameter != null)
             {
-                var yearOfCollection = _contextWrapper.GetPropertyValue(ContextPropertyKeys.YearOfCollection);
+                var yearOfCollection = _contextWrapper.GetPropertyValue(EarningsContextPropertyKeys.YearOfCollection);
                 instance.Dependencies.AddForConstructorParameter(parameter, yearOfCollection);
             }
         }

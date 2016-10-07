@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.Calculator.Data.Repositories;
+using SFA.DAS.CollectionEarnings.Calculator.Data;
 using SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Data.Repositories.LearningDeliveryToProcessRepository.GetAllLearningDeliveriesToProcess

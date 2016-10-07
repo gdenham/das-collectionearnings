@@ -1,40 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using FastMember;
-using SFA.DAS.CollectionEarnings.Calculator.Data.Entities;
+﻿using SFA.DAS.CollectionEarnings.Calculator.Data.Entities;
+using SFA.DAS.Payments.DCFS.Infrastructure.Data;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.Data.Repositories
 {
-    public class ProcessedLearningDeliveryPeriodisedValuesRepository : IProcessedLearningDeliveryPeriodisedValuesRepository
+    public class ProcessedLearningDeliveryPeriodisedValuesRepository : DcfsRepository, IProcessedLearningDeliveryPeriodisedValuesRepository
     {
-        private readonly string _connectionString;
+        private const string LearningDeliveryPeriodisedValuesDestination = "Rulebase.AE_LearningDelivery_PeriodisedValues";
 
         public ProcessedLearningDeliveryPeriodisedValuesRepository(string connectionString)
+            : base(connectionString)
         {
-            _connectionString = connectionString;
         }
 
-        public void AddProcessedLearningDeliveryPeriodisedValues(IEnumerable<ProcessedLearningDeliveryPeriodisedValues> periodisedValues)
+        public void AddProcessedLearningDeliveryPeriodisedValues(ProcessedLearningDeliveryPeriodisedValues[] periodisedValues)
         {
-            var columns = typeof(ProcessedLearningDeliveryPeriodisedValues).GetProperties().Select(p => p.Name).ToArray();
-
-            using (var bcp = new SqlBulkCopy(_connectionString))
-            {
-                foreach (var column in columns)
-                {
-                    bcp.ColumnMappings.Add(column, column);
-                }
-
-                bcp.BulkCopyTimeout = 0;
-                bcp.DestinationTableName = "Rulebase.AE_LearningDelivery_PeriodisedValues";
-                bcp.BatchSize = 1000;
-
-                using (var reader = ObjectReader.Create(periodisedValues, columns))
-                {
-                    bcp.WriteToServer(reader);
-                }
-            }
+            ExecuteBatch(periodisedValues, LearningDeliveryPeriodisedValuesDestination);
         }
     }
 }

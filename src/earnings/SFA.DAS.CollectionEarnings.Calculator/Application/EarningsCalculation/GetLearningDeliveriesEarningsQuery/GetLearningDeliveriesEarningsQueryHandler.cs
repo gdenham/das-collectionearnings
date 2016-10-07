@@ -48,8 +48,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                 return new GetLearningDeliveriesEarningsQueryResponse
                 {
                     IsValid = true,
-                    ProcessedLearningDeliveries = processedLearningDeliveries,
-                    ProcessedLearningDeliveryPeriodisedValues = processedLearningDeliveryPeriodisedValues
+                    ProcessedLearningDeliveries = processedLearningDeliveries.ToArray(),
+                    ProcessedLearningDeliveryPeriodisedValues = processedLearningDeliveryPeriodisedValues.ToArray()
                 };
             }
             catch (Exception ex)

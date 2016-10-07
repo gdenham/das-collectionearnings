@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using NLog;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.Calculator.Context;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools;
+using SFA.DAS.Payments.DCFS.Context;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.DependencyResolution.TaskDependencyResolver.Init
 {

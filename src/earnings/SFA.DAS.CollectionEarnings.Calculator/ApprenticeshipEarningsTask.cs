@@ -1,83 +1,55 @@
-﻿using System;
-using CS.Common.External.Interfaces;
-using NLog;
-using SFA.DAS.CollectionEarnings.Calculator.Context;
+﻿using SFA.DAS.CollectionEarnings.Calculator.Context;
 using SFA.DAS.CollectionEarnings.Calculator.DependencyResolution;
-using SFA.DAS.CollectionEarnings.Calculator.Exceptions;
-using SFA.DAS.CollectionEarnings.Calculator.Logging;
+using SFA.DAS.Payments.DCFS;
+using SFA.DAS.Payments.DCFS.Context;
+using SFA.DAS.Payments.DCFS.Infrastructure.DependencyResolution;
 
 namespace SFA.DAS.CollectionEarnings.Calculator
 {
-    public class ApprenticeshipEarningsTask : IExternalTask
+    public class ApprenticeshipEarningsTask :  DcfsTask
     {
-        private readonly IDependencyResolver _dependencyResolver;
-        private ILogger _logger;
+        private IDependencyResolver _dependencyResolver;
+        private const string EarningsSchema = "Earnings";
 
         public ApprenticeshipEarningsTask()
+            : base(EarningsSchema)
         {
             _dependencyResolver = new TaskDependencyResolver();
         }
 
-        internal ApprenticeshipEarningsTask(IDependencyResolver dependencyResolver, ILogger logger)
+        public ApprenticeshipEarningsTask(IDependencyResolver dependencyResolver)
+            : base(EarningsSchema)
         {
             _dependencyResolver = dependencyResolver;
-            _logger = logger;
         }
 
-        public void Execute(IExternalContext context)
+        protected override void Execute(ContextWrapper context)
         {
-            var contextWrapper = new ContextWrapper(context);
+            _dependencyResolver.Init(typeof(ApprenticeshipEarningsProcessor), context);
 
-            if (IsContextValid(contextWrapper))
-            {
+            var processor = _dependencyResolver.GetInstance<ApprenticeshipEarningsProcessor>();
 
-                LoggingConfig.ConfigureLogging(
-                    contextWrapper.GetPropertyValue(ContextPropertyKeys.TransientDatabaseConnectionString),
-                    contextWrapper.GetPropertyValue(ContextPropertyKeys.LogLevel)
-                    );
-
-                _dependencyResolver.Init(
-                    typeof (ApprenticeshipEarningsProcessor),
-                    contextWrapper
-                    );
-
-                if (_logger == null)
-                {
-                    _logger = LogManager.GetCurrentClassLogger();
-                }
-
-                try
-                {
-                    var processor = _dependencyResolver.GetInstance<ApprenticeshipEarningsProcessor>();
-
-                    processor.Process();
-                }
-                catch (Exception ex)
-                {
-                    _logger.Fatal(ex, ex.Message);
-                    throw;
-                }
-            }
+            processor.Process();
         }
 
-        private bool IsContextValid(ContextWrapper contextWrapper)
+        protected override bool IsValidContext(ContextWrapper contextWrapper)
         {
             if (string.IsNullOrEmpty(contextWrapper.GetPropertyValue(ContextPropertyKeys.TransientDatabaseConnectionString)))
             {
-                throw new EarningsCalculatorInvalidContextException(EarningsCalculatorExceptionMessages.ContextPropertiesNoConnectionString);
+                throw new InvalidContextException(InvalidContextException.ContextPropertiesNoConnectionStringMessage);
             }
 
             if (string.IsNullOrEmpty(contextWrapper.GetPropertyValue(ContextPropertyKeys.LogLevel)))
             {
-                throw new EarningsCalculatorInvalidContextException(EarningsCalculatorExceptionMessages.ContextPropertiesNoLogLevel);
+                throw new InvalidContextException(InvalidContextException.ContextPropertiesNoLogLevelMessage);
             }
 
-            if (string.IsNullOrEmpty(contextWrapper.GetPropertyValue(ContextPropertyKeys.YearOfCollection)))
+            if (string.IsNullOrEmpty(contextWrapper.GetPropertyValue(EarningsContextPropertyKeys.YearOfCollection)))
             {
-                throw new EarningsCalculatorInvalidContextException(EarningsCalculatorExceptionMessages.ContextPropertiesNoYearOfCollection);
+                throw new InvalidContextException(EarningsCalculatorException.ContextPropertiesNoYearOfCollectionMessage);
             }
 
-            return ValidateYearOfCollection(contextWrapper.GetPropertyValue(ContextPropertyKeys.YearOfCollection));
+            return ValidateYearOfCollection(contextWrapper.GetPropertyValue(EarningsContextPropertyKeys.YearOfCollection));
         }
 
         private bool ValidateYearOfCollection(string yearOfCollection)
@@ -90,7 +62,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator
                 !int.TryParse(yearOfCollection.Substring(2, 2), out year2) ||
                 (year2 != year1 + 1))
             {
-                throw new EarningsCalculatorInvalidContextException(EarningsCalculatorExceptionMessages.ContextPropertiesInvalidYearOfCollection);
+                throw new InvalidContextException(EarningsCalculatorException.ContextPropertiesInvalidYearOfCollectionMessage);
             }
 
             return true;
