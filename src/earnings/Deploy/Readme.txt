@@ -9,9 +9,12 @@ DAS Apprenticeship Earnings Funding Calculation Component
   - component\CS.Common.External.dll
   - component\Dapper.Contrib.dll
   - component\Dapper.dll
+  - component\FastMember.dll
   - component\MediatR.dll
   - component\NLog.dll
   - component\SFA.DAS.CollectionEarnings.Calculator.dll
+  - component\SFA.DAS.Payments.DCFS.dll
+  - component\SFA.DAS.Payments.DCFS.StructureMap.dll
   - component\StructureMap.dll
  
  1.2 SQL scripts:

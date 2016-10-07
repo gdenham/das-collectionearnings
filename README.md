@@ -26,10 +26,7 @@ You should run Visual Studio as Administrator
 ## Running Database Integration Tests Locally
 
 To successfully run the database integration tests you need:
-* Create a database named 'ApprenticeshipEarningsTransient'.
-* Run the 'src/earnings/SFA.DAS.CollectionEarnings.Calculator.IntegrationTests/Ilr.Transient.DDL.sql' script against the newly created database.
-* Run the 'src/earnings/Deploy/sql/ddl/Ilr.Transient.Earnings.DDL.Tables.sql' script against the newly created database.
-* Run the 'src/earnings/Deploy/sql/ddl/Ilr.Transient.Earnings.DDL.Views.sql' script against the newly created database.
+* Create a database named 'ApprenticeshipEarningsIntegrationTests'.
 
 ### Prerequisites
 
