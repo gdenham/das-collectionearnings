@@ -1,11 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
 using CS.Common.External.Interfaces;
-using Dapper;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Calculator.Context;
-using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools;
 using SFA.DAS.Payments.DCFS.Context;
@@ -23,7 +19,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipE
         public void Arrange()
         {
             TestDataHelper.Clean();
-            TestDataHelper.ExecuteScript("IlrDataOneLearningDeliveryToProcess.sql");
 
             _task = new Calculator.ApprenticeshipEarningsTask();
 
@@ -41,22 +36,57 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipE
         [Test]
         public void ThenProcessedLearningDeliveryWithAssociatedPeriodisedValuesIsAdded()
         {
+            // Arrange
+            TestDataHelper.ExecuteScript("IlrDataOneLearningDeliveryToProcess.sql");
+
             // Act
             _task.Execute(_context);
 
-            // Assert - expecting one processed learning delivery with associated periodised values
-            using (var connection = new SqlConnection(_transientConnectionString))
-            {
-                var learningDeliveries = connection.Query<ProcessedLearningDelivery>("SELECT * FROM [Rulebase].[AE_LearningDelivery]");
-                var periodisedValues = connection.Query<ProcessedLearningDeliveryPeriodisedValues>("SELECT * FROM [Rulebase].[AE_LearningDelivery_PeriodisedValues]");
+            // Assert
+            var learningDeliveries = TestDataHelper.GetProcessedLearningDeliveries();
+            var periodisedValues = TestDataHelper.GetProcessedLearningDeliveryPeriodisedValues();
 
-                Assert.IsNotNull(learningDeliveries);
-                Assert.IsNotNull(periodisedValues);
+            Assert.IsNotNull(learningDeliveries);
+            Assert.IsNotNull(periodisedValues);
 
-                Assert.AreEqual(1, learningDeliveries.Count());
-                Assert.AreEqual(1, periodisedValues.Count());
-            }
+            Assert.AreEqual(1, learningDeliveries.Length);
+            Assert.AreEqual(1, periodisedValues.Length);
         }
 
+        [Test]
+        public void ThenProcessedLearningDeliveryWithAssociatedPeriodisedValuesIsAddedForALearnerThatFinishedLate()
+        {
+            // Arrange
+            TestDataHelper.ExecuteScript("IlrDataOneLearningDeliveryToProcessLateFinisher.sql");
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            var learningDeliveries = TestDataHelper.GetProcessedLearningDeliveries();
+            var periodisedValues = TestDataHelper.GetProcessedLearningDeliveryPeriodisedValues();
+
+            Assert.IsNotNull(learningDeliveries);
+            Assert.IsNotNull(periodisedValues);
+
+            Assert.AreEqual(1, learningDeliveries.Length);
+            Assert.AreEqual(1, periodisedValues.Length);
+
+            Assert.AreEqual(160.00m, learningDeliveries[0].MonthlyInstallment);
+            Assert.AreEqual(600.00m, learningDeliveries[0].CompletionPayment);
+
+            Assert.AreEqual(160.00m, periodisedValues[0].Period_1);
+            Assert.AreEqual(160.00m, periodisedValues[0].Period_2);
+            Assert.AreEqual(0.00m, periodisedValues[0].Period_3);
+            Assert.AreEqual(0.00m, periodisedValues[0].Period_4);
+            Assert.AreEqual(600.00m, periodisedValues[0].Period_5);
+            Assert.AreEqual(0.00m, periodisedValues[0].Period_6);
+            Assert.AreEqual(0.00m, periodisedValues[0].Period_7);
+            Assert.AreEqual(0.00m, periodisedValues[0].Period_8);
+            Assert.AreEqual(0.00m, periodisedValues[0].Period_9);
+            Assert.AreEqual(0.00m, periodisedValues[0].Period_10);
+            Assert.AreEqual(0.00m, periodisedValues[0].Period_11);
+            Assert.AreEqual(0.00m, periodisedValues[0].Period_12);
+        }
     }
 }

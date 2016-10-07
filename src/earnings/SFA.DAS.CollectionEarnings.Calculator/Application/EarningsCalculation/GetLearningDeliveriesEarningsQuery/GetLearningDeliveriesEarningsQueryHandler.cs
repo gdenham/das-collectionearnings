@@ -9,6 +9,9 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
 {
     public class GetLearningDeliveriesEarningsQueryHandler : IRequestHandler<GetLearningDeliveriesEarningsQueryRequest, GetLearningDeliveriesEarningsQueryResponse>
     {
+        private const decimal CompletionPaymentRatio = 0.2m;
+        private const decimal InLearningPaymentRatio = 1.00m - CompletionPaymentRatio;
+
         private readonly IDateTimeProvider _dateTimeProvider;
 
         public GetLearningDeliveriesEarningsQueryHandler(IDateTimeProvider dateTimeProvider)
@@ -79,12 +82,12 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
 
         private decimal CalculateCompletionPayment(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
         {
-            return learningDelivery.NegotiatedPrice * 0.2m;
+            return decimal.Round(learningDelivery.NegotiatedPrice * CompletionPaymentRatio, 5);
         }
 
         private decimal CalculateMonthlyInstallment(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
         {
-            return learningDelivery.NegotiatedPrice * 0.8m / CalculateNumberOfPeriods(learningDelivery);
+            return decimal.Round(learningDelivery.NegotiatedPrice * InLearningPaymentRatio / CalculateNumberOfPeriods(learningDelivery), 5);
         }
 
         private DateTime CalculateFirstCensusDateForTheLearningDelivery(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
@@ -161,15 +164,21 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
             var censusDate = CalculateFirstCensusDateForTheLearningDelivery(learningDelivery);
             var period = CalculateFirstPeriodForTheLearningDelivery(learningDelivery);
 
-            var lastDate = learningDelivery.LearnActEndDate.HasValue
+            var plannedEndDate = learningDelivery.LearnPlanEndDate;
+            var learningEndDate = learningDelivery.LearnActEndDate.HasValue
                 ? learningDelivery.LearnActEndDate
-                : learningDelivery.LearnPlanEndDate;
+                : plannedEndDate;
 
-            while (censusDate <= lastDate && period <= 12)
+            while (censusDate <= learningEndDate && period <= 12)
             {
-                var amount = monthlyInstallment;
+                var amount = 0.00m;
 
-                if (censusDate == lastDate && shouldAddCompletionPayment)
+                if (censusDate <= plannedEndDate)
+                {
+                    amount += monthlyInstallment;
+                }
+
+                if (censusDate == learningEndDate && shouldAddCompletionPayment)
                 {
                     amount += completionPayment;
                     addedCompletionPayment = true;

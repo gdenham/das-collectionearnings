@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data;
 using SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools;
 
@@ -27,7 +26,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.
 
             // Assert
             Assert.IsNotNull(learningDeliveries);
-            Assert.AreEqual(0, learningDeliveries.Count());
+            Assert.AreEqual(0, learningDeliveries.Length);
         }
 
         [Test]
@@ -41,7 +40,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.
 
             // Assert
             Assert.IsNotNull(learningDeliveries);
-            Assert.AreEqual(0, learningDeliveries.Count());
+            Assert.AreEqual(0, learningDeliveries.Length);
         }
 
         [Test]
@@ -55,7 +54,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.
 
             // Assert
             Assert.IsNotNull(learningDeliveries);
-            Assert.AreEqual(1, learningDeliveries.Count());
+            Assert.AreEqual(1, learningDeliveries.Length);
         }
 
         [Test]
@@ -69,7 +68,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.
 
             // Assert
             Assert.IsNotNull(learningDeliveries);
-            Assert.AreEqual(10, learningDeliveries.Count());
+            Assert.AreEqual(10, learningDeliveries.Length);
         }
     }
 }

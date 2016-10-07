@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Data.SqlClient;
-using System.Linq;
-using Dapper;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data;
 using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
@@ -63,13 +61,10 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.
             _repository.AddProcessedLearningDeliveryPeriodisedValues(periodisedValues);
 
             // Assert
-            using (var connection = new SqlConnection(_transientConnectionString))
-            {
-                var rows = connection.Query<ProcessedLearningDeliveryPeriodisedValues>("SELECT * FROM [Rulebase].[AE_LearningDelivery_PeriodisedValues]");
+            var rows = TestDataHelper.GetProcessedLearningDeliveryPeriodisedValues();
 
-                Assert.IsNotNull(rows);
-                Assert.AreEqual(5, rows.Count());
-            }
+            Assert.IsNotNull(rows);
+            Assert.AreEqual(5, rows.Length);
         }
 
         [Test]
