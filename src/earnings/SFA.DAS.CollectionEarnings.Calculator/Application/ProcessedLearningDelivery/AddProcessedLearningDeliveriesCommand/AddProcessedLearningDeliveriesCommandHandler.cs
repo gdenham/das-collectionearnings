@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using SFA.DAS.CollectionEarnings.Calculator.Data;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDelivery.AddProcessedLearningDeliveriesCommand
 {

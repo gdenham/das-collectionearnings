@@ -5,7 +5,7 @@ using CS.Common.External.Interfaces;
 using Dapper;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Calculator.Context;
-using SFA.DAS.CollectionEarnings.Calculator.Data.Entities;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools;
 using SFA.DAS.Payments.DCFS.Context;

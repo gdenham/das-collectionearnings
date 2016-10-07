@@ -1,7 +1,7 @@
-﻿using SFA.DAS.CollectionEarnings.Calculator.Data.Entities;
+﻿using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 using SFA.DAS.Payments.DCFS.Infrastructure.Data;
 
-namespace SFA.DAS.CollectionEarnings.Calculator.Data.Repositories
+namespace SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Repositories
 {
     public class ProcessedLearningDeliveryRepository : DcfsRepository, IProcessedLearningDeliveryRepository
     {

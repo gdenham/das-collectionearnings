@@ -20,8 +20,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
         {
             try
             {
-                var processedLearningDeliveries = new ConcurrentBag<Data.Entities.ProcessedLearningDelivery>();
-                var processedLearningDeliveryPeriodisedValues = new ConcurrentBag<Data.Entities.ProcessedLearningDeliveryPeriodisedValues>();
+                var processedLearningDeliveries = new ConcurrentBag<Infrastructure.Data.Entities.ProcessedLearningDelivery>();
+                var processedLearningDeliveryPeriodisedValues = new ConcurrentBag<Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues>();
 
                 var learningDeliveries = message.LearningDeliveries.ToList();
 
@@ -62,7 +62,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
             }
         }
 
-        private int CalculateNumberOfPeriods(Data.Entities.LearningDeliveryToProcess learningDelivery)
+        private int CalculateNumberOfPeriods(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
         {
             var result = 0;
 
@@ -77,17 +77,17 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
             return result;
         }
 
-        private decimal CalculateCompletionPayment(Data.Entities.LearningDeliveryToProcess learningDelivery)
+        private decimal CalculateCompletionPayment(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
         {
             return learningDelivery.NegotiatedPrice * 0.2m;
         }
 
-        private decimal CalculateMonthlyInstallment(Data.Entities.LearningDeliveryToProcess learningDelivery)
+        private decimal CalculateMonthlyInstallment(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
         {
             return learningDelivery.NegotiatedPrice * 0.8m / CalculateNumberOfPeriods(learningDelivery);
         }
 
-        private DateTime CalculateFirstCensusDateForTheLearningDelivery(Data.Entities.LearningDeliveryToProcess learningDelivery)
+        private DateTime CalculateFirstCensusDateForTheLearningDelivery(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
         {
             var firstCensusDateAfterYearOfCollectionStart = _dateTimeProvider.YearOfCollectionStart.LastDayOfMonth();
             var firstCensusDateAfterLearningStart = learningDelivery.LearnStartDate.LastDayOfMonth();
@@ -97,7 +97,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                 : firstCensusDateAfterYearOfCollectionStart;
         }
 
-        private int CalculateFirstPeriodForTheLearningDelivery(Data.Entities.LearningDeliveryToProcess learningDelivery)
+        private int CalculateFirstPeriodForTheLearningDelivery(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
         {
             var firstDayAfterYearOfCollectionStart = _dateTimeProvider.YearOfCollectionStart.FirstDayOfMonth();
 
@@ -110,9 +110,9 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                 : period;
         }
 
-        private Data.Entities.ProcessedLearningDelivery BuildProcessedLearningDelivery(Data.Entities.LearningDeliveryToProcess learningDelivery, decimal monthlyInstallment, decimal monthlyInstallmentUncapped, decimal completionPayment, decimal completionPaymentUncapped)
+        private Infrastructure.Data.Entities.ProcessedLearningDelivery BuildProcessedLearningDelivery(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery, decimal monthlyInstallment, decimal monthlyInstallmentUncapped, decimal completionPayment, decimal completionPaymentUncapped)
         {
-            return new Data.Entities.ProcessedLearningDelivery
+            return new Infrastructure.Data.Entities.ProcessedLearningDelivery
             {
                 Ukprn = learningDelivery.Ukprn,
                 LearnRefNumber = learningDelivery.LearnRefNumber,
@@ -135,9 +135,9 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
             };
         }
 
-        private Data.Entities.ProcessedLearningDeliveryPeriodisedValues BuildProcessedLearningDeliveryPeriodisedValues(Data.Entities.LearningDeliveryToProcess learningDelivery, decimal monthlyInstallment, decimal completionPayment)
+        private Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues BuildProcessedLearningDeliveryPeriodisedValues(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery, decimal monthlyInstallment, decimal completionPayment)
         {
-            var result = new Data.Entities.ProcessedLearningDeliveryPeriodisedValues
+            var result = new Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues
             {
                 LearnRefNumber = learningDelivery.LearnRefNumber,
                 AimSeqNumber = learningDelivery.AimSeqNumber,

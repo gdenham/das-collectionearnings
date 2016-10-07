@@ -4,6 +4,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDel
 {
     public class AddProcessedLearningDeliveriesCommandRequest : IRequest
     {
-         public Data.Entities.ProcessedLearningDelivery[] LearningDeliveries { get; set; }
+         public Infrastructure.Data.Entities.ProcessedLearningDelivery[] LearningDeliveries { get; set; }
     }
 }

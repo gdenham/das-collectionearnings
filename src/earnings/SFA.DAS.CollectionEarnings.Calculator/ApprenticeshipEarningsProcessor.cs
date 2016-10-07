@@ -5,7 +5,7 @@ using SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.GetL
 using SFA.DAS.CollectionEarnings.Calculator.Application.LearningDeliveryToProcess.GetAllLearningDeliveriesToProcessQuery;
 using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDelivery.AddProcessedLearningDeliveriesCommand;
 using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriodisedValues.AddProcessedLearningDeliveryPeriodisedValuesCommand;
-using SFA.DAS.CollectionEarnings.Calculator.Data.Entities;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.Calculator
 {

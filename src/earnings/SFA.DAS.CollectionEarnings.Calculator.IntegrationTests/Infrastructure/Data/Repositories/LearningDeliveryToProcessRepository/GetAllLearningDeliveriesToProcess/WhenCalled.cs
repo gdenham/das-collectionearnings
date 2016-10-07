@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.Calculator.Data;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data;
 using SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools;
 
-namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Data.Repositories.LearningDeliveryToProcessRepository.GetAllLearningDeliveriesToProcess
+namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.Data.Repositories.LearningDeliveryToProcessRepository.GetAllLearningDeliveriesToProcess
 {
     public class WhenCalled
     {
@@ -16,7 +16,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Data.Repositori
         {
             TestDataHelper.Clean();
 
-            _repository = new Calculator.Data.Repositories.LearningDeliveryToProcessRepository(_transientConnectionString);
+            _repository = new Calculator.Infrastructure.Data.Repositories.LearningDeliveryToProcessRepository(_transientConnectionString);
         }
 
         [Test]

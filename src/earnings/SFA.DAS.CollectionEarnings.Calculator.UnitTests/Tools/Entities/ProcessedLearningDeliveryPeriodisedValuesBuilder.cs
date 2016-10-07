@@ -1,4 +1,4 @@
-﻿using SFA.DAS.CollectionEarnings.Calculator.Data.Entities;
+﻿using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities
 {

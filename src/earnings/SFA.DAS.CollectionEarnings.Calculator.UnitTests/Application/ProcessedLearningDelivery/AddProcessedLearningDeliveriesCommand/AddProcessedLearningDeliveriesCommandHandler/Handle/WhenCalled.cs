@@ -2,7 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDelivery.AddProcessedLearningDeliveriesCommand;
-using SFA.DAS.CollectionEarnings.Calculator.Data;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.ProcessedLearningDelivery.AddProcessedLearningDeliveriesCommand.AddProcessedLearningDeliveriesCommandHandler.Handle
@@ -39,7 +39,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.ProcessedL
         {
             // Arrange
             _repository
-                .Setup(r => r.AddProcessedLearningDeliveries(It.IsAny<Data.Entities.ProcessedLearningDelivery[]>()));
+                .Setup(r => r.AddProcessedLearningDeliveries(It.IsAny<Infrastructure.Data.Entities.ProcessedLearningDelivery[]>()));
 
             // Act
             var response = _handler.Handle(_request);
@@ -53,7 +53,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.ProcessedL
         {
             // Arrange
             _repository
-                .Setup(r => r.AddProcessedLearningDeliveries(It.IsAny<Data.Entities.ProcessedLearningDelivery[]>()))
+                .Setup(r => r.AddProcessedLearningDeliveries(It.IsAny<Infrastructure.Data.Entities.ProcessedLearningDelivery[]>()))
                 .Throws<Exception>();
 
             // Assert

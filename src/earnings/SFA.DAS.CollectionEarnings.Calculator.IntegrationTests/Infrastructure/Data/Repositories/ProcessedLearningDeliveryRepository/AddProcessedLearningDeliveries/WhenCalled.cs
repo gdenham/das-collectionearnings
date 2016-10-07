@@ -3,12 +3,12 @@ using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.Calculator.Data;
-using SFA.DAS.CollectionEarnings.Calculator.Data.Entities;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities;
 
-namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Data.Repositories.ProcessedLearningDeliveryRepository.AddProcessedLearningDeliveries
+namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.Data.Repositories.ProcessedLearningDeliveryRepository.AddProcessedLearningDeliveries
 {
     public class WhenCalled
     {
@@ -70,7 +70,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Data.Repositori
         {
             TestDataHelper.Clean();
 
-            _repository = new Calculator.Data.Repositories.ProcessedLearningDeliveryRepository(_transientConnectionString);
+            _repository = new Calculator.Infrastructure.Data.Repositories.ProcessedLearningDeliveryRepository(_transientConnectionString);
         }
 
         [Test]

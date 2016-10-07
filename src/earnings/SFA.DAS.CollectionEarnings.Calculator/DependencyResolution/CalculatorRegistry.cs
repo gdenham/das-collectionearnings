@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using MediatR;
 using NLog;
-using SFA.DAS.CollectionEarnings.Calculator.Data;
-using SFA.DAS.CollectionEarnings.Calculator.Data.Repositories;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Repositories;
 using SFA.DAS.CollectionEarnings.Calculator.Tools.Providers;
 using StructureMap;
 

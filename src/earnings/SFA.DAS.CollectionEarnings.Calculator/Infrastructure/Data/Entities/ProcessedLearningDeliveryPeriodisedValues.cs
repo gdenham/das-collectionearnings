@@ -2,7 +2,7 @@
 
 using System;
 
-namespace SFA.DAS.CollectionEarnings.Calculator.Data.Entities
+namespace SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities
 {
     public class ProcessedLearningDeliveryPeriodisedValues
     {

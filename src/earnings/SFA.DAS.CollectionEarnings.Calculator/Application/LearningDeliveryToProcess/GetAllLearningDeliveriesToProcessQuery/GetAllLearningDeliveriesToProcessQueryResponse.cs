@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.CollectionEarnings.Calculator.Application.LearningDeliveryToProcess.GetAllLearningDeliveriesToProcessQuery
 {
-    public class GetAllLearningDeliveriesToProcessQueryResponse : QueryResponse<Data.Entities.LearningDeliveryToProcess>
+    public class GetAllLearningDeliveriesToProcessQueryResponse : QueryResponse<Infrastructure.Data.Entities.LearningDeliveryToProcess>
     {
     }
 }

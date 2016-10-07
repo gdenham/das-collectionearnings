@@ -4,6 +4,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
 {
     public class GetLearningDeliveriesEarningsQueryRequest : IRequest<GetLearningDeliveriesEarningsQueryResponse>
     {
-         public Data.Entities.LearningDeliveryToProcess[] LearningDeliveries { get; set; } 
+         public Infrastructure.Data.Entities.LearningDeliveryToProcess[] LearningDeliveries { get; set; } 
     }
 }
