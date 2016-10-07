@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using MediatR;
+﻿using MediatR;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriodisedValues.AddProcessedLearningDeliveryPeriodisedValuesCommand
 {
-    public class AddProcessedLearningDeliveryPeriodisedValuesCommandRequest : IRequest<AddProcessedLearningDeliveryPeriodisedValuesCommandResponse>
+    public class AddProcessedLearningDeliveryPeriodisedValuesCommandRequest : IRequest
     {
-         public IEnumerable<Data.Entities.ProcessedLearningDeliveryPeriodisedValues> PeriodisedValues { get; set; }
+         public Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues[] PeriodisedValues { get; set; }
     }
 }

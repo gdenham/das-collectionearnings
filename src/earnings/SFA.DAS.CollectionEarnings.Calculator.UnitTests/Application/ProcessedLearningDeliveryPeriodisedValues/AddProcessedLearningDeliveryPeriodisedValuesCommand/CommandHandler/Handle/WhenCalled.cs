@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriodisedValues.AddProcessedLearningDeliveryPeriodisedValuesCommand;
-using SFA.DAS.CollectionEarnings.Calculator.Data.Repositories;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.ProcessedLearningDeliveryPeriodisedValues.AddProcessedLearningDeliveryPeriodisedValuesCommand.CommandHandler.Handle
@@ -40,15 +39,13 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.ProcessedL
         {
             // Arrange
             _repository
-                .Setup(r => r.AddProcessedLearningDeliveryPeriodisedValues(It.IsAny<IEnumerable<Data.Entities.ProcessedLearningDeliveryPeriodisedValues>>()));
+                .Setup(r => r.AddProcessedLearningDeliveryPeriodisedValues(It.IsAny<Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues[]>()));
 
             // Act
             var response = _handler.Handle(_request);
 
             // Assert
             Assert.IsNotNull(response);
-            Assert.IsTrue(response.IsValid);
-            Assert.IsNull(response.Exception);
         }
 
         [Test]
@@ -56,16 +53,11 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.ProcessedL
         {
             // Arrange
             _repository
-                .Setup(r => r.AddProcessedLearningDeliveryPeriodisedValues(It.IsAny<IEnumerable<Data.Entities.ProcessedLearningDeliveryPeriodisedValues>>()))
-                .Throws(new Exception("Error while writing processed learning delivery periodised values."));
-
-            // Act
-            var response = _handler.Handle(_request);
+                .Setup(r => r.AddProcessedLearningDeliveryPeriodisedValues(It.IsAny<Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues[]>()))
+                .Throws<Exception>();
 
             // Assert
-            Assert.IsNotNull(response);
-            Assert.IsFalse(response.IsValid);
-            Assert.IsNotNull(response.Exception);
+            Assert.Throws<Exception>(() => _handler.Handle(_request));
         }
     }
 }

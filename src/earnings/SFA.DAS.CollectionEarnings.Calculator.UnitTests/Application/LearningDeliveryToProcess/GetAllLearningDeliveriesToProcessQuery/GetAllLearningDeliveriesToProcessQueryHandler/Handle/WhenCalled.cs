@@ -3,7 +3,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Calculator.Application.LearningDeliveryToProcess.GetAllLearningDeliveriesToProcessQuery;
-using SFA.DAS.CollectionEarnings.Calculator.Data.Repositories;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.LearningDeliveryToProcess.GetAllLearningDeliveriesToProcessQuery.GetAllLearningDeliveriesToProcessQueryHandler.Handle

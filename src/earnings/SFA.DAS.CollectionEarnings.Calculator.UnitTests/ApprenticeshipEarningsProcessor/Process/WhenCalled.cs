@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using MediatR;
 using Moq;
 using NLog;
@@ -8,8 +7,7 @@ using SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.GetL
 using SFA.DAS.CollectionEarnings.Calculator.Application.LearningDeliveryToProcess.GetAllLearningDeliveriesToProcessQuery;
 using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDelivery.AddProcessedLearningDeliveriesCommand;
 using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriodisedValues.AddProcessedLearningDeliveryPeriodisedValuesCommand;
-using SFA.DAS.CollectionEarnings.Calculator.Data.Entities;
-using SFA.DAS.CollectionEarnings.Calculator.Exceptions;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarningsProcessor.Process
@@ -64,19 +62,11 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddProcessedLearningDeliveriesCommandRequest>()))
-                .Returns(new AddProcessedLearningDeliveriesCommandResponse
-                    {
-                        IsValid = true
-                    }
-                );
+                .Returns(Unit.Value);
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddProcessedLearningDeliveryPeriodisedValuesCommandRequest>()))
-                .Returns(new AddProcessedLearningDeliveryPeriodisedValuesCommandResponse
-                    {
-                        IsValid = true
-                    }
-                );
+                .Returns(Unit.Value);
         }
 
         [Test]
@@ -88,13 +78,13 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
                 .Returns(new GetAllLearningDeliveriesToProcessQueryResponse
                     {
                         IsValid = false,
-                        Exception = new Exception(EarningsCalculatorExceptionMessages.ErrorReadingLearningDeliveriesToProcess)
+                        Exception = new Exception(EarningsCalculatorException.ErrorReadingLearningDeliveriesToProcessMessage)
                     }
                 );
 
             // Assert
-            var ex = Assert.Throws<EarningsCalculatorProcessorException>(() => _processor.Process());
-            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorExceptionMessages.ErrorReadingLearningDeliveriesToProcess));
+            var ex = Assert.Throws<EarningsCalculatorException>(() => _processor.Process());
+            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorException.ErrorReadingLearningDeliveriesToProcessMessage));
         }
 
         [Test]
@@ -106,13 +96,13 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
                 .Returns(new GetLearningDeliveriesEarningsQueryResponse
                     {
                         IsValid = false,
-                        Exception = new Exception(EarningsCalculatorExceptionMessages.ErrorCalculatingEarningsForTheLearningDeliveries)
+                        Exception = new Exception(EarningsCalculatorException.ErrorCalculatingEarningsForTheLearningDeliveriesMessage)
                     }
                 );
 
             // Assert
-            var ex = Assert.Throws<EarningsCalculatorProcessorException>(() => _processor.Process());
-            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorExceptionMessages.ErrorCalculatingEarningsForTheLearningDeliveries));
+            var ex = Assert.Throws<EarningsCalculatorException>(() => _processor.Process());
+            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorException.ErrorCalculatingEarningsForTheLearningDeliveriesMessage));
         }
 
         [Test]
@@ -121,16 +111,11 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
             // Arrange
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddProcessedLearningDeliveriesCommandRequest>()))
-                .Returns(new AddProcessedLearningDeliveriesCommandResponse
-                    {
-                        IsValid = false,
-                        Exception = new Exception(EarningsCalculatorExceptionMessages.ErrorWritingProcessedLearningDeliveries)
-                    }
-                );
+                .Throws<Exception>();
 
             // Assert
-            var ex = Assert.Throws<EarningsCalculatorProcessorException>(() => _processor.Process());
-            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorExceptionMessages.ErrorWritingProcessedLearningDeliveries));
+            var ex = Assert.Throws<EarningsCalculatorException>(() => _processor.Process());
+            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorException.ErrorWritingProcessedLearningDeliveriesMessage));
         }
 
         [Test]
@@ -139,22 +124,17 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
             // Arrange
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddProcessedLearningDeliveryPeriodisedValuesCommandRequest>()))
-                .Returns(new AddProcessedLearningDeliveryPeriodisedValuesCommandResponse
-                    {
-                        IsValid = false,
-                        Exception = new Exception(EarningsCalculatorExceptionMessages.ErrorWritingProcessedLearningDeliveryPeriodisedValues)
-                    }
-                );
+                .Throws<Exception>();
 
             // Assert
-            var ex = Assert.Throws<EarningsCalculatorProcessorException>(() => _processor.Process());
-            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorExceptionMessages.ErrorWritingProcessedLearningDeliveryPeriodisedValues));
+            var ex = Assert.Throws<EarningsCalculatorException>(() => _processor.Process());
+            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorException.ErrorWritingProcessedLearningDeliveryPeriodisedValuesMessage));
         }
 
         [Test]
 
         [TestCaseSource(nameof(EmptyItems))]
-        public void ThenExpectingLogEntryForGetAllLearningDeliveriesToProcessQueryNoItems(IEnumerable<LearningDeliveryToProcess> items)
+        public void ThenExpectingLogEntryForGetAllLearningDeliveriesToProcessQueryNoItems(LearningDeliveryToProcess[] items)
         {
             // Arrange
             _mediator

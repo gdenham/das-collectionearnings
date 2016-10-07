@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using SFA.DAS.Payments.DCFS.Application;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.GetLearningDeliveriesEarningsQuery
 {
     public class GetLearningDeliveriesEarningsQueryResponse : Response
     {
-        public IEnumerable<Data.Entities.ProcessedLearningDelivery> ProcessedLearningDeliveries { get; set; }
-        public IEnumerable<Data.Entities.ProcessedLearningDeliveryPeriodisedValues> ProcessedLearningDeliveryPeriodisedValues { get; set; }
+        public Infrastructure.Data.Entities.ProcessedLearningDelivery[] ProcessedLearningDeliveries { get; set; }
+        public Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues[] ProcessedLearningDeliveryPeriodisedValues { get; set; }
     }
 }

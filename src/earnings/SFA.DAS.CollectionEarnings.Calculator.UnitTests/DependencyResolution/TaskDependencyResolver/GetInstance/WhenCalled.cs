@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using NLog;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.Calculator.Context;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools;
+using SFA.DAS.Payments.DCFS.Context;
 using StructureMap;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.DependencyResolution.TaskDependencyResolver.GetInstance
@@ -16,7 +16,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.DependencyResolution.T
         {
             var context = new ExternalContextStub
             {
-                Properties = new Dictionary<string, string>()
+                Properties = new Dictionary<string, string>
                 {
                     {ContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String"},
                     {ContextPropertyKeys.LogLevel, "Info"}

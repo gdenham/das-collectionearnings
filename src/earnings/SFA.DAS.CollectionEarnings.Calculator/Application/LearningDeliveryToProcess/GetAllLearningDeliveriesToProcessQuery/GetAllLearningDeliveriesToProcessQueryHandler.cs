@@ -1,6 +1,6 @@
 ﻿using System;
 using MediatR;
-using SFA.DAS.CollectionEarnings.Calculator.Data.Repositories;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.Application.LearningDeliveryToProcess.GetAllLearningDeliveriesToProcessQuery
 {

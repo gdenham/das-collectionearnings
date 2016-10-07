@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -118,7 +117,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
 
         [Test]
         [TestCaseSource(nameof(LearningDeliveriesToProcessAndExpectedMonthlyAndCompletionAmounts))]
-        public void ThenMonthlyInstallmentAndCompletionPaymentAreCalculatedCorrectly(IEnumerable<Data.Entities.LearningDeliveryToProcess> learningDeliveries, decimal monthly, decimal completion)
+        public void ThenMonthlyInstallmentAndCompletionPaymentAreCalculatedCorrectly(Infrastructure.Data.Entities.LearningDeliveryToProcess[] learningDeliveries, decimal monthly, decimal completion)
         {
             // Arrange
             _request = new GetLearningDeliveriesEarningsQueryRequest
@@ -142,7 +141,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
 
         [Test]
         [TestCaseSource(nameof(LearningDeliveriesToProcessWithSubmissionDatesAndExpectedPaymentSchedules))]
-        public void ThenPeriodisedValuesAreCalculatedCorrectlyForTheProvidedSubmission(IEnumerable<Data.Entities.LearningDeliveryToProcess> learningDeliveries, DateTime submissionDate, decimal[] expectedPeriodisedValues, string because)
+        public void ThenPeriodisedValuesAreCalculatedCorrectlyForTheProvidedSubmission(Infrastructure.Data.Entities.LearningDeliveryToProcess[] learningDeliveries, DateTime submissionDate, decimal[] expectedPeriodisedValues, string because)
         {
             // Arrange
             _dateTimeProvider

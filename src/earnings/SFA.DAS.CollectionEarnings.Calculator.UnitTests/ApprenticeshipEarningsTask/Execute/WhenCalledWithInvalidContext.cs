@@ -4,10 +4,9 @@ using MediatR;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Calculator.Context;
-using SFA.DAS.CollectionEarnings.Calculator.DependencyResolution;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools;
-using NLog;
-using SFA.DAS.CollectionEarnings.Calculator.Exceptions;
+using SFA.DAS.Payments.DCFS.Context;
+using SFA.DAS.Payments.DCFS.Infrastructure.DependencyResolution;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarningsTask.Execute
 {
@@ -23,28 +22,25 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
         private IExternalTask _task;
 
         private Mock<IDependencyResolver> _dependencyResolver;
-        private Mock<ILogger> _logger;
         private Mock<IMediator> _mediator;
 
         [SetUp]
         public void Arrange()
         {
-            _logger = new Mock<ILogger>();
             _mediator = new Mock<IMediator>();
 
             _dependencyResolver = new Mock<IDependencyResolver>();
-            _dependencyResolver.Setup(dr => dr.GetInstance<ILogger>()).Returns(_logger.Object);
             _dependencyResolver.Setup(dr => dr.GetInstance<IMediator>()).Returns(_mediator.Object);
 
-            _task = new Calculator.ApprenticeshipEarningsTask(_dependencyResolver.Object, _logger.Object);
+            _task = new Calculator.ApprenticeshipEarningsTask(_dependencyResolver.Object);
         }
 
         [Test]
         public void ThenExpectingExceptionForNullContextProvided()
         {
             // Assert
-            var ex = Assert.Throws<EarningsCalculatorInvalidContextException>(() => _task.Execute(null));
-            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorExceptionMessages.ContextNull));
+            var ex = Assert.Throws<InvalidContextException>(() => _task.Execute(null));
+            Assert.IsTrue(ex.Message.Contains(InvalidContextException.ContextNullMessage));
         }
 
         [Test]
@@ -54,8 +50,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
             _context.Properties = properties;
 
             // Assert
-            var ex = Assert.Throws<EarningsCalculatorInvalidContextException>(() => _task.Execute(_context));
-            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorExceptionMessages.ContextNoProperties));
+            var ex = Assert.Throws<InvalidContextException>(() => _task.Execute(_context));
+            Assert.IsTrue(ex.Message.Contains(InvalidContextException.ContextNoPropertiesMessage));
         }
 
         [Test]
@@ -64,14 +60,14 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
             var properties = new Dictionary<string, string>
             {
                 { ContextPropertyKeys.LogLevel, "Info" },
-                { ContextPropertyKeys.YearOfCollection, "1617" }
+                { EarningsContextPropertyKeys.YearOfCollection, "1617" }
             };
 
             _context.Properties = properties;
 
             // Assert
-            var ex = Assert.Throws<EarningsCalculatorInvalidContextException>(() => _task.Execute(_context));
-            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorExceptionMessages.ContextPropertiesNoConnectionString));
+            var ex = Assert.Throws<InvalidContextException>(() => _task.Execute(_context));
+            Assert.IsTrue(ex.Message.Contains(InvalidContextException.ContextPropertiesNoConnectionStringMessage));
         }
 
         [Test]
@@ -80,14 +76,14 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
             var properties = new Dictionary<string, string>
             {
                 { ContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" },
-                { ContextPropertyKeys.YearOfCollection, "1617" }
+                { EarningsContextPropertyKeys.YearOfCollection, "1617" }
             };
 
             _context.Properties = properties;
 
             // Assert
-            var ex = Assert.Throws<EarningsCalculatorInvalidContextException>(() => _task.Execute(_context));
-            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorExceptionMessages.ContextPropertiesNoLogLevel));
+            var ex = Assert.Throws<InvalidContextException>(() => _task.Execute(_context));
+            Assert.IsTrue(ex.Message.Contains(InvalidContextException.ContextPropertiesNoLogLevelMessage));
         }
 
         [Test]
@@ -102,8 +98,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
             _context.Properties = properties;
 
             // Assert
-            var ex = Assert.Throws<EarningsCalculatorInvalidContextException>(() => _task.Execute(_context));
-            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorExceptionMessages.ContextPropertiesNoYearOfCollection));
+            var ex = Assert.Throws<InvalidContextException>(() => _task.Execute(_context));
+            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorException.ContextPropertiesNoYearOfCollectionMessage));
         }
 
         [TestCase(" ")]
@@ -117,14 +113,14 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
             {
                 { ContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String" },
                 { ContextPropertyKeys.LogLevel, "Info" },
-                { ContextPropertyKeys.YearOfCollection, yearOfCollection }
+                { EarningsContextPropertyKeys.YearOfCollection, yearOfCollection }
             };
 
             _context.Properties = properties;
 
             // Assert
-            var ex = Assert.Throws<EarningsCalculatorInvalidContextException>(() => _task.Execute(_context));
-            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorExceptionMessages.ContextPropertiesInvalidYearOfCollection));
+            var ex = Assert.Throws<InvalidContextException>(() => _task.Execute(_context));
+            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorException.ContextPropertiesInvalidYearOfCollectionMessage));
         }
     }
 }

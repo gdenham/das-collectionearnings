@@ -30,23 +30,32 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CS.Common.External">
-      <HintPath>..\Lib\CS.Common.External.dll</HintPath>
-    </Reference>
-    <Reference Include="Dapper, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.1.50.0\lib\net45\Dapper.dll</HintPath>
+    <Reference Include="CS.Common.External, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SFA.DAS.Payments.DCFS.1.0.0.11709\lib\net45\CS.Common.External.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapper.Contrib, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.Contrib.1.50.0\lib\net45\Dapper.Contrib.dll</HintPath>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net45\Dapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FastMember, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.1.1.0\lib\net40\FastMember.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.3.7\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.3.9\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SFA.DAS.Payments.DCFS, Version=1.0.0.11709, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SFA.DAS.Payments.DCFS.1.0.0.11709\lib\net45\SFA.DAS.Payments.DCFS.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap, Version=4.4.1.451, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StructureMap.4.4.1\lib\net45\StructureMap.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -62,12 +71,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApprenticeshipEarningsTask\Execute\WhenCalled.cs" />
-    <Compile Include="Data\Repositories\LearningDeliveryToProcessRepository\GetAllLearningDeliveriesToProcess\WhenCalled.cs" />
-    <Compile Include="Data\Repositories\ProcessedLearningDeliveryPeriodisedValuesRepository\AddProcessedLearningDeliveryPeriodisedValues\WhenCalled.cs" />
-    <Compile Include="Data\Repositories\ProcessedLearningDeliveryRepository\AddProcessedLearningDeliveries\WhenCalled.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\LearningDeliveryToProcessRepository\GetAllLearningDeliveriesToProcess\WhenCalled.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\ProcessedLearningDeliveryPeriodisedValuesRepository\AddProcessedLearningDeliveryPeriodisedValues\WhenCalled.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\ProcessedLearningDeliveryRepository\AddProcessedLearningDeliveries\WhenCalled.cs" />
+    <Compile Include="GlobalSetup.cs" />
+    <Compile Include="GlobalTestContext.cs" />
+    <Compile Include="GlobalTestContextSetupException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tools\ConnectionStringFactory.cs" />
-    <Compile Include="Tools\Database.cs" />
+    <Compile Include="Tools\TestDataHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -84,6 +95,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Deploy\sql\ddl\Ilr.Transient.Earnings.DDL.Tables.sql">
+      <Link>DbSetupScripts\Ilr.Transient.Earnings.DDL.Tables.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Deploy\sql\ddl\Ilr.Transient.Earnings.DDL.Views.sql">
+      <Link>DbSetupScripts\Ilr.Transient.Earnings.DDL.Views.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DbSetupScripts\Ilr.Transient.DDL.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Tools\Sql\IlrDataOneLearningDeliveryToProcess.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

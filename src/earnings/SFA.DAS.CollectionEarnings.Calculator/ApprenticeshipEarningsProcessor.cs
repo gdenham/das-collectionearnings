@@ -1,11 +1,11 @@
-﻿using System.Linq;
+﻿using System;
 using MediatR;
 using NLog;
 using SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.GetLearningDeliveriesEarningsQuery;
 using SFA.DAS.CollectionEarnings.Calculator.Application.LearningDeliveryToProcess.GetAllLearningDeliveriesToProcessQuery;
 using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDelivery.AddProcessedLearningDeliveriesCommand;
 using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriodisedValues.AddProcessedLearningDeliveryPeriodisedValuesCommand;
-using SFA.DAS.CollectionEarnings.Calculator.Exceptions;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.Calculator
 {
@@ -28,60 +28,15 @@ namespace SFA.DAS.CollectionEarnings.Calculator
         {
             _logger.Info("Started Apprenticeship Earnings Processor.");
 
-            _logger.Debug("Reading learning deliveries to process.");
+            var learningDeliveriesToProcess = ReturnLearningDeliveriesToProcessOrThrow();
 
-            var learningDeliveries = _mediator.Send(new GetAllLearningDeliveriesToProcessQueryRequest());
-
-            if (!learningDeliveries.IsValid)
+            if (learningDeliveriesToProcess.HasAnyItems())
             {
-                throw new EarningsCalculatorProcessorException(EarningsCalculatorExceptionMessages.ErrorReadingLearningDeliveriesToProcess, learningDeliveries.Exception);
-            }
+                var processedEarnings = CalculateEarningsOrThrow(learningDeliveriesToProcess.Items);
 
-            if (learningDeliveries.Items != null && learningDeliveries.Items.Any())
-            {
-                _logger.Debug("Started calculating the earnings for the found learning deliveries.");
+                WriteProcessedLearningDeliveriesOrThrow(processedEarnings.ProcessedLearningDeliveries);
 
-                var earnings = _mediator.Send(new GetLearningDeliveriesEarningsQueryRequest
-                {
-                    LearningDeliveries = learningDeliveries.Items
-                });
-
-                _logger.Debug("Finished calculating the earnings for the found learning deliveries.");
-
-                if (!earnings.IsValid)
-                {
-                    throw new EarningsCalculatorProcessorException(EarningsCalculatorExceptionMessages.ErrorCalculatingEarningsForTheLearningDeliveries, earnings.Exception);
-                }
-
-                _logger.Debug("Started writing processed learning deliveries.");
-
-                var writeProcessedLearningDeliveriesResult =
-                    _mediator.Send(new AddProcessedLearningDeliveriesCommandRequest
-                    {
-                        LearningDeliveries = earnings.ProcessedLearningDeliveries
-                    });
-
-                _logger.Debug("Finished writing processed learning deliveries.");
-
-                if (!writeProcessedLearningDeliveriesResult.IsValid)
-                {
-                    throw new EarningsCalculatorProcessorException(EarningsCalculatorExceptionMessages.ErrorWritingProcessedLearningDeliveries, writeProcessedLearningDeliveriesResult.Exception);
-                }
-
-                _logger.Debug("Started writing processed learning deliveries periodised values.");
-
-                var writeProcessedLearningDeliveryPeriodisedValuesResult =
-                    _mediator.Send(new AddProcessedLearningDeliveryPeriodisedValuesCommandRequest
-                    {
-                        PeriodisedValues = earnings.ProcessedLearningDeliveryPeriodisedValues
-                    });
-
-                _logger.Debug("Finished writing processed learning deliveries periodised values.");
-
-                if (!writeProcessedLearningDeliveryPeriodisedValuesResult.IsValid)
-                {
-                    throw new EarningsCalculatorProcessorException(EarningsCalculatorExceptionMessages.ErrorWritingProcessedLearningDeliveryPeriodisedValues, writeProcessedLearningDeliveryPeriodisedValuesResult.Exception);
-                }
+                WriteProcessedLearningDeliveryPeriodisedValuesOrThrow(processedEarnings.ProcessedLearningDeliveryPeriodisedValues);
             }
             else
             {
@@ -89,6 +44,78 @@ namespace SFA.DAS.CollectionEarnings.Calculator
             }
 
             _logger.Info("Finished Apprenticeship Earnings Processor.");
+        }
+
+        private GetAllLearningDeliveriesToProcessQueryResponse ReturnLearningDeliveriesToProcessOrThrow()
+        {
+            _logger.Debug("Reading learning deliveries to process.");
+
+            var learningDeliveries = _mediator.Send(new GetAllLearningDeliveriesToProcessQueryRequest());
+
+            if (!learningDeliveries.IsValid)
+            {
+                throw new EarningsCalculatorException(
+                    EarningsCalculatorException.ErrorReadingLearningDeliveriesToProcessMessage, learningDeliveries.Exception);
+            }
+
+            return learningDeliveries;
+        }
+
+        private GetLearningDeliveriesEarningsQueryResponse CalculateEarningsOrThrow(LearningDeliveryToProcess[] learningDeliveriesToProcess)
+        {
+            _logger.Debug("Started calculating the earnings for the found learning deliveries.");
+
+            var earnings = _mediator.Send(new GetLearningDeliveriesEarningsQueryRequest
+            {
+                LearningDeliveries = learningDeliveriesToProcess
+            });
+
+            _logger.Debug("Finished calculating the earnings for the found learning deliveries.");
+
+            if (!earnings.IsValid)
+            {
+                throw new EarningsCalculatorException(EarningsCalculatorException.ErrorCalculatingEarningsForTheLearningDeliveriesMessage, earnings.Exception);
+            }
+
+            return earnings;
+        }
+
+        private void WriteProcessedLearningDeliveriesOrThrow(ProcessedLearningDelivery[] processedLearningDeliveries)
+        {
+            _logger.Debug("Started writing processed learning deliveries.");
+
+            try
+            {
+                _mediator.Send(new AddProcessedLearningDeliveriesCommandRequest
+                {
+                    LearningDeliveries = processedLearningDeliveries
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new EarningsCalculatorException(EarningsCalculatorException.ErrorWritingProcessedLearningDeliveriesMessage, ex);
+            }
+
+            _logger.Debug("Finished writing processed learning deliveries.");
+        }
+
+        private void WriteProcessedLearningDeliveryPeriodisedValuesOrThrow(ProcessedLearningDeliveryPeriodisedValues[] processedLearningDeliveryPeriodisedValues)
+        {
+            _logger.Debug("Started writing processed learning deliveries periodised values.");
+
+            try
+            {
+                _mediator.Send(new AddProcessedLearningDeliveryPeriodisedValuesCommandRequest
+                {
+                    PeriodisedValues = processedLearningDeliveryPeriodisedValues
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new EarningsCalculatorException(EarningsCalculatorException.ErrorWritingProcessedLearningDeliveryPeriodisedValuesMessage, ex);
+            }
+
+            _logger.Debug("Finished writing processed learning deliveries periodised values.");
         }
     }
 }

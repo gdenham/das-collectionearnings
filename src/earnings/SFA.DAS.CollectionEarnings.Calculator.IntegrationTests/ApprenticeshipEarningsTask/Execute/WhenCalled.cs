@@ -5,15 +5,16 @@ using CS.Common.External.Interfaces;
 using Dapper;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Calculator.Context;
-using SFA.DAS.CollectionEarnings.Calculator.Data.Entities;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools;
+using SFA.DAS.Payments.DCFS.Context;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipEarningsTask.Execute
 {
     public class WhenCalled
     {
-        private readonly string _transientConnectionString = ConnectionStringFactory.GetTransientConnectionString();
+        private readonly string _transientConnectionString = GlobalTestContext.Instance.ConnectionString;
 
         private IExternalTask _task;
         private IExternalContext _context;
@@ -21,8 +22,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipE
         [SetUp]
         public void Arrange()
         {
-            Database.Clean(_transientConnectionString);
-            Database.AddIlrDataOneLearningDeliveryToProcess(_transientConnectionString);
+            TestDataHelper.Clean();
+            TestDataHelper.ExecuteScript("IlrDataOneLearningDeliveryToProcess.sql");
 
             _task = new Calculator.ApprenticeshipEarningsTask();
 
@@ -32,7 +33,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipE
                 {
                     {ContextPropertyKeys.TransientDatabaseConnectionString, _transientConnectionString},
                     {ContextPropertyKeys.LogLevel, "Trace"},
-                    {ContextPropertyKeys.YearOfCollection, "1718"}
+                    {EarningsContextPropertyKeys.YearOfCollection, "1718"}
                 }
             };
         }

@@ -3,9 +3,9 @@ using CS.Common.External.Interfaces;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Calculator.Context;
-using SFA.DAS.CollectionEarnings.Calculator.DependencyResolution;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools;
-using NLog;
+using SFA.DAS.Payments.DCFS.Context;
+using SFA.DAS.Payments.DCFS.Infrastructure.DependencyResolution;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarningsTask.Execute
 {
@@ -15,7 +15,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
         private IExternalTask _task;
 
         private Mock<IDependencyResolver> _dependencyResolver;
-        private Mock<ILogger> _logger;
         private Mock<Calculator.ApprenticeshipEarningsProcessor> _processor;
 
         [SetUp]
@@ -27,15 +26,14 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
                 {
                     {ContextPropertyKeys.TransientDatabaseConnectionString, "Ilr.Transient.Connection.String"},
                     {ContextPropertyKeys.LogLevel, "Info"},
-                    {ContextPropertyKeys.YearOfCollection, "1718"}
+                    {EarningsContextPropertyKeys.YearOfCollection, "1718"}
                 }
             };
 
             _dependencyResolver = new Mock<IDependencyResolver>();
-            _logger = new Mock<ILogger>();
             _processor = new Mock<Calculator.ApprenticeshipEarningsProcessor>();
 
-            _task = new Calculator.ApprenticeshipEarningsTask(_dependencyResolver.Object, _logger.Object);
+            _task = new Calculator.ApprenticeshipEarningsTask(_dependencyResolver.Object);
         }
 
         [Test]
