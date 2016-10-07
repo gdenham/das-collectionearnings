@@ -14,7 +14,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipE
 {
     public class WhenCalled
     {
-        private readonly string _transientConnectionString = ConnectionStringFactory.GetTransientConnectionString();
+        private readonly string _transientConnectionString = GlobalTestContext.Instance.ConnectionString;
 
         private IExternalTask _task;
         private IExternalContext _context;
@@ -22,8 +22,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipE
         [SetUp]
         public void Arrange()
         {
-            Database.Clean(_transientConnectionString);
-            Database.AddIlrDataOneLearningDeliveryToProcess(_transientConnectionString);
+            TestDataHelper.Clean();
+            TestDataHelper.ExecuteScript("IlrDataOneLearningDeliveryToProcess.sql");
 
             _task = new Calculator.ApprenticeshipEarningsTask();
 

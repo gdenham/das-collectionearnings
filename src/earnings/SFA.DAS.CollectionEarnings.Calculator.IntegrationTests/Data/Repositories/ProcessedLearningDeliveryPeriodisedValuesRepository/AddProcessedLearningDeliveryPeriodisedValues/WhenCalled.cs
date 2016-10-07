@@ -34,14 +34,14 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Data.Repositori
             }
         };
 
-        private readonly string _transientConnectionString = ConnectionStringFactory.GetTransientConnectionString();
+        private readonly string _transientConnectionString = GlobalTestContext.Instance.ConnectionString;
 
         private IProcessedLearningDeliveryPeriodisedValuesRepository _repository;
 
         [SetUp]
         public void Arrange()
         {
-            Database.Clean(_transientConnectionString);
+            TestDataHelper.Clean();
 
             _repository = new Calculator.Data.Repositories.ProcessedLearningDeliveryPeriodisedValuesRepository(_transientConnectionString);
         }

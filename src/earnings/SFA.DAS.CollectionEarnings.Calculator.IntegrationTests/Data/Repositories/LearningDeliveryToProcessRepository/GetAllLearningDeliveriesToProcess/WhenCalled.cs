@@ -7,14 +7,14 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Data.Repositori
 {
     public class WhenCalled
     {
-        private readonly string _transientConnectionString = ConnectionStringFactory.GetTransientConnectionString();
+        private readonly string _transientConnectionString = GlobalTestContext.Instance.ConnectionString;
 
         private ILearningDeliveryToProcessRepository _repository;
 
         [SetUp]
         public void Arrange()
         {
-            Database.Clean(_transientConnectionString);
+            TestDataHelper.Clean();
 
             _repository = new Calculator.Data.Repositories.LearningDeliveryToProcessRepository(_transientConnectionString);
         }
@@ -34,7 +34,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Data.Repositori
         public void ThenNoLearningDeliveriesReturnedForWrongEntriesInTheDatabase()
         {
             // Arrange
-            Database.AddIlrDataNoLearningDeliveriesToProcess(_transientConnectionString);
+            TestDataHelper.ExecuteScript("IlrDataNoLearningDeliveriesToProcess.sql");
 
             // Act
             var learningDeliveries = _repository.GetAllLearningDeliveriesToProcess();
@@ -48,7 +48,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Data.Repositori
         public void ThenOneLearningDeliveryReturnedForOneEntryInTheDatabase()
         {
             // Arrange
-            Database.AddIlrDataOneLearningDeliveryToProcess(_transientConnectionString);
+            TestDataHelper.ExecuteScript("IlrDataOneLearningDeliveryToProcess.sql");
 
             // Act
             var learningDeliveries = _repository.GetAllLearningDeliveriesToProcess();
@@ -62,7 +62,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Data.Repositori
         public void ThenMultipleLearningDeliveriesReturnedForMultipleEntriesInTheDatabase()
         {
             // Arrange
-            Database.AddIlrDataMultipleLearningDeliveriesToProcess(_transientConnectionString);
+            TestDataHelper.ExecuteScript("IlrDataMultipleLearningDeliveriesToProcess.sql");
 
             // Act
             var learningDeliveries = _repository.GetAllLearningDeliveriesToProcess();
