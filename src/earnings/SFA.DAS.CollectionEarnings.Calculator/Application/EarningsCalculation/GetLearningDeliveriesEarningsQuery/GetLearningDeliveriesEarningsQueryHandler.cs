@@ -190,7 +190,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                 period++;
             }
 
-            if (shouldAddCompletionPayment && !addedCompletionPayment && period < 12)
+            if (shouldAddCompletionPayment && !addedCompletionPayment && period <= 12)
             {
                 result.SetPeriodValue(period, completionPayment);
             }

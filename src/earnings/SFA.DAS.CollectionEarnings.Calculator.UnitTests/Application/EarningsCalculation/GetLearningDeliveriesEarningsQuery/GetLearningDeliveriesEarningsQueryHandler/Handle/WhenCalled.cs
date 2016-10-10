@@ -109,6 +109,13 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
                 new DateTime(2018, 12, 15),
                 new DateTime(2017, 8, 1),
                 new[] {0.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m}
+            },
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2017, 4, 1)).WithLearnPlanEndDate(new DateTime(2018, 5, 1)).WithLearnActEndDate(new DateTime(2018, 7, 15)).WithNegotiatedPrice(15000).Build()},
+                new DateTime(2018, 7, 25),
+                new DateTime(2017, 8, 1),
+                new[] { 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 0.00m, 0.00m, 3000.00m}
             }
         };
 
