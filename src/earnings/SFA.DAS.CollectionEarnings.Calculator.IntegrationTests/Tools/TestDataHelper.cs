@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using Dapper;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools
 {
@@ -37,9 +38,14 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools
                 ");
         }
 
-        internal static int GetPaymentsCount()
+        internal static ProcessedLearningDelivery[] GetProcessedLearningDeliveries()
         {
-            return Count("CoInvestedPayments.Payments");
+            return Query<ProcessedLearningDelivery>("SELECT * FROM [Rulebase].[AE_LearningDelivery]");
+        }
+
+        internal static ProcessedLearningDeliveryPeriodisedValues[] GetProcessedLearningDeliveryPeriodisedValues()
+        {
+            return Query<ProcessedLearningDeliveryPeriodisedValues>("SELECT * FROM [Rulebase].[AE_LearningDelivery_PeriodisedValues]");
         }
 
         internal static void ExecuteScript(string script)

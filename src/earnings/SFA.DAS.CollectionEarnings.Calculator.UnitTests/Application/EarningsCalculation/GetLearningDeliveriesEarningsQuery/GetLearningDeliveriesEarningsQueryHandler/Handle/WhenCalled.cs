@@ -29,7 +29,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
             new object[]
             {
                 new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 30)).Build()},
-                923.0769230769230769230769231m,
+                923.07692m,
                 3000.00m
             }
         };
@@ -61,7 +61,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
             {
                 new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 30)).Build()},
                 new DateTime(2018, 7, 15),
-                new[] { 0.00m, 923.0769230769230769230769231m, 923.0769230769230769230769231m, 923.0769230769230769230769231m, 923.0769230769230769230769231m, 923.0769230769230769230769231m, 923.0769230769230769230769231m, 923.0769230769230769230769231m, 923.0769230769230769230769231m, 923.0769230769230769230769231m, 923.0769230769230769230769231m, 923.0769230769230769230769231m},
+                new[] { 0.00m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m},
                 "expecting monthly installments of 923.0769230769230769230769231 starting from the second period for a learning episode that starts on 01/09/2017, runs for 13 months, has a negociated price of 15000 and is submitted on 15/07/2018."
             },
             new object[]
@@ -86,7 +86,32 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
                 "expecting one monthly installment of 1000.00 in the first period and the 3000.00 completion payment in the second period for a learning episode that starts on 01/09/2016, runs for 12 months, does not end on a census date, has a negociated price of 15000 and is submitted on 30/09/2017."
             }
         };
-        
+
+        private static readonly object[] LearningDeliveriesToProcessWithSubmissionAndYearOfCollectionDatesAndExpectedPaymentSchedulesForLateFinishers =
+        {
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 8)).WithLearnActEndDate(new DateTime(2018, 10, 8)).Build()},
+                new DateTime(2018, 10, 15),
+                new DateTime(2018, 8, 1),
+                new[] {1000.00m, 0.00m, 3000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m}
+            },
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 8)).WithLearnActEndDate(new DateTime(2018, 12, 8)).Build()},
+                new DateTime(2018, 12, 15),
+                new DateTime(2018, 8, 1),
+                new[] {1000.00m, 0.00m, 0.00m, 0.00m, 3000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m}
+            },
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 8)).WithLearnActEndDate(new DateTime(2018, 12, 8)).Build()},
+                new DateTime(2018, 12, 15),
+                new DateTime(2017, 8, 1),
+                new[] {0.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m}
+            }
+        };
+
         #endregion
 
         private Mock<IDateTimeProvider> _dateTimeProvider; 
@@ -141,7 +166,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
 
         [Test]
         [TestCaseSource(nameof(LearningDeliveriesToProcessWithSubmissionDatesAndExpectedPaymentSchedules))]
-        public void ThenPeriodisedValuesAreCalculatedCorrectlyForTheProvidedSubmission(Infrastructure.Data.Entities.LearningDeliveryToProcess[] learningDeliveries, DateTime submissionDate, decimal[] expectedPeriodisedValues, string because)
+        public void ThenPeriodisedValuesAreCalculatedCorrectlyForALearnerThatIsInLearningOrFinishesOnTime(Infrastructure.Data.Entities.LearningDeliveryToProcess[] learningDeliveries, DateTime submissionDate, decimal[] expectedPeriodisedValues, string because)
         {
             // Arrange
             _dateTimeProvider
@@ -167,6 +192,41 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
             for (var x = 0; x < 12; x++)
             {
                 Assert.AreEqual(expectedPeriodisedValues[x], periodisedValues.GetPeriodValue(x + 1), because, null);
+            }
+        }
+
+        [Test]
+        [TestCaseSource(nameof(LearningDeliveriesToProcessWithSubmissionAndYearOfCollectionDatesAndExpectedPaymentSchedulesForLateFinishers))]
+        public void ThenPeriodisedValuesAreCalculatedCorrectlyForALearnerThatFinishesLater(Infrastructure.Data.Entities.LearningDeliveryToProcess[] learningDeliveries, DateTime submissionDate, DateTime yearOfCollectionDate, decimal[] expectedPeriodisedValues)
+        {
+            // Arrange
+            _dateTimeProvider
+                .Setup(dtp => dtp.YearOfCollectionStart)
+                .Returns(yearOfCollectionDate);
+
+            _dateTimeProvider
+                .Setup(dtp => dtp.Today)
+                .Returns(submissionDate);
+
+            _request = new GetLearningDeliveriesEarningsQueryRequest
+            {
+                LearningDeliveries = learningDeliveries
+            };
+
+            // Act
+            var result = _handler.Handle(_request);
+
+            // Assert
+            Assert.IsNotNull(result.IsValid);
+            Assert.IsTrue(result.IsValid);
+
+            var periodisedValues = result.ProcessedLearningDeliveryPeriodisedValues.FirstOrDefault();
+
+            Assert.IsNotNull(periodisedValues);
+
+            for (var x = 0; x < 12; x++)
+            {
+                Assert.AreEqual(expectedPeriodisedValues[x], periodisedValues.GetPeriodValue(x + 1));
             }
         }
     }
