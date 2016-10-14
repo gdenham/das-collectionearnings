@@ -5,6 +5,6 @@
         public long Ukprn { get; set; }
         public string LearnRefNumber { get; set; }
         public long AimSeqNumber { get; set; }
-        public string CommitmentId { get; set; }
+        public long CommitmentId { get; set; }
     }
 }

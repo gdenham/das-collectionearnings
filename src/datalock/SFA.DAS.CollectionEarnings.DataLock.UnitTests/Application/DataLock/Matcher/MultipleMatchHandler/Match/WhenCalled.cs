@@ -40,7 +40,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
             var commitments = new List<CollectionEarnings.DataLock.Application.Commitment.Commitment>
             {
                 new CommitmentBuilder().Build(),
-                new CommitmentBuilder().WithCommitmentId("C-002").Build()
+                new CommitmentBuilder().WithCommitmentId(2).Build()
             };
 
             var learner = new LearnerBuilder().Build();
