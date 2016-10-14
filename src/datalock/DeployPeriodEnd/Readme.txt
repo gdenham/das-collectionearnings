@@ -28,23 +28,23 @@ DAS Data Lock Component - DAS Period End
   - sql\dml\PeriodEnd.DataLock.Cleanup.Deds.DML.sql:
    - deds database cleanup script that needs to be executed before copying from the transient database to the deds database
  
- 1.4 Copy to transient mapping xml:
+ 1.3 Copy to transient mapping xml:
   - copy mappings\DasPeriodEndDataLockCopyToTransientMapping.xml:
    - sql bulk copy binary task configuration file that copies das commitments from deds to transient
    - SourceConnectionString: deds das commitments connection string
    - DestinationConnectionString: transient connection string
  
- 1.5 Copy to deds mapping xml:
+ 1.4 Copy to deds mapping xml:
   - copy mappings\DasPeriodEndDataLockCopyToDedsMapping.xml:
    - sql bulk copy binary task configuration file that copies data lock results (validation errors and found matches) from transient to deds
    - SourceConnectionString: transient connection string
    - DestinationConnectionString: deds das period end connection string
  
- 1.6 Test results:
+ 1.5 Test results:
   - test-results\TestResult.xml
   - test-results\TestResult-Integration.xml
  
- 1.7 Validation messages CSV file
+ 1.6 Validation messages CSV file
   - DataLock.ValidationMessages.csv
   
 -------------------------------------------------------------------------------------
