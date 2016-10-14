@@ -77,7 +77,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
 
         private string ReplaceSqlTokens(string sql, string databaseName)
         {
-            return sql.Replace("${ILR_Current.FQ}", databaseName)
+            return sql.Replace("${ILR_Deds.FQ}", databaseName)
                       .Replace("${ILR_Summarisation.FQ}", databaseName)
                       .Replace("${DAS_Commitments.FQ}", databaseName)
                       .Replace("${DAS_PeriodEnd.FQ}", databaseName);

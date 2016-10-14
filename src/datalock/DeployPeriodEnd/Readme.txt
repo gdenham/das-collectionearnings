@@ -60,7 +60,7 @@ DAS Data Lock Component - DAS Period End
 -------------------------------------------------------------------------------------
 3. Expected data set keys in the manifest that runs the component
 -------------------------------------------------------------------------------------
- 3.1 Current ILR Collection: ${ILR_Current.FQ}
+ 3.1 Current ILR Collection: ${ILR_Deds.FQ}
  3.1 Current ILR Summarisation Collection: ${ILR_Summarisation.FQ}
  3.3 DAS Period End Collection: ${DAS_PeriodEnd.FQ}
 
