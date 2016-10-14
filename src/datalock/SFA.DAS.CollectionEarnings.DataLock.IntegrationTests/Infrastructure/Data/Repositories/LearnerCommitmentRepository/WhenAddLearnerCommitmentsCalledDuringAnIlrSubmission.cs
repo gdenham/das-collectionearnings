@@ -24,8 +24,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             var learnerCommitments = new[]
             {
                 new LearnerCommitmentEntityBuilder().Build(),
-                new LearnerCommitmentEntityBuilder().WithLearnRefNumber("Lrn002").WithCommitmentId("C-002").Build(),
-                new LearnerCommitmentEntityBuilder().WithLearnRefNumber("Lrn003").WithAimSeqNumber(2).WithCommitmentId("C-003").Build()
+                new LearnerCommitmentEntityBuilder().WithLearnRefNumber("Lrn002").WithCommitmentId(2).Build(),
+                new LearnerCommitmentEntityBuilder().WithLearnRefNumber("Lrn003").WithAimSeqNumber(2).WithCommitmentId(3).Build()
             };
 
             // Act

@@ -17,14 +17,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Learner.AddL
                 Ukprn = 10007459,
                 LearnerReferenceNumber = "Lrn001",
                 AimSequenceNumber = 1,
-                CommitmentId = "C-001"
+                CommitmentId = 1
             },
             new LearnerCommitment
             {
                 Ukprn = 10007459,
                 LearnerReferenceNumber = "Lrn002",
                 AimSequenceNumber = 9,
-                CommitmentId = "C-002"
+                CommitmentId = 2
             }
         };
 

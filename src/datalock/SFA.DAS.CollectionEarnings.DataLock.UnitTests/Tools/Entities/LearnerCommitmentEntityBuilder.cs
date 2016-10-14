@@ -7,7 +7,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
         private long _ukprn = 10007459;
         private string _learnRefNumber = "Lrn001";
         private long _aimSeqNumber = 1;
-        private string _commitmentId = "C-001";
+        private long _commitmentId = 1;
 
         public LearnerCommitmentEntity Build()
         {
@@ -41,7 +41,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
             return this;
         }
 
-        public LearnerCommitmentEntityBuilder WithCommitmentId(string commitmentId)
+        public LearnerCommitmentEntityBuilder WithCommitmentId(long commitmentId)
         {
             _commitmentId = commitmentId;
 

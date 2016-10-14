@@ -4,7 +4,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.Commitment
 {
     public class Commitment
     {
-        public string CommitmentId { get; set; }
+        public long CommitmentId { get; set; }
         public long Uln { get; set; }
         public long Ukprn { get; set; }
         public string AccountId { get; set; }

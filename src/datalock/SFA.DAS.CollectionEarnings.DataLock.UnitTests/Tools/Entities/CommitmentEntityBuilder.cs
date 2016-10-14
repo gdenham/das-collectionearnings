@@ -5,7 +5,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
 {
     public class CommitmentEntityBuilder : IBuilder<CommitmentEntity>
     {
-        private string _commitmentId = "C-001";
+        private long _commitmentId = 1;
         private long _uln = 1000000019;
         private long _ukprn = 10007459;
         private string _accountId = "A-001";
@@ -35,7 +35,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
             };
         }
 
-        public CommitmentEntityBuilder WithCommitmentId(string commitmentId)
+        public CommitmentEntityBuilder WithCommitmentId(long commitmentId)
         {
             _commitmentId = commitmentId;
 
