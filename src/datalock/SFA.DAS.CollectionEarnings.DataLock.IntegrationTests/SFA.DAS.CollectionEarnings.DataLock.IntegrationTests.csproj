@@ -158,6 +158,9 @@
     <Content Include="DbSetupScripts\Ilr.Transient.DDL.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="DbSetupScripts\Summarisation.Deds.DDL.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Tools\Ilr\Files\DPP-222\IlrAcceptanceCriteria2.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
