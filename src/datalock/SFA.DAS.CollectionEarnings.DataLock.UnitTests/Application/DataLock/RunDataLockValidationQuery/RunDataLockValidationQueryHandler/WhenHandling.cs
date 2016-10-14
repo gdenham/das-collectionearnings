@@ -295,7 +295,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
             var commitments = new[]
             {
                 new CommitmentBuilder().Build(),
-                new CommitmentBuilder().WithCommitmentId("C-002").Build()
+                new CommitmentBuilder().WithCommitmentId(2).Build()
             };
 
             _request = new RunDataLockValidationQueryRequest

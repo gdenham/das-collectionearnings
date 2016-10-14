@@ -14,7 +14,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
         private readonly CommitmentEntity[] _commitments =
         {
             new CommitmentEntityBuilder().Build(),
-            new CommitmentEntityBuilder().WithCommitmentId("C-002").WithUln(1000000027).WithAgreedCost(30000.00m).Build()
+            new CommitmentEntityBuilder().WithCommitmentId(2).WithUln(1000000027).WithAgreedCost(30000.00m).Build()
         };
 
         private ICommitmentRepository _commitmentRepository;

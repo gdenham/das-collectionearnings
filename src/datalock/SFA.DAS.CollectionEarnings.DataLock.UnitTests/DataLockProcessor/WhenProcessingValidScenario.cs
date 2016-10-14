@@ -104,7 +104,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                             Ukprn = 10007459,
                             LearnerReferenceNumber = "Lrn001",
                             AimSequenceNumber = 1,
-                            CommitmentId = "C-001"
+                            CommitmentId = 1
                         }
                     }
                 });
