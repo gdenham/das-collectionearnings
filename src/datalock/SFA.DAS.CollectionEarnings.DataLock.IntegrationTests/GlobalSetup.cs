@@ -49,6 +49,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
                 {
                     // Pre-req scripts
                     RunSqlScript(@"Ilr.Deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);
+                    RunSqlScript(@"Summarisation.Deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);
 
                     // Component scripts
                     RunSqlScript(@"PeriodEnd.Transient.Reference.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);
@@ -76,9 +77,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
 
         private string ReplaceSqlTokens(string sql, string databaseName)
         {
-            return sql.Replace("${ILR_Current.FQ}", databaseName)
+            return sql.Replace("${ILR_Deds.FQ}", databaseName)
                       .Replace("${ILR_Summarisation.FQ}", databaseName)
-                      .Replace("${DAS_Commitments.FQ}", databaseName);
+                      .Replace("${DAS_Commitments.FQ}", databaseName)
+                      .Replace("${DAS_PeriodEnd.FQ}", databaseName);
         }
     }
 }
