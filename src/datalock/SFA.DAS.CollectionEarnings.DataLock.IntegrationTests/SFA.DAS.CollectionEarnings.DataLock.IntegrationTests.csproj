@@ -140,6 +140,22 @@
       <Link>DbSetupScripts\PeriodEnd.Transient.Reference.DDL.Tables.sql</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\DeployPeriodEnd\sql\dml\01 PeriodEnd.DataLock.Populate.Reference.CollectionPeriods.dml.sql">
+      <Link>Tools\Sql\Copy Reference Data\01 PeriodEnd.DataLock.Populate.Reference.CollectionPeriods.dml.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\DeployPeriodEnd\sql\dml\02 PeriodEnd.DataLock.Populate.Reference.Providers.dml.sql">
+      <Link>Tools\Sql\Copy Reference Data\02 PeriodEnd.DataLock.Populate.Reference.Providers.dml.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\DeployPeriodEnd\sql\dml\03 PeriodEnd.DataLock.Populate.Reference.Learners.dml.sql">
+      <Link>Tools\Sql\Copy Reference Data\03 PeriodEnd.DataLock.Populate.Reference.Learners.dml.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\DeployPeriodEnd\sql\dml\04 PeriodEnd.DataLock.Populate.Reference.DasCommitments.dml.sql">
+      <Link>Tools\Sql\Copy Reference Data\04 PeriodEnd.DataLock.Populate.Reference.DasCommitments.dml.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Tables.sql">
       <Link>DbSetupScripts\Ilr.Transient.DataLock.DDL.Tables.sql</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -150,6 +166,13 @@
     </Content>
     <Content Include="..\Deploy\sql\ddl\Ilr.Transient.Reference.DDL.Tables.sql">
       <Link>DbSetupScripts\Ilr.Transient.Reference.DDL.Tables.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Deploy\sql\dml\01 Ilr.DataLock.Populate.Reference.DasCommitments.dml.sql">
+      <Link>Tools\Sql\Copy Reference Data\01 Ilr.DataLock.Populate.Reference.DasCommitments.dml.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DbSetupScripts\DasCommitments.deds.DDL.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DbSetupScripts\Ilr.Deds.DDL.sql">

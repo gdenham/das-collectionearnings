@@ -9,6 +9,19 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
 {
     public class TestDataHelper
     {
+        private static readonly string[] PeriodEndCopyReferenceDataScripts =
+        {
+            "01 PeriodEnd.DataLock.Populate.Reference.CollectionPeriods.dml.sql",
+            "02 PeriodEnd.DataLock.Populate.Reference.Providers.dml.sql",
+            "03 PeriodEnd.DataLock.Populate.Reference.Learners.dml.sql",
+            "04 PeriodEnd.DataLock.Populate.Reference.DasCommitments.dml.sql"
+        };
+
+        private static readonly string[] SubmissionCopyReferenceDataScripts =
+        {
+            "01 Ilr.DataLock.Populate.Reference.DasCommitments.dml.sql"
+        };
+
         internal static void Clean()
         {
             Clean(GlobalTestContext.Instance.SubmissionConnectionString);
@@ -29,7 +42,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                         FROM sys.objects o WITH (NOWAIT)
                         JOIN sys.schemas s WITH (NOWAIT) ON o.[schema_id] = s.[schema_id]
                         WHERE o.[type] = 'U'
-                            AND s.name IN ('Input', 'Valid', 'Invalid', 'Reference', 'DataLock')
+                            AND s.name IN ('dbo', 'Input', 'Valid', 'Invalid', 'Reference', 'DataLock')
                         FOR XML PATH(''), TYPE).value('.', 'NVARCHAR(MAX)')
 
                     EXEC sys.sp_executesql @SQL                
@@ -49,7 +62,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
         private static void AddCommitment(string connectionString, CommitmentEntity commitment)
         {
             Execute(connectionString,
-                @"INSERT INTO [Reference].[DasCommitments] (
+                @"INSERT INTO [dbo].[DasCommitments] (
                         CommitmentId, 
                         Uln, 
                         Ukprn, 
@@ -60,7 +73,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                         StandardCode, 
                         ProgrammeType, 
                         FrameworkCode, 
-                        PathwayCode
+                        PathwayCode,
+                        Priority,
+                        VersionId
                     ) VALUES (
                         @CommitmentId, 
                         @Uln, 
@@ -72,7 +87,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                         @StandardCode, 
                         @ProgrammeType, 
                         @FrameworkCode, 
-                        @PathwayCode
+                        @PathwayCode,
+                        1,
+                        '1'
                     )",
                 new
                 {
@@ -90,7 +107,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                 });
         }
 
-        internal static void AddProviderIlrSubmission(long ukprn)
+        internal static void AddProvider(long ukprn)
         {
             Execute(GlobalTestContext.Instance.SubmissionConnectionString,
                 "INSERT INTO [Input].[LearningProvider] (LearningProvider_Id, UKPRN) VALUES (@id, @ukprn)",
@@ -101,7 +118,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                 });
         }
 
-        internal static void AddProviderIlrPeriodEnd(long ukprn)
+        internal static void PeriodEndAddProvider(long ukprn)
         {
             Execute(GlobalTestContext.Instance.PeriodEndConnectionString,
                 "INSERT INTO [Valid].[LearningProvider] (UKPRN) VALUES (@ukprn)", 
@@ -148,6 +165,36 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
             Execute(GlobalTestContext.Instance.PeriodEndConnectionString, scriptCommand);
         }
 
+        internal static void CopyReferenceData()
+        {
+            foreach (var script in SubmissionCopyReferenceDataScripts)
+            {
+                var sql = File.ReadAllText($@"{AppDomain.CurrentDomain.BaseDirectory}\Tools\Sql\Copy Reference Data\{script}");
+
+                var commands = ReplaceSqlTokens(sql, GlobalTestContext.Instance.BracketedSubmissionDatabaseName).Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var command in commands)
+                {
+                    Execute(GlobalTestContext.Instance.SubmissionConnectionString, command);
+                }
+            }
+        }
+
+        internal static void PeriodEndCopyReferenceData()
+        {
+            foreach (var script in PeriodEndCopyReferenceDataScripts)
+            {
+                var sql = File.ReadAllText($@"{AppDomain.CurrentDomain.BaseDirectory}\Tools\Sql\Copy Reference Data\{script}");
+
+                var commands = ReplaceSqlTokens(sql, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName).Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var command in commands)
+                {
+                    Execute(GlobalTestContext.Instance.PeriodEndConnectionString, command);
+                }
+            }
+        }
+
         private static void Execute(string connectionString, string command, object param = null)
         {
             using (var connection = new SqlConnection(connectionString))
@@ -178,6 +225,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                     connection.Close();
                 }
             }
+        }
+
+        private static string ReplaceSqlTokens(string sql, string databaseName)
+        {
+            return sql.Replace("${ILR_Deds.FQ}", databaseName)
+                      .Replace("${ILR_Summarisation.FQ}", databaseName)
+                      .Replace("${DAS_Commitments.FQ}", databaseName)
+                      .Replace("${DAS_PeriodEnd.FQ}", databaseName);
         }
     }
 }

@@ -23,6 +23,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
         public void Arrange()
         {
             TestDataHelper.Clean();
+            TestDataHelper.AddProvider(_ukprn);
 
             _commitmentRepository = new DataLock.Infrastructure.Data.Repositories.CommitmentRepository(GlobalTestContext.Instance.SubmissionConnectionString);
         }
@@ -58,6 +59,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
         {
             // Arrange
             TestDataHelper.AddCommitment(_commitments[0]);
+            TestDataHelper.CopyReferenceData();
 
             // Act
             var response = _commitmentRepository.GetProviderCommitments(_ukprn);
@@ -73,6 +75,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             // Arrange
             TestDataHelper.AddCommitment(_commitments[0]);
             TestDataHelper.AddCommitment(_commitments[1]);
+            TestDataHelper.CopyReferenceData();
 
             // Act
             var response = _commitmentRepository.GetProviderCommitments(_ukprn);

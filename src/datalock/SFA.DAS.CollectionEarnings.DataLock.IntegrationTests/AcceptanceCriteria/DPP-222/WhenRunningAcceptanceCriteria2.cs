@@ -55,6 +55,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.AcceptanceCriteri
                     .WithPathwayCode(6)
                     .WithAgreedCost(3000)
                     .Build());
+
+            TestDataHelper.CopyReferenceData();
         }
 
         [Test]
