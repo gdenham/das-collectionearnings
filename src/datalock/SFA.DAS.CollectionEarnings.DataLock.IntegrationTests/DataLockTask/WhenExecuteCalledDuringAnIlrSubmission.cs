@@ -214,8 +214,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.MultipleMatches));
         }
 
-        [Test]
-        public void ThenMatchingLearnerAndCommitmentAddedForMatchFound()
+        [TestCase("IlrLearnerAndCommitmentMatch.xml")]
+        [TestCase("IlrTnp1AndTnp2.xml")]
+        public void ThenMatchingLearnerAndCommitmentAddedForMatchFound(string ilrFile)
         {
             // Arrange
             var commitments = new[]
@@ -224,7 +225,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
                 new CommitmentEntityBuilder().WithCommitmentId(2).WithUln(1000000027).WithStandardCode(null).Build()
             };
 
-            SetupIlrData(@"\Tools\Ilr\Files\IlrLearnerAndCommitmentMatch.xml");
+            SetupIlrData(@"\Tools\Ilr\Files\" + ilrFile);
             SetupCommitmentData(commitments[0]);
             SetupCommitmentData(commitments[1]);
 

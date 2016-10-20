@@ -167,6 +167,9 @@
     <Content Include="Tools\Ilr\Files\DPP-222\IlrAcceptanceCriteria1.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Tools\Ilr\Files\IlrTnp1AndTnp2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Tools\Ilr\Files\IlrMultipleLearners.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
