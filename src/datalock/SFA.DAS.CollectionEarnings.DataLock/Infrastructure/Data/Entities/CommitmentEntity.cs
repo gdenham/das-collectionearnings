@@ -7,7 +7,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities
         public long CommitmentId { get; set; }
         public long Uln { get; set; }
         public long Ukprn { get; set; }
-        public string AccountId { get; set; }
+        public long AccountId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public decimal AgreedCost { get; set; }
