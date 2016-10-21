@@ -11,11 +11,11 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools
     {
         private readonly static Random _random = new Random();
 
-        internal static void AddAccount(long id, string name = null, decimal balance = 999999999)
+        internal static void AddAccount(string id, string name = null, decimal balance = 999999999)
         {
             if (name == null)
             {
-                name = id.ToString();
+                name = id;
             }
 
             Execute("INSERT INTO dbo.DasAccounts (AccountId, AccountName, LevyBalance) VALUES (@id, @name, @balance)", new { id, name, balance });

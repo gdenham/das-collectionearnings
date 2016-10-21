@@ -8,7 +8,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
         private long _commitmentId = 1;
         private long _uln = 1000000019;
         private long _ukprn = 10007459;
-        private long _accountId = 1;
+        private string _accountId = "A-001";
         private DateTime _startDate = new DateTime(2016, 9, 1);
         private DateTime _endDate = new DateTime(2018, 12, 31);
         private decimal _agreedCost = 15000.00m;
@@ -56,7 +56,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
             return this;
         }
 
-        public CommitmentEntityBuilder WithAccountId(long accountId)
+        public CommitmentEntityBuilder WithAccountId(string accountId)
         {
             _accountId = accountId;
 
