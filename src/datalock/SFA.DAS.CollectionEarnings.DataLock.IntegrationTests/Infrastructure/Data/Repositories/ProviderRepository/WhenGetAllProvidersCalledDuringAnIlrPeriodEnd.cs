@@ -32,8 +32,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
         public void ThenDasLearnersReturnedForMultipleEntriesInTheDatabase()
         {
             // Arrange
-            TestDataHelper.AddProviderIlrPeriodEnd(12345678);
-            TestDataHelper.AddProviderIlrPeriodEnd(87654321);
+            TestDataHelper.PeriodEndAddProvider(12345678);
+            TestDataHelper.PeriodEndAddProvider(87654321);
+
+            TestDataHelper.PeriodEndCopyReferenceData();
 
             // Act
             var providers = _providerRepository.GetAllProviders();

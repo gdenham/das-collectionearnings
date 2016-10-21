@@ -53,6 +53,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             // Arrange
             SetupIlrData(@"\Tools\Ilr\Files\IlrUkprnMismatch.xml");
             SetupCommitmentData(new CommitmentEntityBuilder().Build());
+            TestDataHelper.CopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -71,6 +72,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             // Arrange
             SetupIlrData(@"\Tools\Ilr\Files\IlrUlnMismatch.xml");
             SetupCommitmentData(new CommitmentEntityBuilder().Build());
+            TestDataHelper.CopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -89,6 +91,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             // Arrange
             SetupIlrData(@"\Tools\Ilr\Files\IlrStandardMismatch.xml");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).WithProgrammeType(null).WithFrameworkCode(null).WithPathwayCode(null).Build());
+            TestDataHelper.CopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -107,6 +110,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             // Arrange
             SetupIlrData(@"\Tools\Ilr\Files\IlrFrameworkMismatch.xml");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(null).WithFrameworkCode(999).Build());
+            TestDataHelper.CopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -125,6 +129,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             // Arrange
             SetupIlrData(@"\Tools\Ilr\Files\IlrProgrammeMismatch.xml");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(null).WithProgrammeType(999).Build());
+            TestDataHelper.CopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -143,6 +148,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             // Arrange
             SetupIlrData(@"\Tools\Ilr\Files\IlrPathwayMismatch.xml");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(null).WithPathwayCode(999).Build());
+            TestDataHelper.CopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -162,6 +168,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             SetupIlrData(@"\Tools\Ilr\Files\IlrPriceMismatch.xml");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId(2).WithUln(1000000027).WithStandardCode(null).Build());
+            TestDataHelper.CopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -181,6 +188,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             SetupIlrData(@"\Tools\Ilr\Files\IlrEarlierStartMonth.xml");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId(2).WithUln(1000000027).WithStandardCode(null).Build());
+            TestDataHelper.CopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -202,6 +210,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId(2).WithUln(1000000027).WithStandardCode(null).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId(3).WithStandardCode(999).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId(4).WithUln(1000000027).WithStandardCode(null).Build());
+            TestDataHelper.CopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -228,6 +237,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             SetupIlrData(@"\Tools\Ilr\Files\" + ilrFile);
             SetupCommitmentData(commitments[0]);
             SetupCommitmentData(commitments[1]);
+            TestDataHelper.CopyReferenceData();
 
             // Act
             _task.Execute(_context);

@@ -25,9 +25,11 @@ DAS Data Lock Component - ILR Submission
    - transient database tables that need to be present when the component is executed
   - sql\ddl\Ilr.Deds.DataLock.DDL.Tables.sql:
    - deds database tables that need to be present when the component is executed
+  
   - sql\dml\Ilr.DataLock.Cleanup.Deds.DML.sql:
    - deds database cleanup script that needs to be executed before copying from the transient database to the deds database
-  - sql\dml\Ilr.Transient.Reference.Populate.DML.sql:
+  
+  - sql\dml\01 Ilr.DataLock.Populate.Reference.DasCommitments.dml.sql:
    - populate reference data (from deds to transient) needed to perform data lock
  
  1.3 Copy to deds mapping xml:
@@ -63,7 +65,7 @@ DAS Data Lock Component - ILR Submission
 4. Expected manifest das steps for the ilr submission process
 -------------------------------------------------------------------------------------
  4.1 Build the transient database.
- 4.2 Copy commitments reference data to transient using the 'Ilr.Transient.Reference.Populate.DML.sql' sql script.
+ 4.2 Copy commitments reference data to transient using the '01 Ilr.DataLock.Populate.Reference.DasCommitments.dml' sql script.
  4.3 Execute the 'DAS Data Lock Component - ILR Submission' component
  4.4 Cleanup the deds data lock results using the 'Ilr.DataLock.Cleanup.Deds.DML.sql' sql script
  4.5 Bulk copy the data lock results from transient to deds

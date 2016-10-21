@@ -46,6 +46,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             // Arrange
             TestDataHelper.PeriodEndExecuteScript("PeriodEndUkprnMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().Withukprn(999).Build());
+            TestDataHelper.PeriodEndCopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -64,6 +65,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             // Arrange
             TestDataHelper.PeriodEndExecuteScript("PeriodEndUlnMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithUln(999).Build());
+            TestDataHelper.PeriodEndCopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -82,6 +84,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             // Arrange
             TestDataHelper.PeriodEndExecuteScript("PeriodEndStandardMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).WithProgrammeType(null).WithFrameworkCode(null).WithPathwayCode(null).Build());
+            TestDataHelper.PeriodEndCopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -100,6 +103,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             // Arrange
             TestDataHelper.PeriodEndExecuteScript("PeriodEndFrameworkMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(null).WithFrameworkCode(999).Build());
+            TestDataHelper.PeriodEndCopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -118,6 +122,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             // Arrange
             TestDataHelper.PeriodEndExecuteScript("PeriodEndProgrammeMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(null).WithProgrammeType(999).Build());
+            TestDataHelper.PeriodEndCopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -136,6 +141,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             // Arrange
             TestDataHelper.PeriodEndExecuteScript("PeriodEndPathwayMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(null).WithPathwayCode(999).Build());
+            TestDataHelper.PeriodEndCopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -155,6 +161,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             TestDataHelper.PeriodEndExecuteScript("PeriodEndPriceMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithUln(1000000000).WithStandardCode(999).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId(2).WithUln(1000000027).WithStandardCode(null).Build());
+            TestDataHelper.PeriodEndCopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -174,6 +181,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             TestDataHelper.PeriodEndExecuteScript("PeriodEndEarlierStartMonth.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithUln(1000000000).WithStandardCode(999).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId(2).WithUln(1000000027).WithStandardCode(null).Build());
+            TestDataHelper.PeriodEndCopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -195,6 +203,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId(2).WithUln(1000000027).WithStandardCode(null).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithUln(1000000000).WithCommitmentId(3).WithStandardCode(999).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId(4).WithUln(1000000027).WithStandardCode(null).Build());
+            TestDataHelper.PeriodEndCopyReferenceData();
 
             // Act
             _task.Execute(_context);
@@ -220,6 +229,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             TestDataHelper.PeriodEndExecuteScript("PeriodEndMatchFound.sql");
             SetupCommitmentData(commitments[0]);
             SetupCommitmentData(commitments[1]);
+            TestDataHelper.PeriodEndCopyReferenceData();
 
             // Act
             _task.Execute(_context);

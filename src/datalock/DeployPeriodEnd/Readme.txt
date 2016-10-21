@@ -27,24 +27,27 @@ DAS Data Lock Component - DAS Period End
    - deds database tables that need to be present when the component is executed
   - sql\dml\PeriodEnd.DataLock.Cleanup.Deds.DML.sql:
    - deds database cleanup script that needs to be executed before copying from the transient database to the deds database
- 
- 1.3 Copy to transient mapping xml:
-  - copy mappings\DasPeriodEndDataLockCopyToTransientMapping.xml:
-   - sql bulk copy binary task configuration file that copies das commitments from deds to transient
-   - SourceConnectionString: deds das commitments connection string
-   - DestinationConnectionString: transient connection string
- 
- 1.4 Copy to deds mapping xml:
+
+  - sql\dml\01 PeriodEnd.DataLock.Populate.Reference.CollectionPeriods.dml.sql:
+   - populate collection periods mapping reference data (from deds to transient) needed to perform data lock
+  - sql\dml\02 PeriodEnd.DataLock.Populate.Reference.Providers.dml.sql:
+   - populate learning providers reference data (from deds to transient) needed to perform data lock
+  - sql\dml\03 PeriodEnd.DataLock.Populate.Reference.Learners.dml.sql:
+   - populate learners reference data (from deds to transient) needed to perform data lock
+  - sql\dml\04 PeriodEnd.DataLock.Populate.Reference.DasCommitments.dml.sql:
+   - populate commitments reference data (from deds to transient) needed to perform data lock
+   
+ 1.3 Copy to deds mapping xml:
   - copy mappings\DasPeriodEndDataLockCopyToDedsMapping.xml:
    - sql bulk copy binary task configuration file that copies data lock results (validation errors and found matches) from transient to deds
    - SourceConnectionString: transient connection string
    - DestinationConnectionString: deds das period end connection string
  
- 1.5 Test results:
+ 1.4 Test results:
   - test-results\TestResult.xml
   - test-results\TestResult-Integration.xml
  
- 1.6 Validation messages CSV file
+ 1.5 Validation messages CSV file
   - DataLock.ValidationMessages.csv
   
 -------------------------------------------------------------------------------------
@@ -63,13 +66,13 @@ DAS Data Lock Component - DAS Period End
  3.1 Current ILR Collection: ${ILR_Deds.FQ}
  3.1 Current ILR Summarisation Collection: ${ILR_Summarisation.FQ}
  3.3 DAS Period End Collection: ${DAS_PeriodEnd.FQ}
+ 3.4 DAS Commitments Reference Data Collection: ${DAS_Commitments.FQ}
 
 -------------------------------------------------------------------------------------
 4. Expected manifest steps for the das period end process - data lock period end
 -------------------------------------------------------------------------------------
  4.1 Build the transient database.
- 4.2 Bulk copy commitments from deds to transient
+ 4.2 Copy reference data from deds to transient using the provided scripts in the 01 - 04 order
  4.3 Execute the 'DAS Data Lock Component - DAS Period End' component
  4.4 Cleanup the deds data lock results using the 'PeriodEnd.DataLock.Cleanup.Deds.DML.sql' sql script
  4.5 Bulk copy the data lock results from transient to deds
-

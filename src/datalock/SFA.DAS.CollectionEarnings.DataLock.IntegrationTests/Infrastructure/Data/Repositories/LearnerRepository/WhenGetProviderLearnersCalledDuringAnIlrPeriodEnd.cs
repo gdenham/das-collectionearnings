@@ -49,6 +49,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
         {
             // Arrange
             TestDataHelper.PeriodEndExecuteScript("PeriodEndMultipleLearningDeliveries.sql");
+            TestDataHelper.PeriodEndCopyReferenceData();
 
             // Act
             var learners = _learnerRepository.GetProviderLearners(_ukprn);
