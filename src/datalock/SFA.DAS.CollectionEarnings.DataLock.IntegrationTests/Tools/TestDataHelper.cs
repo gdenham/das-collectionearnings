@@ -11,10 +11,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
     {
         private static readonly string[] PeriodEndCopyReferenceDataScripts =
         {
-            "01 PeriodEnd.DataLock.Populate.Reference.CollectionPeriods.dml.sql",
-            "02 PeriodEnd.DataLock.Populate.Reference.Providers.dml.sql",
-            "03 PeriodEnd.DataLock.Populate.Reference.Learners.dml.sql",
-            "04 PeriodEnd.DataLock.Populate.Reference.DasCommitments.dml.sql"
+            "01 PeriodEnd.Populate.Reference.CollectionPeriods.dml.sql",
+            "02 PeriodEnd.Populate.Reference.Providers.dml.sql",
+            "03 PeriodEnd.Populate.Reference.Commitments.dml.sql",
+            "05 PeriodEnd.DataLock.Populate.Reference.Learners.dml.sql"
         };
 
         private static readonly string[] SubmissionCopyReferenceDataScripts =

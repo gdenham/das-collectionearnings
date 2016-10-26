@@ -13,7 +13,8 @@ INSERT INTO [Reference].[DasCommitments]
         [StandardCode],
         [ProgrammeType],
         [FrameworkCode],
-        [PathwayCode]
+        [PathwayCode],
+		[Priority],
+		[VersionId]
 	FROM ${DAS_Commitments.FQ}.[dbo].[DasCommitments]
-	WHERE [Ukprn] IN (SELECT DISTINCT [Ukprn] FROM [Reference].[Providers])
 GO

@@ -22,7 +22,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql - Ilr Period End", "Sql
 	ProjectSection(SolutionItems) = preProject
 		DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.DataLock.DDL.Tables.sql = DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.DataLock.DDL.Tables.sql
 		DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.DataLock.DDL.Views.sql = DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.DataLock.DDL.Views.sql
-		DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.Reference.DDL.Tables.sql = DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.Reference.DDL.Tables.sql
+		DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.DataLock.Reference.ddl.tables.sql = DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.DataLock.Reference.ddl.tables.sql
+		DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.Reference.CollectionPeriods.ddl.tables.sql = DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.Reference.CollectionPeriods.ddl.tables.sql
+		DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.Reference.Commitments.ddl.tables.sql = DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.Reference.Commitments.ddl.tables.sql
+		DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.Reference.Providers.ddl.tables.sql = DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.Reference.Providers.ddl.tables.sql
 	EndProjectSection
 EndProject
 Global
