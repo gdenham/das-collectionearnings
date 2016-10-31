@@ -1,5 +1,6 @@
 ﻿-- Learning provider
 INSERT [Valid].[LearningProvider] ([UKPRN]) VALUES (10007459)
+INSERT [dbo].[FileDetails] ([UKPRN],[SubmittedTime]) VALUES (10007459, GETDATE())
 
 -- Learner
 INSERT [Valid].[Learner] ([UKPRN], [LearnRefNumber], [PrevLearnRefNumber], [PrevUKPRN], [ULN], [FamilyName], [GivenNames], [DateOfBirth], [Ethnicity], [Sex], [LLDDHealthProb], [NINumber], [PriorAttain], [Accom], [ALSCost], [PlanLearnHours], [PlanEEPHours], [MathGrade], [EngGrade], [HomePostcode], [CurrentPostcode], [LrnFAM_DLA], [LrnFAM_ECF], [LrnFAM_EDF1], [LrnFAM_EDF2], [LrnFAM_EHC], [LrnFAM_FME], [LrnFAM_HNS], [LrnFAM_LDA], [LrnFAM_LSR1], [LrnFAM_LSR2], [LrnFAM_LSR3], [LrnFAM_LSR4], [LrnFAM_MCF], [LrnFAM_NLM1], [LrnFAM_NLM2], [LrnFAM_PPE1], [LrnFAM_PPE2], [LrnFAM_SEN], [ProvSpecMon_A], [ProvSpecMon_B]) VALUES (10007459, N'1', NULL, NULL, 1000000019, N'FamilyName', N'GivenNames', CAST(N'1984-10-12' AS Date), 98, N'M', 2, N'AB123456C', 3, NULL, NULL, NULL, NULL, NULL, NULL, N'BL4 0DH', N'BL4 0DH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
