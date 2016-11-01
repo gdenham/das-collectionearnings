@@ -19,13 +19,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql - Ilr Submission", "Sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql - Ilr Period End", "Sql - Ilr Period End", "{5924484A-3E97-41A7-9567-9AAA751B7BB5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DDL", "DDL", "{5DE2B258-6E87-4BF8-BF79-56A39791D4E2}"
 	ProjectSection(SolutionItems) = preProject
+		DeployPeriodEnd\sql\ddl\PeriodEnd.Deds.DataLock.DDL.Tables.sql = DeployPeriodEnd\sql\ddl\PeriodEnd.Deds.DataLock.DDL.Tables.sql
 		DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.DataLock.DDL.Tables.sql = DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.DataLock.DDL.Tables.sql
 		DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.DataLock.DDL.Views.sql = DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.DataLock.DDL.Views.sql
 		DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.DataLock.Reference.ddl.tables.sql = DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.DataLock.Reference.ddl.tables.sql
 		DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.Reference.CollectionPeriods.ddl.tables.sql = DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.Reference.CollectionPeriods.ddl.tables.sql
 		DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.Reference.Commitments.ddl.tables.sql = DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.Reference.Commitments.ddl.tables.sql
 		DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.Reference.Providers.ddl.tables.sql = DeployPeriodEnd\sql\ddl\PeriodEnd.Transient.Reference.Providers.ddl.tables.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DML", "DML", "{6C9AEB38-0684-4214-BD60-4E2CC65EE0B1}"
+	ProjectSection(SolutionItems) = preProject
+		DeployPeriodEnd\sql\dml\01 PeriodEnd.Populate.Reference.CollectionPeriods.dml.sql = DeployPeriodEnd\sql\dml\01 PeriodEnd.Populate.Reference.CollectionPeriods.dml.sql
+		DeployPeriodEnd\sql\dml\02 PeriodEnd.Populate.Reference.Providers.dml.sql = DeployPeriodEnd\sql\dml\02 PeriodEnd.Populate.Reference.Providers.dml.sql
+		DeployPeriodEnd\sql\dml\03 PeriodEnd.Populate.Reference.Commitments.dml.sql = DeployPeriodEnd\sql\dml\03 PeriodEnd.Populate.Reference.Commitments.dml.sql
+		DeployPeriodEnd\sql\dml\05 PeriodEnd.DataLock.Populate.Reference.Learners.dml.sql = DeployPeriodEnd\sql\dml\05 PeriodEnd.DataLock.Populate.Reference.Learners.dml.sql
+		DeployPeriodEnd\sql\dml\PeriodEnd.DataLock.Cleanup.Deds.DML.sql = DeployPeriodEnd\sql\dml\PeriodEnd.DataLock.Cleanup.Deds.DML.sql
 	EndProjectSection
 EndProject
 Global
@@ -53,5 +65,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{79593EF5-9F58-4E91-BE67-C5D20EE0DBC0} = {C69707A2-A4B1-497A-B10E-74BF405DFB13}
 		{44D50594-88B7-4573-8C82-9DAB9937A5BB} = {C69707A2-A4B1-497A-B10E-74BF405DFB13}
+		{5DE2B258-6E87-4BF8-BF79-56A39791D4E2} = {5924484A-3E97-41A7-9567-9AAA751B7BB5}
+		{6C9AEB38-0684-4214-BD60-4E2CC65EE0B1} = {5924484A-3E97-41A7-9567-9AAA751B7BB5}
 	EndGlobalSection
 EndGlobal

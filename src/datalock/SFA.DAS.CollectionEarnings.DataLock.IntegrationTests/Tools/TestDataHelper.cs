@@ -121,10 +121,19 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
         internal static void PeriodEndAddProvider(long ukprn)
         {
             Execute(GlobalTestContext.Instance.PeriodEndConnectionString,
-                "INSERT INTO [Valid].[LearningProvider] (UKPRN) VALUES (@ukprn)", 
+                "INSERT INTO [Valid].[LearningProvider] (UKPRN) VALUES (@ukprn)",
                 new
                 {
                     ukprn = ukprn
+                });
+
+
+            Execute(GlobalTestContext.Instance.PeriodEndConnectionString,
+                "INSERT INTO dbo.FileDetails (UKPRN, SubmittedTime) VALUES (@ukprn, @submittedTime)",
+                new
+                {
+                    ukprn = ukprn,
+                    submittedTime = DateTime.Today
                 });
         }
 
