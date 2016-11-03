@@ -6,6 +6,7 @@ using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.GetLearningDeliveriesEarningsQuery;
 using SFA.DAS.CollectionEarnings.Calculator.Application.LearningDeliveryToProcess.GetAllLearningDeliveriesToProcessQuery;
 using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDelivery.AddProcessedLearningDeliveriesCommand;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriod.AddProcessedLearningDeliveryPeriodCommand;
 using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriodisedValues.AddProcessedLearningDeliveryPeriodisedValuesCommand;
 using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities;
@@ -66,6 +67,10 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
 
             _mediator
                 .Setup(m => m.Send(It.IsAny<AddProcessedLearningDeliveryPeriodisedValuesCommandRequest>()))
+                .Returns(Unit.Value);
+
+            _mediator
+                .Setup(m => m.Send(It.IsAny<AddProcessedLearningDeliveryPeriodCommandRequest>()))
                 .Returns(Unit.Value);
         }
 
@@ -151,6 +156,19 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.ApprenticeshipEarnings
 
             // Assert
             _logger.Verify(l => l.Info(It.Is<string>(p => p.Equals("Not found any learning deliveries to process."))), Times.Once);
+        }
+
+        [Test]
+        public void ThenExpectingExceptionForAddProcessedLearningDeliveryPeriodCommandFailure()
+        {
+            // Arrange
+            _mediator
+                .Setup(m => m.Send(It.IsAny<AddProcessedLearningDeliveryPeriodCommandRequest>()))
+                .Throws<Exception>();
+
+            // Assert
+            var ex = Assert.Throws<EarningsCalculatorException>(() => _processor.Process());
+            Assert.IsTrue(ex.Message.Contains(EarningsCalculatorException.ErrorWritingLearningDeliveriesPeriodEarningsMessage));
         }
     }
 }
