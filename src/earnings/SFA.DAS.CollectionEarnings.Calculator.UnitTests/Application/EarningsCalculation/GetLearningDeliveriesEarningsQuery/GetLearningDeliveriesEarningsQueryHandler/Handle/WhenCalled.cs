@@ -3,6 +3,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.GetLearningDeliveriesEarningsQuery;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriodisedValues;
 using SFA.DAS.CollectionEarnings.Calculator.Tools.Providers;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities;
 
@@ -34,7 +35,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
             }
         };
 
-        private static readonly object[] LearningDeliveriesToProcessWithSubmissionDatesAndExpectedPaymentSchedules =
+        private static readonly object[] LearningDeliveriesToProcessWithSubmissionDatesAndExpectedOnProgrammeSchedule =
         {
             new object[]
             {
@@ -52,56 +53,74 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
             },
             new object[]
             {
-                new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 2, 28)).WithLearnActEndDate(new DateTime(2018, 2, 28)).Build()},
-                new DateTime(2018, 3, 15),
-                new[] {0.00m, 2000.00m, 2000.00m, 2000.00m, 2000.00m, 2000.00m, 5000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m},
-                "expecting monthly installments of 2000.00 starting from the second period and a completion payment added in the 7th period for a learning episode that starts on 01/09/2017, runs for 6 months, ends on a census date, has a negociated price of 15000 and is submitted on 15/03/2018."
-            },
-            new object[]
-            {
                 new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 30)).Build()},
                 new DateTime(2018, 7, 15),
                 new[] { 0.00m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m},
-                "expecting monthly installments of 923.0769230769230769230769231 starting from the second period for a learning episode that starts on 01/09/2017, runs for 13 months, has a negociated price of 15000 and is submitted on 15/07/2018."
+                "expecting monthly installments of 923.07692 starting from the second period for a learning episode that starts on 01/09/2017, runs for 13 months, has a negociated price of 15000 and is submitted on 15/07/2018."
             },
             new object[]
             {
                 new[] {new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2017, 10, 1)).WithLearnPlanEndDate(new DateTime(2018, 3, 31)).WithLearnActEndDate(new DateTime(2018, 3, 31)).WithNegotiatedPrice(3750).Build()},
                 new DateTime(2018, 3, 15),
-                new[] {0.00m, 0.00m, 500.00m, 500.00m, 500.00m, 500.00m, 500.00m, 1250.00m, 0.00m, 0.00m, 0.00m, 0.00m},
-                "expecting monthly installments of 500.00 starting from the third period and a completion payment added in the 8th period for a learning episode that starts on 01/10/2017, runs for 6 months, ends on a census date, has a negociated price of 3750 and is submitted on 15/03/2018."
-            },
-            new object[]
-            {
-                new[] {new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2017, 10, 1)).WithLearnPlanEndDate(new DateTime(2018, 4, 10)).WithLearnActEndDate(new DateTime(2018, 4, 10)).WithNegotiatedPrice(3750).Build()},
-                new DateTime(2018, 3, 15),
-                new[] {0.00m, 0.00m, 500.00m, 500.00m, 500.00m, 500.00m, 500.00m, 500.00m, 750.00m, 0.00m, 0.00m, 0.00m},
-                "expecting monthly installments of 500.00 starting from the third period and a completion payment of 750.00 added in the 9th period for a learning episode that starts on 01/10/2017, runs for 6 months, ends after a census date, has a negociated price of 3750 and is submitted on 15/03/2018."
+                new[] {0.00m, 0.00m, 500.00m, 500.00m, 500.00m, 500.00m, 500.00m, 500.00m, 0.00m, 0.00m, 0.00m, 0.00m},
+                "expecting monthly installments of 500.00 starting from the third period for a learning episode that starts on 01/10/2017, runs for 6 months, ends on a census date, has a negociated price of 3750 and is submitted on 15/03/2018."
             },
             new object[]
             {
                 new[] {new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2016, 9, 1)).WithLearnPlanEndDate(new DateTime(2017, 9, 8)).WithLearnActEndDate(new DateTime(2017, 9, 8)).Build()},
                 new DateTime(2017, 9, 30),
-                new[] {1000.00m, 3000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m},
-                "expecting one monthly installment of 1000.00 in the first period and the 3000.00 completion payment in the second period for a learning episode that starts on 01/09/2016, runs for 12 months, does not end on a census date, has a negociated price of 15000 and is submitted on 30/09/2017."
+                new[] {1000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m},
+                "expecting one monthly installment of 1000.00 in the first period for a learning episode that starts on 01/09/2016, runs for 12 months, does not end on a census date, has a negociated price of 15000 and is submitted on 30/09/2017."
             }
         };
 
-        private static readonly object[] LearningDeliveriesToProcessWithSubmissionAndYearOfCollectionDatesAndExpectedPaymentSchedulesForLateFinishers =
+        private static readonly object[] LearningDeliveriesToProcessWithSubmissionDatesAndExpectedCompletionSchedule =
+        {
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().Build()},
+                new DateTime(2017, 9, 30),
+                new[] {0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m},
+                "expecting no completion payment for a learning episode that starts on 01/09/2017, runs for 12 months, has a negociated price of 15000 and is submitted on 30/09/2017."
+            },
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 2, 28)).WithLearnActEndDate(new DateTime(2018, 2, 28)).Build()},
+                new DateTime(2018, 3, 15),
+                new[] {0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 3000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m},
+                "expecting a completion payment of 3000.00 in in the 7th period for a learning episode that starts on 01/09/2017, runs for 6 months, ends on a census date, has a negociated price of 15000 and is submitted on 15/03/2018."
+            },
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2017, 10, 1)).WithLearnPlanEndDate(new DateTime(2018, 3, 10)).WithLearnActEndDate(new DateTime(2018, 3, 10)).WithNegotiatedPrice(3750).Build()},
+                new DateTime(2018, 3, 15),
+                new[] {0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 750.00m, 0.00m, 0.00m, 0.00m, 0.00m},
+                "expecting a completion payment of 750.00m in the 8th period for a learning episode that starts on 01/10/2017, runs for 6 months, does not end on a census date, has a negociated price of 3750 and is submitted on 15/03/2018."
+            },
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2016, 9, 1)).WithLearnPlanEndDate(new DateTime(2017, 9, 8)).WithLearnActEndDate(new DateTime(2017, 9, 8)).Build()},
+                new DateTime(2017, 9, 30),
+                new[] {0.00m, 3000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m},
+                "expecting a completion payment of 3000.00 in the second period for a learning episode that starts on 01/09/2016, runs for 12 months, does not end on a census date, has a negociated price of 15000 and is submitted on 30/09/2017."
+            }
+        };
+
+        private static readonly object[] LearningDeliveriesToProcessWithSubmissionAndYearOfCollectionDatesAndExpectedOnProgrammeScheduleForLateFinishers =
         {
             new object[]
             {
                 new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 8)).WithLearnActEndDate(new DateTime(2018, 10, 8)).Build()},
                 new DateTime(2018, 10, 15),
                 new DateTime(2018, 8, 1),
-                new[] {1000.00m, 0.00m, 3000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m}
+                new[] {1000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m}
             },
             new object[]
             {
                 new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 8)).WithLearnActEndDate(new DateTime(2018, 12, 8)).Build()},
                 new DateTime(2018, 12, 15),
                 new DateTime(2018, 8, 1),
-                new[] {1000.00m, 0.00m, 0.00m, 0.00m, 3000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m}
+                new[] {1000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m}
             },
             new object[]
             {
@@ -115,7 +134,39 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
                 new[] {new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2017, 4, 1)).WithLearnPlanEndDate(new DateTime(2018, 5, 1)).WithLearnActEndDate(new DateTime(2018, 7, 15)).WithNegotiatedPrice(15000).Build()},
                 new DateTime(2018, 7, 25),
                 new DateTime(2017, 8, 1),
-                new[] { 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 0.00m, 0.00m, 3000.00m}
+                new[] {923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 923.07692m, 0.00m, 0.00m, 0.00m}
+            }
+        };
+
+        private static readonly object[] LearningDeliveriesToProcessWithSubmissionAndYearOfCollectionDatesAndExpectedCompletionScheduleForLateFinishers =
+        {
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 8)).WithLearnActEndDate(new DateTime(2018, 10, 8)).Build()},
+                new DateTime(2018, 10, 15),
+                new DateTime(2018, 8, 1),
+                new[] {0.00m, 0.00m, 3000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m}
+            },
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 8)).WithLearnActEndDate(new DateTime(2018, 12, 8)).Build()},
+                new DateTime(2018, 12, 15),
+                new DateTime(2018, 8, 1),
+                new[] {0.00m, 0.00m, 0.00m, 0.00m, 3000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m}
+            },
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 8)).WithLearnActEndDate(new DateTime(2018, 12, 8)).Build()},
+                new DateTime(2018, 12, 15),
+                new DateTime(2017, 8, 1),
+                new[] {0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m}
+            },
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2017, 4, 1)).WithLearnPlanEndDate(new DateTime(2018, 5, 1)).WithLearnActEndDate(new DateTime(2018, 7, 15)).WithNegotiatedPrice(15000).Build()},
+                new DateTime(2018, 7, 25),
+                new DateTime(2017, 8, 1),
+                new[] {0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 3000.00m}
             }
         };
 
@@ -172,8 +223,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
         }
 
         [Test]
-        [TestCaseSource(nameof(LearningDeliveriesToProcessWithSubmissionDatesAndExpectedPaymentSchedules))]
-        public void ThenPeriodisedValuesAreCalculatedCorrectlyForALearnerThatIsInLearningOrFinishesOnTime(Infrastructure.Data.Entities.LearningDeliveryToProcess[] learningDeliveries, DateTime submissionDate, decimal[] expectedPeriodisedValues, string because)
+        [TestCaseSource(nameof(LearningDeliveriesToProcessWithSubmissionDatesAndExpectedOnProgrammeSchedule))]
+        public void ThenPeriodisedOnProgrammeValuesAreCalculatedCorrectlyForALearnerThatIsInLearningOrFinishesOnTime(Infrastructure.Data.Entities.LearningDeliveryToProcess[] learningDeliveries, DateTime submissionDate, decimal[] expectedPeriodisedValues, string because)
         {
             // Arrange
             _dateTimeProvider
@@ -192,7 +243,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
             Assert.IsNotNull(result.IsValid);
             Assert.IsTrue(result.IsValid);
 
-            var periodisedValues = result.ProcessedLearningDeliveryPeriodisedValues.FirstOrDefault();
+            var periodisedValues = result.ProcessedLearningDeliveryPeriodisedValues.SingleOrDefault(pv => pv.AttributeName == AttributeNames.OnProgrammePayment);
 
             Assert.IsNotNull(periodisedValues);
 
@@ -203,8 +254,39 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
         }
 
         [Test]
-        [TestCaseSource(nameof(LearningDeliveriesToProcessWithSubmissionAndYearOfCollectionDatesAndExpectedPaymentSchedulesForLateFinishers))]
-        public void ThenPeriodisedValuesAreCalculatedCorrectlyForALearnerThatFinishesLater(Infrastructure.Data.Entities.LearningDeliveryToProcess[] learningDeliveries, DateTime submissionDate, DateTime yearOfCollectionDate, decimal[] expectedPeriodisedValues)
+        [TestCaseSource(nameof(LearningDeliveriesToProcessWithSubmissionDatesAndExpectedCompletionSchedule))]
+        public void ThenPeriodisedCompletionValuesAreCalculatedCorrectlyForALearnerThatIsInLearningOrFinishesOnTime(Infrastructure.Data.Entities.LearningDeliveryToProcess[] learningDeliveries, DateTime submissionDate, decimal[] expectedPeriodisedValues, string because)
+        {
+            // Arrange
+            _dateTimeProvider
+                .Setup(dtp => dtp.Today)
+                .Returns(submissionDate);
+
+            _request = new GetLearningDeliveriesEarningsQueryRequest
+            {
+                LearningDeliveries = learningDeliveries
+            };
+
+            // Act
+            var result = _handler.Handle(_request);
+
+            // Assert
+            Assert.IsNotNull(result.IsValid);
+            Assert.IsTrue(result.IsValid);
+
+            var periodisedValues = result.ProcessedLearningDeliveryPeriodisedValues.SingleOrDefault(pv => pv.AttributeName == AttributeNames.CompletionPayment);
+
+            Assert.IsNotNull(periodisedValues);
+
+            for (var x = 0; x < 12; x++)
+            {
+                Assert.AreEqual(expectedPeriodisedValues[x], periodisedValues.GetPeriodValue(x + 1), because, null);
+            }
+        }
+
+        [Test]
+        [TestCaseSource(nameof(LearningDeliveriesToProcessWithSubmissionAndYearOfCollectionDatesAndExpectedOnProgrammeScheduleForLateFinishers))]
+        public void ThenPeriodisedOnProgrammeValuesAreCalculatedCorrectlyForALearnerThatFinishesLater(Infrastructure.Data.Entities.LearningDeliveryToProcess[] learningDeliveries, DateTime submissionDate, DateTime yearOfCollectionDate, decimal[] expectedPeriodisedValues)
         {
             // Arrange
             _dateTimeProvider
@@ -227,7 +309,44 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
             Assert.IsNotNull(result.IsValid);
             Assert.IsTrue(result.IsValid);
 
-            var periodisedValues = result.ProcessedLearningDeliveryPeriodisedValues.FirstOrDefault();
+            var periodisedValues =
+                result.ProcessedLearningDeliveryPeriodisedValues.SingleOrDefault(pv => pv.AttributeName == AttributeNames.OnProgrammePayment);
+
+            Assert.IsNotNull(periodisedValues);
+
+            for (var x = 0; x < 12; x++)
+            {
+                Assert.AreEqual(expectedPeriodisedValues[x], periodisedValues.GetPeriodValue(x + 1));
+            }
+        }
+
+        [Test]
+        [TestCaseSource(nameof(LearningDeliveriesToProcessWithSubmissionAndYearOfCollectionDatesAndExpectedCompletionScheduleForLateFinishers))]
+        public void ThenPeriodisedCompletionValuesAreCalculatedCorrectlyForALearnerThatFinishesLater(Infrastructure.Data.Entities.LearningDeliveryToProcess[] learningDeliveries, DateTime submissionDate, DateTime yearOfCollectionDate, decimal[] expectedPeriodisedValues)
+        {
+            // Arrange
+            _dateTimeProvider
+                .Setup(dtp => dtp.YearOfCollectionStart)
+                .Returns(yearOfCollectionDate);
+
+            _dateTimeProvider
+                .Setup(dtp => dtp.Today)
+                .Returns(submissionDate);
+
+            _request = new GetLearningDeliveriesEarningsQueryRequest
+            {
+                LearningDeliveries = learningDeliveries
+            };
+
+            // Act
+            var result = _handler.Handle(_request);
+
+            // Assert
+            Assert.IsNotNull(result.IsValid);
+            Assert.IsTrue(result.IsValid);
+
+            var periodisedValues =
+                result.ProcessedLearningDeliveryPeriodisedValues.SingleOrDefault(pv => pv.AttributeName == AttributeNames.CompletionPayment);
 
             Assert.IsNotNull(periodisedValues);
 

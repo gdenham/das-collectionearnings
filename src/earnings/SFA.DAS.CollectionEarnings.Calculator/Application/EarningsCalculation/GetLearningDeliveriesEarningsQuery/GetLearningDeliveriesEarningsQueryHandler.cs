@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using MediatR;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriodisedValues;
 using SFA.DAS.CollectionEarnings.Calculator.Tools.Extensions;
 using SFA.DAS.CollectionEarnings.Calculator.Tools.Providers;
 
@@ -23,8 +24,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
         {
             try
             {
-                var processedLearningDeliveries = new ConcurrentBag<Infrastructure.Data.Entities.ProcessedLearningDelivery>();
-                var processedLearningDeliveryPeriodisedValues = new ConcurrentBag<Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues>();
+                var processedLearningDeliveries = new List<Infrastructure.Data.Entities.ProcessedLearningDelivery>();
+                var processedLearningDeliveryPeriodisedValues = new List<Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues>();
 
                 var learningDeliveries = message.LearningDeliveries.ToList();
 
@@ -41,7 +42,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                             completionPaymentUncapped,
                             completionPaymentUncapped));
 
-                    processedLearningDeliveryPeriodisedValues.Add(
+                    processedLearningDeliveryPeriodisedValues.AddRange(
                         BuildProcessedLearningDeliveryPeriodisedValues(
                             learningDelivery,
                             monthlyInstallmentUncapped,
@@ -138,64 +139,54 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
             };
         }
 
-        private Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues BuildProcessedLearningDeliveryPeriodisedValues(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery, decimal monthlyInstallment, decimal completionPayment)
+        private Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues[] BuildProcessedLearningDeliveryPeriodisedValues(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery, decimal monthlyInstallment, decimal completionPayment)
         {
-            var result = new Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues
+            var onProgrammeEarning = new Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues
             {
                 LearnRefNumber = learningDelivery.LearnRefNumber,
                 AimSeqNumber = learningDelivery.AimSeqNumber,
-                Period_1 = 0m,
-                Period_2 = 0m,
-                Period_3 = 0m,
-                Period_4 = 0m,
-                Period_5 = 0m,
-                Period_6 = 0m,
-                Period_7 = 0m,
-                Period_8 = 0m,
-                Period_9 = 0m,
-                Period_10 = 0m,
-                Period_11 = 0m,
-                Period_12 = 0m
+                AttributeName = AttributeNames.OnProgrammePayment
             };
 
-            var addedCompletionPayment = false;
+            var completionEarning = new Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues
+            {
+                LearnRefNumber = learningDelivery.LearnRefNumber,
+                AimSeqNumber = learningDelivery.AimSeqNumber,
+                AttributeName = AttributeNames.CompletionPayment
+            };
+
+            var balancingEarning = new Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues
+            {
+                LearnRefNumber = learningDelivery.LearnRefNumber,
+                AimSeqNumber = learningDelivery.AimSeqNumber,
+                AttributeName = AttributeNames.BalancingPayment
+            };
+
             var shouldAddCompletionPayment = learningDelivery.LearnActEndDate.HasValue;
 
             var censusDate = CalculateFirstCensusDateForTheLearningDelivery(learningDelivery);
             var period = CalculateFirstPeriodForTheLearningDelivery(learningDelivery);
 
             var plannedEndDate = learningDelivery.LearnPlanEndDate;
-            var learningEndDate = learningDelivery.LearnActEndDate.HasValue
-                ? learningDelivery.LearnActEndDate
-                : plannedEndDate;
+            var learningEndCensusDate = learningDelivery.LearnActEndDate?.LastDayOfMonth() ?? plannedEndDate.LastDayOfMonth();
 
-            while (censusDate <= learningEndDate && period <= 12)
+            while (censusDate <= learningEndCensusDate && period <= 12)
             {
-                var amount = 0.00m;
-
                 if (censusDate <= plannedEndDate)
                 {
-                    amount += monthlyInstallment;
+                    onProgrammeEarning.SetPeriodValue(period, monthlyInstallment);
                 }
 
-                if (censusDate == learningEndDate && shouldAddCompletionPayment)
+                if (shouldAddCompletionPayment && censusDate == learningEndCensusDate)
                 {
-                    amount += completionPayment;
-                    addedCompletionPayment = true;
+                    completionEarning.SetPeriodValue(period, completionPayment);
                 }
-
-                result.SetPeriodValue(period, amount);
 
                 censusDate = censusDate.AddMonths(1).LastDayOfMonth();
                 period++;
             }
 
-            if (shouldAddCompletionPayment && !addedCompletionPayment && period <= 12)
-            {
-                result.SetPeriodValue(period, completionPayment);
-            }
-
-            return result;
+            return new [] { onProgrammeEarning, completionEarning, balancingEarning };
         }
     }
 }

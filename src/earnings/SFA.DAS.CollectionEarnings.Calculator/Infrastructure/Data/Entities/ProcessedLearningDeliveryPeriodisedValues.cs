@@ -8,6 +8,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities
     {
         public string LearnRefNumber { get; set; }
         public int AimSeqNumber { get; set; }
+        public string AttributeName { get; set; }
         public decimal Period_1 { get; set; }
         public decimal Period_2 { get; set; }
         public decimal Period_3 { get; set; }
