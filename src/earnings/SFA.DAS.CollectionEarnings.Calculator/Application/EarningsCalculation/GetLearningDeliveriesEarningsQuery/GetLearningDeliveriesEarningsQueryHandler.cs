@@ -163,6 +163,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
             };
 
             var shouldAddCompletionPayment = learningDelivery.LearnActEndDate.HasValue;
+            var shouldAddBalancingPayment = shouldAddCompletionPayment &&
+                                            learningDelivery.LearnActEndDate.Value < learningDelivery.LearnPlanEndDate;
 
             var censusDate = CalculateFirstCensusDateForTheLearningDelivery(learningDelivery);
             var period = CalculateFirstPeriodForTheLearningDelivery(learningDelivery);
@@ -182,11 +184,48 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                     completionEarning.SetPeriodValue(period, completionPayment);
                 }
 
+                if (shouldAddBalancingPayment && censusDate == learningEndCensusDate)
+                {
+                    var balancingPayment = CalculateBalancingPaymentAmount(monthlyInstallment, completionPayment, learningDelivery);
+
+                    balancingEarning.SetPeriodValue(period, balancingPayment);
+                }
+
                 censusDate = censusDate.AddMonths(1).LastDayOfMonth();
                 period++;
             }
 
             return new [] { onProgrammeEarning, completionEarning, balancingEarning };
+        }
+
+        private decimal CalculateBalancingPaymentAmount(decimal monthlyInstallment, decimal completionPayment, Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
+        {
+            if (!learningDelivery.LearnActEndDate.HasValue)
+            {
+                return 0.00m;
+            }
+
+            var numberOfPeriods = CalculateNumberOfPeriods(learningDelivery);
+            var numberOfPeriodsToBalance = CalculateNumberOfPeriodsToBalance(learningDelivery.LearnPlanEndDate, learningDelivery.LearnActEndDate.Value);
+
+            var amountEarnedSoFar = monthlyInstallment * (numberOfPeriods - numberOfPeriodsToBalance);
+
+            return decimal.Round(learningDelivery.NegotiatedPrice - completionPayment - amountEarnedSoFar, 5);
+        }
+
+        private int CalculateNumberOfPeriodsToBalance(DateTime plannedEndDate, DateTime actualEndDate)
+        {
+            var result = 0;
+
+            var censusDate = actualEndDate.AddMonths(1).LastDayOfMonth();
+
+            while (censusDate <= plannedEndDate)
+            {
+                censusDate = censusDate.AddMonths(1).LastDayOfMonth();
+                result++;
+            }
+
+            return result;
         }
     }
 }

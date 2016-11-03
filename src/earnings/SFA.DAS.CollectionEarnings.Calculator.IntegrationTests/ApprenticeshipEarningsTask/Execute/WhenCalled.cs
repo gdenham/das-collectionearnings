@@ -137,7 +137,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipE
         }
 
         [Test]
-        public void ThenNoPeriodisedBalancingNonZeroValuesAreAddedForALearnerThatFinishedLate()
+        public void ThenPeriodisedBalancingWithZeroValuesAreAddedForALearnerThatFinishedLate()
         {
             // Arrange
             TestDataHelper.ExecuteScript("IlrDataOneLearningDeliveryToProcessLateFinisher.sql");
@@ -155,6 +155,102 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipE
             Assert.IsNotNull(balancingEarning);
 
             Assert.AreEqual(0.00m, balancingEarning.Period_1);
+            Assert.AreEqual(0.00m, balancingEarning.Period_2);
+            Assert.AreEqual(0.00m, balancingEarning.Period_3);
+            Assert.AreEqual(0.00m, balancingEarning.Period_4);
+            Assert.AreEqual(0.00m, balancingEarning.Period_5);
+            Assert.AreEqual(0.00m, balancingEarning.Period_6);
+            Assert.AreEqual(0.00m, balancingEarning.Period_7);
+            Assert.AreEqual(0.00m, balancingEarning.Period_8);
+            Assert.AreEqual(0.00m, balancingEarning.Period_9);
+            Assert.AreEqual(0.00m, balancingEarning.Period_10);
+            Assert.AreEqual(0.00m, balancingEarning.Period_11);
+            Assert.AreEqual(0.00m, balancingEarning.Period_12);
+        }
+
+        [Test]
+        public void ThenPeriodisedOnProgrammeValuesAreAddedForALearnerThatFinishedEarly()
+        {
+            // Arrange
+            TestDataHelper.ExecuteScript("IlrDataOneLearningDeliveryToProcessEarlyFinisher.sql");
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            var periodisedValues = TestDataHelper.GetProcessedLearningDeliveryPeriodisedValues();
+
+            Assert.IsNotNull(periodisedValues);
+
+            var onProgrammeEarning = periodisedValues.SingleOrDefault(pv => pv.AttributeName == AttributeNames.OnProgrammePayment);
+
+            Assert.IsNotNull(onProgrammeEarning);
+
+            Assert.AreEqual(160.00m, onProgrammeEarning.Period_1);
+            Assert.AreEqual(0.00m, onProgrammeEarning.Period_2);
+            Assert.AreEqual(0.00m, onProgrammeEarning.Period_3);
+            Assert.AreEqual(0.00m, onProgrammeEarning.Period_4);
+            Assert.AreEqual(0.00m, onProgrammeEarning.Period_5);
+            Assert.AreEqual(0.00m, onProgrammeEarning.Period_6);
+            Assert.AreEqual(0.00m, onProgrammeEarning.Period_7);
+            Assert.AreEqual(0.00m, onProgrammeEarning.Period_8);
+            Assert.AreEqual(0.00m, onProgrammeEarning.Period_9);
+            Assert.AreEqual(0.00m, onProgrammeEarning.Period_10);
+            Assert.AreEqual(0.00m, onProgrammeEarning.Period_11);
+            Assert.AreEqual(0.00m, onProgrammeEarning.Period_12);
+        }
+
+        [Test]
+        public void ThenPeriodisedCompletionValuesAreAddedForALearnerThatFinishedEarly()
+        {
+            // Arrange
+            TestDataHelper.ExecuteScript("IlrDataOneLearningDeliveryToProcessEarlyFinisher.sql");
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            var periodisedValues = TestDataHelper.GetProcessedLearningDeliveryPeriodisedValues();
+
+            Assert.IsNotNull(periodisedValues);
+
+            var completionEarning = periodisedValues.SingleOrDefault(pv => pv.AttributeName == AttributeNames.CompletionPayment);
+
+            Assert.IsNotNull(completionEarning);
+
+            Assert.AreEqual(600.00m, completionEarning.Period_1);
+            Assert.AreEqual(0.00m, completionEarning.Period_2);
+            Assert.AreEqual(0.00m, completionEarning.Period_3);
+            Assert.AreEqual(0.00m, completionEarning.Period_4);
+            Assert.AreEqual(0.00m, completionEarning.Period_5);
+            Assert.AreEqual(0.00m, completionEarning.Period_6);
+            Assert.AreEqual(0.00m, completionEarning.Period_7);
+            Assert.AreEqual(0.00m, completionEarning.Period_8);
+            Assert.AreEqual(0.00m, completionEarning.Period_9);
+            Assert.AreEqual(0.00m, completionEarning.Period_10);
+            Assert.AreEqual(0.00m, completionEarning.Period_11);
+            Assert.AreEqual(0.00m, completionEarning.Period_12);
+        }
+
+        [Test]
+        public void ThenPeriodisedBalancingValuesAreAddedForALearnerThatFinishedEarly()
+        {
+            // Arrange
+            TestDataHelper.ExecuteScript("IlrDataOneLearningDeliveryToProcessEarlyFinisher.sql");
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            var periodisedValues = TestDataHelper.GetProcessedLearningDeliveryPeriodisedValues();
+
+            Assert.IsNotNull(periodisedValues);
+
+            var balancingEarning = periodisedValues.SingleOrDefault(pv => pv.AttributeName == AttributeNames.BalancingPayment);
+
+            Assert.IsNotNull(balancingEarning);
+
+            Assert.AreEqual(160.00m, balancingEarning.Period_1);
             Assert.AreEqual(0.00m, balancingEarning.Period_2);
             Assert.AreEqual(0.00m, balancingEarning.Period_3);
             Assert.AreEqual(0.00m, balancingEarning.Period_4);
