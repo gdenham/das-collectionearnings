@@ -73,6 +73,7 @@
     <Compile Include="ApprenticeshipEarningsTask\Execute\WhenCalled.cs" />
     <Compile Include="Infrastructure\Data\Repositories\LearningDeliveryToProcessRepository\GetAllLearningDeliveriesToProcess\WhenCalled.cs" />
     <Compile Include="Infrastructure\Data\Repositories\ProcessedLearningDeliveryPeriodisedValuesRepository\AddProcessedLearningDeliveryPeriodisedValues\WhenCalled.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\ProcessedLearningDeliveryPeriodRepository\AddProcessedLearningDeliveryPeriod\WhenCalled.cs" />
     <Compile Include="Infrastructure\Data\Repositories\ProcessedLearningDeliveryRepository\AddProcessedLearningDeliveries\WhenCalled.cs" />
     <Compile Include="GlobalSetup.cs" />
     <Compile Include="GlobalTestContext.cs" />

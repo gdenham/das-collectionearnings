@@ -113,6 +113,55 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
             }
         };
 
+        private static readonly object[] LearningDeliveriesToProcessWithSubmissionAndYearOfCollectionDatesAndExpectedPeriodsSchedule =
+        {
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 8)).WithLearnActEndDate(new DateTime(2018, 8, 8)).Build()},
+                new DateTime(2018, 10, 15),
+                new DateTime(2018, 8, 1),
+                new[] {1000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m},
+                new[] {3000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m},
+                new[] {0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m}
+            },
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 8)).WithLearnActEndDate(new DateTime(2018, 7, 8)).Build()},
+                new DateTime(2017, 10, 15),
+                new DateTime(2017, 8, 1),
+                new[] {0.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m},
+                new[] {0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 3000.00m},
+                new[] {0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 1000.00m}
+            },
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 8)).WithLearnActEndDate(new DateTime(2018, 6, 8)).Build()},
+                new DateTime(2017, 10, 15),
+                new DateTime(2017, 8, 1),
+                new[] {0.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 0.00m},
+                new[] {0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 3000.00m, 0.00m },
+                new[] {0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 2000.00m, 0.00m }
+            },
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 8)).WithLearnActEndDate(new DateTime(2018, 9, 1)).Build()},
+                new DateTime(2018, 10, 15),
+                new DateTime(2018, 8, 1),
+                new[] {1000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m},
+                new[] {0.00m, 3000.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m},
+                new[] {0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m}
+            },
+            new object[]
+            {
+                new[] {new LearningDeliveryToProcessBuilder().WithLearnPlanEndDate(new DateTime(2018, 9, 8)).WithLearnActEndDate(new DateTime(2018, 8, 8)).Build()},
+                new DateTime(2017, 10, 15),
+                new DateTime(2017, 8, 1),
+                new[] {0.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m, 1000.00m},
+                new[] {0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m},
+                new[] {0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m}
+            }
+        };
+
         #endregion
 
         private Mock<IDateTimeProvider> _dateTimeProvider;
@@ -246,6 +295,48 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
             for (var x = 0; x < 12; x++)
             {
                 Assert.AreEqual(expectedPeriodisedValues[x], periodisedValues.GetPeriodValue(x + 1), because);
+            }
+        }
+
+        [Test]
+        [TestCaseSource(nameof(LearningDeliveriesToProcessWithSubmissionAndYearOfCollectionDatesAndExpectedPeriodsSchedule))]
+        public void ThenPeriodEarningsAreCalculatedCorrectly(Infrastructure.Data.Entities.LearningDeliveryToProcess[] learningDeliveries, DateTime submissionDate, DateTime yearOfCollectionDate, decimal[] expectedOnProgramme, decimal[] expectedCompletion, decimal[] expectedBalancing)
+        {
+            // Arrange
+            _dateTimeProvider
+                .Setup(dtp => dtp.YearOfCollectionStart)
+                .Returns(yearOfCollectionDate);
+
+            _dateTimeProvider
+                .Setup(dtp => dtp.Today)
+                .Returns(submissionDate);
+
+            _request = new GetLearningDeliveriesEarningsQueryRequest
+            {
+                LearningDeliveries = learningDeliveries
+            };
+
+            // Act
+            var result = _handler.Handle(_request);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.IsValid);
+
+            var periods = result.LearningDeliveryPeriodEarnings;
+
+            Assert.IsNotNull(periods);
+            Assert.AreEqual(12, periods.Length);
+
+            for (var x = 0; x < 12; x++)
+            {
+                var periodEarning = periods.SingleOrDefault(pe => pe.Period == x + 1);
+
+                Assert.IsNotNull(periodEarning);
+
+                Assert.AreEqual(expectedOnProgramme[x], periodEarning.OnProgrammeEarning);
+                Assert.AreEqual(expectedCompletion[x], periodEarning.CompletionEarning);
+                Assert.AreEqual(expectedBalancing[x], periodEarning.BalancingEarning);
             }
         }
     }

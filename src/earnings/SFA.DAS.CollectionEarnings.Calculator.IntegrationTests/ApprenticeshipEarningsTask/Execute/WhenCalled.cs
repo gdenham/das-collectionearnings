@@ -47,14 +47,17 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipE
             // Assert
             var learningDeliveries = TestDataHelper.GetProcessedLearningDeliveries();
             var periodisedValues = TestDataHelper.GetProcessedLearningDeliveryPeriodisedValues();
+            var periodValues = TestDataHelper.GetProcessedLearningDeliveryPeriods();
 
             Assert.IsNotNull(learningDeliveries);
             Assert.IsNotNull(periodisedValues);
+            Assert.IsNotNull(periodValues);
 
             Assert.AreEqual(1, learningDeliveries.Length);
             Assert.AreEqual(1, periodisedValues.Count(pv => pv.AttributeName == AttributeNames.OnProgrammePayment));
             Assert.AreEqual(1, periodisedValues.Count(pv => pv.AttributeName == AttributeNames.CompletionPayment));
             Assert.AreEqual(1, periodisedValues.Count(pv => pv.AttributeName == AttributeNames.BalancingPayment));
+            Assert.AreEqual(12, periodValues.Length);
         }
 
         [Test]
@@ -169,6 +172,49 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipE
         }
 
         [Test]
+        public void ThenTwelveLeaarningDeliveryPeriodsAreAddedForALearnerThatFinishedLate()
+        {
+            // Arrange
+            TestDataHelper.ExecuteScript("IlrDataOneLearningDeliveryToProcessLateFinisher.sql");
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            var periods = TestDataHelper.GetProcessedLearningDeliveryPeriods();
+
+            Assert.IsNotNull(periods);
+            Assert.AreEqual(12, periods.Length);
+
+            Assert.AreEqual(1, periods[0].Period);
+            Assert.AreEqual(160.00m, periods[0].ProgrammeAimOnProgPayment);
+            Assert.AreEqual(0.00m, periods[0].ProgrammeAimCompletionPayment);
+            Assert.AreEqual(0.00m, periods[0].ProgrammeAimBalPayment);
+
+            Assert.AreEqual(2, periods[1].Period);
+            Assert.AreEqual(160.00m, periods[1].ProgrammeAimOnProgPayment);
+            Assert.AreEqual(0.00m, periods[1].ProgrammeAimCompletionPayment);
+            Assert.AreEqual(0.00m, periods[1].ProgrammeAimBalPayment);
+
+            Assert.AreEqual(5, periods[4].Period);
+            Assert.AreEqual(0.00m, periods[4].ProgrammeAimOnProgPayment);
+            Assert.AreEqual(600.00m, periods[4].ProgrammeAimCompletionPayment);
+            Assert.AreEqual(0.00m, periods[4].ProgrammeAimBalPayment);
+
+            var zeroValuesPeriods = new[] {3, 4, 6, 7, 8, 9, 10, 11, 12};
+
+            foreach (var period in zeroValuesPeriods)
+            {
+                var periodEntity = periods.SingleOrDefault(p => p.Period == period);
+
+                Assert.IsNotNull(periodEntity);
+                Assert.AreEqual(0.00m, periodEntity.ProgrammeAimOnProgPayment);
+                Assert.AreEqual(0.00m, periodEntity.ProgrammeAimCompletionPayment);
+                Assert.AreEqual(0.00m, periodEntity.ProgrammeAimBalPayment);
+            }
+        }
+
+        [Test]
         public void ThenPeriodisedOnProgrammeValuesAreAddedForALearnerThatFinishedEarly()
         {
             // Arrange
@@ -262,6 +308,39 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipE
             Assert.AreEqual(0.00m, balancingEarning.Period_10);
             Assert.AreEqual(0.00m, balancingEarning.Period_11);
             Assert.AreEqual(0.00m, balancingEarning.Period_12);
+        }
+
+        [Test]
+        public void ThenTwelveLeaarningDeliveryPeriodsAreAddedForALearnerThatFinishedEarly()
+        {
+            // Arrange
+            TestDataHelper.ExecuteScript("IlrDataOneLearningDeliveryToProcessEarlyFinisher.sql");
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            var periods = TestDataHelper.GetProcessedLearningDeliveryPeriods();
+
+            Assert.IsNotNull(periods);
+            Assert.AreEqual(12, periods.Length);
+
+            Assert.AreEqual(1, periods[0].Period);
+            Assert.AreEqual(160.00m, periods[0].ProgrammeAimOnProgPayment);
+            Assert.AreEqual(600.00m, periods[0].ProgrammeAimCompletionPayment);
+            Assert.AreEqual(160.00m, periods[0].ProgrammeAimBalPayment);
+
+            var zeroValuesPeriods = new[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+
+            foreach (var period in zeroValuesPeriods)
+            {
+                var periodEntity = periods.SingleOrDefault(p => p.Period == period);
+
+                Assert.IsNotNull(periodEntity);
+                Assert.AreEqual(0.00m, periodEntity.ProgrammeAimOnProgPayment);
+                Assert.AreEqual(0.00m, periodEntity.ProgrammeAimCompletionPayment);
+                Assert.AreEqual(0.00m, periodEntity.ProgrammeAimBalPayment);
+            }
         }
     }
 }

@@ -52,6 +52,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                             learningDelivery,
                             monthlyInstallmentUncapped,
                             completionPaymentUncapped);
+
+                        FillMissingPeriodEarnings(learningDelivery);
                     });
 
                 return new GetLearningDeliveriesEarningsQueryResponse
@@ -179,7 +181,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
             var plannedEndDate = learningDelivery.LearnPlanEndDate;
             var learningEndCensusDate = learningDelivery.LearnActEndDate?.LastDayOfMonth() ?? plannedEndDate.LastDayOfMonth();
 
-            while (period <= 12)
+            while (censusDate <= learningEndCensusDate && period <= 12)
             {
                 var periodEarning = new LearningDeliveryPeriodEarning
                 {
@@ -188,7 +190,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                     Period = period
                 };
 
-                if (censusDate <= learningEndCensusDate && censusDate <= plannedEndDate)
+                if (censusDate <= plannedEndDate)
                 {
                     onProgrammeEarning.SetPeriodValue(period, monthlyInstallment);
 
@@ -250,6 +252,30 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
             }
 
             return result;
+        }
+
+
+        private void FillMissingPeriodEarnings(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
+        {
+            if (_learningDeliveryPeriodEarnings.Count == 12)
+            {
+                return;
+            }
+
+            for (var period = 1; period <= 12; period++)
+            {
+                if (_learningDeliveryPeriodEarnings.Count(pe => pe.Period == period) == 1)
+                {
+                    continue;
+                }
+
+                _learningDeliveryPeriodEarnings.Add(new LearningDeliveryPeriodEarning
+                {
+                    LearnerReferenceNumber = learningDelivery.LearnRefNumber,
+                    AimSequenceNumber = learningDelivery.AimSeqNumber,
+                    Period = period
+                });
+            }
         }
     }
 }

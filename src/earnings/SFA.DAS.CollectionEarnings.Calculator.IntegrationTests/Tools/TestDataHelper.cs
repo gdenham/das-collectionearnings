@@ -48,6 +48,11 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools
             return Query<ProcessedLearningDeliveryPeriodisedValues>("SELECT * FROM [Rulebase].[AE_LearningDelivery_PeriodisedValues]");
         }
 
+        internal static ProcessedLearningDeliveryPeriod[] GetProcessedLearningDeliveryPeriods()
+        {
+            return Query<ProcessedLearningDeliveryPeriod>("SELECT * FROM [Rulebase].[AE_LearningDelivery_Period]");
+        }
+
         internal static void ExecuteScript(string script)
         {
             var scriptCommand = File.ReadAllText($@"{AppDomain.CurrentDomain.BaseDirectory}\Tools\Sql\{script}");
