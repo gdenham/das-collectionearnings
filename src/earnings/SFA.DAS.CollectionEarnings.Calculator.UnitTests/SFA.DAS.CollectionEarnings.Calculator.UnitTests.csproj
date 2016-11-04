@@ -72,9 +72,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\EarningsCalculation\GetLearningDeliveriesEarningsQuery\GetLearningDeliveriesEarningsQueryHandler\Handle\WhenCalled.cs" />
+    <Compile Include="Application\EarningsCalculation\GetLearningDeliveriesEarningsQuery\GetLearningDeliveriesEarningsQueryHandler\WhenHandlingEarlyFinishers.cs" />
+    <Compile Include="Application\EarningsCalculation\GetLearningDeliveriesEarningsQuery\GetLearningDeliveriesEarningsQueryHandler\WhenHandlingLateFinishers.cs" />
+    <Compile Include="Application\EarningsCalculation\GetLearningDeliveriesEarningsQuery\GetLearningDeliveriesEarningsQueryHandler\WhenHandlingInLearningOrOnTimeFinishers.cs" />
     <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryHandler\Handle\WhenCalled.cs" />
     <Compile Include="Application\ProcessedLearningDeliveryPeriodisedValues\AddProcessedLearningDeliveryPeriodisedValuesCommand\CommandHandler\Handle\WhenCalled.cs" />
+    <Compile Include="Application\ProcessedLearningDeliveryPeriod\AddProcessedLearningDeliveryPeriodCommand\CommandHandler\WhenHandling.cs" />
     <Compile Include="Application\ProcessedLearningDelivery\AddProcessedLearningDeliveriesCommand\AddProcessedLearningDeliveriesCommandHandler\Handle\WhenCalled.cs" />
     <Compile Include="ApprenticeshipEarningsProcessor\Process\WhenCalled.cs" />
     <Compile Include="ApprenticeshipEarningsTask\Execute\WhenCalledWithInvalidContext.cs" />
@@ -85,6 +88,7 @@
     <Compile Include="Tools\Entities\IEntityBuilder.cs" />
     <Compile Include="Tools\Entities\LearningDeliveryToProcessBuilder.cs" />
     <Compile Include="Tools\Entities\ProcessedLearningDeliveryBuilder.cs" />
+    <Compile Include="Tools\Entities\ProcessedLearningDeliveryPeriodBuilder.cs" />
     <Compile Include="Tools\Entities\ProcessedLearningDeliveryPeriodisedValuesBuilder.cs" />
     <Compile Include="Tools\ExternalContextStub.cs" />
   </ItemGroup>

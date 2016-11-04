@@ -1,4 +1,5 @@
-﻿using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
+﻿using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriodisedValues;
+using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities
 {
@@ -6,6 +7,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities
     {
         private string _learnRefNumber = "Lrn001";
         private int _aimSeqNumber = 1;
+        private string _attributeName = AttributeNames.OnProgrammePayment;
         private decimal _period1 = 1000m;
         private decimal _period2 = 1000m;
         private decimal _period3 = 1000m;
@@ -25,6 +27,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities
             {
                 LearnRefNumber = _learnRefNumber,
                 AimSeqNumber = _aimSeqNumber,
+                AttributeName = _attributeName,
                 Period_1 = _period1,
                 Period_2 = _period2,
                 Period_3 = _period3,
@@ -50,6 +53,13 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities
         public ProcessedLearningDeliveryPeriodisedValuesBuilder WithAimSeqNumber(int aimseqNumber)
         {
             _aimSeqNumber = aimseqNumber;
+
+            return this;
+        }
+
+        public ProcessedLearningDeliveryPeriodisedValuesBuilder WithAttributeName(string attributeName)
+        {
+            _attributeName = attributeName;
 
             return this;
         }

@@ -4,6 +4,8 @@ using NLog;
 using SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.GetLearningDeliveriesEarningsQuery;
 using SFA.DAS.CollectionEarnings.Calculator.Application.LearningDeliveryToProcess.GetAllLearningDeliveriesToProcessQuery;
 using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDelivery.AddProcessedLearningDeliveriesCommand;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriod;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriod.AddProcessedLearningDeliveryPeriodCommand;
 using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriodisedValues.AddProcessedLearningDeliveryPeriodisedValuesCommand;
 using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 
@@ -35,8 +37,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator
                 var processedEarnings = CalculateEarningsOrThrow(learningDeliveriesToProcess.Items);
 
                 WriteProcessedLearningDeliveriesOrThrow(processedEarnings.ProcessedLearningDeliveries);
-
                 WriteProcessedLearningDeliveryPeriodisedValuesOrThrow(processedEarnings.ProcessedLearningDeliveryPeriodisedValues);
+                WriteProcessedLearningDeliveriesPeriodEarningsOrThrow(processedEarnings.LearningDeliveryPeriodEarnings);
             }
             else
             {
@@ -116,6 +118,25 @@ namespace SFA.DAS.CollectionEarnings.Calculator
             }
 
             _logger.Debug("Finished writing processed learning deliveries periodised values.");
+        }
+
+        private void WriteProcessedLearningDeliveriesPeriodEarningsOrThrow(LearningDeliveryPeriodEarning[] learningDeliveriesPeriodEarnings)
+        {
+            _logger.Debug("Started writing learning deliveries period earnings.");
+
+            try
+            {
+                _mediator.Send(new AddProcessedLearningDeliveryPeriodCommandRequest
+                {
+                    PeriodEarnings = learningDeliveriesPeriodEarnings
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new EarningsCalculatorException(EarningsCalculatorException.ErrorWritingLearningDeliveriesPeriodEarningsMessage, ex);
+            }
+
+            _logger.Debug("Finished writing learning deliveries period earnings.");
         }
     }
 }

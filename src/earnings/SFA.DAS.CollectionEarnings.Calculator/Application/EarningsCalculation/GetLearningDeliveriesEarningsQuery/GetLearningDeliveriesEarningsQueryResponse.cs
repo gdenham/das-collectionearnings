@@ -1,4 +1,5 @@
-﻿using SFA.DAS.Payments.DCFS.Application;
+﻿using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriod;
+using SFA.DAS.Payments.DCFS.Application;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.GetLearningDeliveriesEarningsQuery
 {
@@ -6,5 +7,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
     {
         public Infrastructure.Data.Entities.ProcessedLearningDelivery[] ProcessedLearningDeliveries { get; set; }
         public Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues[] ProcessedLearningDeliveryPeriodisedValues { get; set; }
+        public LearningDeliveryPeriodEarning[] LearningDeliveryPeriodEarnings { get; set; }
     }
 }

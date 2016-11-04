@@ -11,6 +11,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator
         public const string ErrorCalculatingEarningsForTheLearningDeliveriesMessage = "Error while processing the learning deliveries to calculate the earnings.";
         public const string ErrorWritingProcessedLearningDeliveriesMessage = "Error while writing processed learning deliveries.";
         public const string ErrorWritingProcessedLearningDeliveryPeriodisedValuesMessage = "Error while writing processed learning deliveries periodised values.";
+        public const string ErrorWritingLearningDeliveriesPeriodEarningsMessage = "Error while writing learning deliveries period earnings.";
 
         public EarningsCalculatorException(string message, Exception ex)
             : base(message, ex)

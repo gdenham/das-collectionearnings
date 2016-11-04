@@ -78,6 +78,10 @@
     <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryHandler.cs" />
     <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryRequest.cs" />
     <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryResponse.cs" />
+    <Compile Include="Application\ProcessedLearningDeliveryPeriodisedValues\AttributeNames.cs" />
+    <Compile Include="Application\ProcessedLearningDeliveryPeriod\AddProcessedLearningDeliveryPeriodCommand\AddProcessedLearningDeliveryPeriodCommandHandler.cs" />
+    <Compile Include="Application\ProcessedLearningDeliveryPeriod\AddProcessedLearningDeliveryPeriodCommand\AddProcessedLearningDeliveryPeriodCommandRequest.cs" />
+    <Compile Include="Application\ProcessedLearningDeliveryPeriod\LearningDeliveryPeriodEarning.cs" />
     <Compile Include="Application\ProcessedLearningDelivery\AddProcessedLearningDeliveriesCommand\AddProcessedLearningDeliveriesCommandHandler.cs" />
     <Compile Include="Application\ProcessedLearningDelivery\AddProcessedLearningDeliveriesCommand\AddProcessedLearningDeliveriesCommandRequest.cs" />
     <Compile Include="Application\ProcessedLearningDeliveryPeriodisedValues\AddProcessedLearningDeliveryPeriodisedValuesCommand\AddProcessedLearningDeliveryPeriodisedValuesCommandHandler.cs" />
@@ -87,13 +91,16 @@
     <Compile Include="ApprenticeshipEarningsTask.cs" />
     <Compile Include="Context\EarningsContextPropertyKeys.cs" />
     <Compile Include="Infrastructure\Data\Entities\ProcessedLearningDelivery.cs" />
+    <Compile Include="Infrastructure\Data\Entities\ProcessedLearningDeliveryPeriod.cs" />
     <Compile Include="Infrastructure\Data\Entities\ProcessedLearningDeliveryPeriodisedValues.cs" />
     <Compile Include="Infrastructure\Data\Entities\LearningDeliveryToProcess.cs" />
     <Compile Include="Infrastructure\Data\ILearningDeliveryToProcessRepository.cs" />
     <Compile Include="Infrastructure\Data\IProcessedLearningDeliveryPeriodisedValuesRepository.cs" />
+    <Compile Include="Infrastructure\Data\IProcessedLearningDeliveryPeriodRepository.cs" />
     <Compile Include="Infrastructure\Data\IProcessedLearningDeliveryRepository.cs" />
     <Compile Include="Infrastructure\Data\Repositories\LearningDeliveryToProcessRepository.cs" />
     <Compile Include="Infrastructure\Data\Repositories\ProcessedLearningDeliveryPeriodisedValuesRepository.cs" />
+    <Compile Include="Infrastructure\Data\Repositories\ProcessedLearningDeliveryPeriodRepository.cs" />
     <Compile Include="Infrastructure\Data\Repositories\ProcessedLearningDeliveryRepository.cs" />
     <Compile Include="DependencyResolution\CalculatorRegistry.cs" />
     <Compile Include="DependencyResolution\TaskDependencyResolver.cs" />

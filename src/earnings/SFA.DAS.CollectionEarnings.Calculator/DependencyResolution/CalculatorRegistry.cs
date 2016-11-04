@@ -27,6 +27,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.DependencyResolution
             For<ILearningDeliveryToProcessRepository>().Use<LearningDeliveryToProcessRepository>();
             For<IProcessedLearningDeliveryRepository>().Use<ProcessedLearningDeliveryRepository>();
             For<IProcessedLearningDeliveryPeriodisedValuesRepository>().Use<ProcessedLearningDeliveryPeriodisedValuesRepository>();
+            For<IProcessedLearningDeliveryPeriodRepository>().Use<ProcessedLearningDeliveryPeriodRepository>();
             For<IDateTimeProvider>().Use<DateTimeProvider>();
 
             For<SingleInstanceFactory>().Use<SingleInstanceFactory>(ctx => t => GetInstance(ctx, t));
