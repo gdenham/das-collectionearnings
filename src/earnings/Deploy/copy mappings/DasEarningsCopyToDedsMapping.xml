@@ -100,6 +100,10 @@
           <Destination>AimSeqNumber</Destination>
         </ColumnMapping>
         <ColumnMapping>
+          <Source>AttributeName</Source>
+          <Destination>AttributeName</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
           <Source>Period_1</Source>
           <Destination>Period_1</Destination>
         </ColumnMapping>
@@ -146,6 +150,41 @@
         <ColumnMapping>
           <Source>Period_12</Source>
           <Destination>Period_12</Destination>
+        </ColumnMapping>
+      </ColumnMappings>
+    </TableMapping>
+    <TableMapping>
+      <Source>[Rulebase].[vw_AE_LearningDelivery_Period]</Source>
+      <Destination>[Rulebase].[AE_LearningDelivery_Period]</Destination>
+      <Ordinal>3</Ordinal>
+      <ColumnMappings>
+        <ColumnMapping>
+          <Source>Ukprn</Source>
+          <Destination>Ukprn</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>LearnRefNumber</Source>
+          <Destination>LearnRefNumber</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>AimSeqNumber</Source>
+          <Destination>AimSeqNumber</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>Period</Source>
+          <Destination>Period</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>ProgrammeAimOnProgPayment</Source>
+          <Destination>ProgrammeAimOnProgPayment</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>ProgrammeAimCompletionPayment</Source>
+          <Destination>ProgrammeAimCompletionPayment</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>ProgrammeAimBalPayment</Source>
+          <Destination>ProgrammeAimBalPayment</Destination>
         </ColumnMapping>
       </ColumnMappings>
     </TableMapping>
