@@ -75,6 +75,7 @@
     <Compile Include="Application\EarningsCalculation\GetLearningDeliveriesEarningsQuery\GetLearningDeliveriesEarningsQueryHandler\WhenHandlingEarlyFinishers.cs" />
     <Compile Include="Application\EarningsCalculation\GetLearningDeliveriesEarningsQuery\GetLearningDeliveriesEarningsQueryHandler\WhenHandlingLateFinishers.cs" />
     <Compile Include="Application\EarningsCalculation\GetLearningDeliveriesEarningsQuery\GetLearningDeliveriesEarningsQueryHandler\WhenHandlingInLearningOrOnTimeFinishers.cs" />
+    <Compile Include="Application\EarningsCalculation\GetLearningDeliveriesEarningsQuery\GetLearningDeliveriesEarningsQueryHandler\WhenHandlingMultipleLearners.cs" />
     <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryHandler\Handle\WhenCalled.cs" />
     <Compile Include="Application\ProcessedLearningDeliveryPeriodisedValues\AddProcessedLearningDeliveryPeriodisedValuesCommand\CommandHandler\Handle\WhenCalled.cs" />
     <Compile Include="Application\ProcessedLearningDeliveryPeriod\AddProcessedLearningDeliveryPeriodCommand\CommandHandler\WhenHandling.cs" />
