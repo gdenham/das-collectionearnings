@@ -52,8 +52,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                             learningDelivery,
                             monthlyInstallmentUncapped,
                             completionPaymentUncapped);
-
-                        FillMissingPeriodEarnings(learningDelivery);
                     });
 
                 return new GetLearningDeliveriesEarningsQueryResponse
@@ -150,6 +148,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
 
         private void BuildPeriodEarningsAndPeriodisedValues(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery, decimal monthlyInstallment, decimal completionPayment)
         {
+            var periodEarnings = new List<LearningDeliveryPeriodEarning>();
+
             var onProgrammeEarning = new Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues
             {
                 LearnRefNumber = learningDelivery.LearnRefNumber,
@@ -213,15 +213,19 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                     periodEarning.BalancingEarning = balancingPayment;
                 }
 
-                _learningDeliveryPeriodEarnings.Add(periodEarning);
+                periodEarnings.Add(periodEarning);
 
                 censusDate = censusDate.AddMonths(1).LastDayOfMonth();
                 period++;
             }
 
+            FillMissingPeriodEarnings(periodEarnings, learningDelivery);
+
             _processedLearningDeliveryPeriodisedValues.Add(onProgrammeEarning);
             _processedLearningDeliveryPeriodisedValues.Add(completionEarning);
             _processedLearningDeliveryPeriodisedValues.Add(balancingEarning);
+
+            _learningDeliveryPeriodEarnings.AddRange(periodEarnings);
         }
 
         private decimal CalculateBalancingPaymentAmount(decimal monthlyInstallment, decimal completionPayment, Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
@@ -255,16 +259,16 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
         }
 
 
-        private void FillMissingPeriodEarnings(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
+        private void FillMissingPeriodEarnings(List<LearningDeliveryPeriodEarning>  periodEarnings, Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
         {
-            if (_learningDeliveryPeriodEarnings.Count == 12)
+            if (periodEarnings.Count == 12)
             {
                 return;
             }
 
             for (var period = 1; period <= 12; period++)
             {
-                if (_learningDeliveryPeriodEarnings.Count(pe => pe.Period == period) == 1)
+                if (periodEarnings.Count(pe => pe.Period == period) == 1)
                 {
                     continue;
                 }
