@@ -16,10 +16,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
             try
             {
                 SetupConnectionStrings();
-                SetupSubmissionDatabaseName();
-                SetupSubmissionDedsDatabaseName();
-                SetupPeriodEndDatabaseName();
-                SetupPeriodEndDedsDatabaseName();
+
+                SubmissionDatabaseName = ExtractDatabaseNameFromConnectionString(SubmissionConnectionString);
+                SubmissionDedsDatabaseName = ExtractDatabaseNameFromConnectionString(SubmissionDedsConnectionString);
+                PeriodEndDatabaseName = ExtractDatabaseNameFromConnectionString(PeriodEndConnectionString);
+                PeriodEndDedsDatabaseName = ExtractDatabaseNameFromConnectionString(PeriodEndDedsConnectionString);
+
                 SetupBracketedDatabaseNames();
                 SetupAsseblyDirectory();
             }
@@ -70,61 +72,21 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
             }
         }
 
-        private void SetupSubmissionDatabaseName()
+        private string ExtractDatabaseNameFromConnectionString(string connectionString)
         {
-            var match = Regex.Match(SubmissionConnectionString, @"database=([A-Z0-9\-_]{1,});", RegexOptions.IgnoreCase);
+            var match = Regex.Match(connectionString, @"database=([A-Z0-9\-_]{1,});", RegexOptions.IgnoreCase);
             if (match.Success)
             {
-                SubmissionDatabaseName = match.Groups[1].Value;
-                return;
+                return match.Groups[1].Value;
             }
 
-            match = Regex.Match(SubmissionConnectionString, @"initial catalog=([A-Z0-9\-_]{1,});", RegexOptions.IgnoreCase);
+            match = Regex.Match(connectionString, @"initial catalog=([A-Z0-9\-_]{1,});", RegexOptions.IgnoreCase);
             if (match.Success)
             {
-                SubmissionDatabaseName = match.Groups[1].Value;
-                return;
+                return match.Groups[1].Value;
             }
 
-            throw new Exception("Cannot extract ilr submission database name from connection");
-        }
-
-        private void SetupSubmissionDedsDatabaseName()
-        {
-            var match = Regex.Match(SubmissionDedsConnectionString, @"database=([A-Z0-9\-_]{1,});", RegexOptions.IgnoreCase);
-            if (match.Success)
-            {
-                SubmissionDedsDatabaseName = match.Groups[1].Value;
-                return;
-            }
-
-            match = Regex.Match(SubmissionDedsConnectionString, @"initial catalog=([A-Z0-9\-_]{1,});", RegexOptions.IgnoreCase);
-            if (match.Success)
-            {
-                SubmissionDedsDatabaseName = match.Groups[1].Value;
-                return;
-            }
-
-            throw new Exception("Cannot extract ilr submission deds database name from connection");
-        }
-
-        private void SetupPeriodEndDatabaseName()
-        {
-            var match = Regex.Match(PeriodEndConnectionString, @"database=([A-Z0-9\-_]{1,});", RegexOptions.IgnoreCase);
-            if (match.Success)
-            {
-                PeriodEndDatabaseName = match.Groups[1].Value;
-                return;
-            }
-
-            match = Regex.Match(PeriodEndConnectionString, @"initial catalog=([A-Z0-9\-_]{1,});", RegexOptions.IgnoreCase);
-            if (match.Success)
-            {
-                PeriodEndDatabaseName = match.Groups[1].Value;
-                return;
-            }
-
-            throw new Exception("Cannot extract period end database name from connection");
+            throw new Exception("Cannot extract database name from connection string");
         }
 
         private void SetupPeriodEndDedsDatabaseName()
