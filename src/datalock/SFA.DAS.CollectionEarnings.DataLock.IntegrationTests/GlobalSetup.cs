@@ -12,11 +12,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
         [OneTimeSetUp]
         public void BeforeAllTests()
         {
-            SetupSubmissionDatabase();
+            SetupSubmissionDatabases();
             SetupPeriodEndDatabase();
         }
 
-        private void SetupSubmissionDatabase()
+        private void SetupSubmissionDatabases()
         {
             using (var connection = new SqlConnection(GlobalTestContext.Instance.SubmissionConnectionString))
             {
@@ -32,6 +32,24 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
                     RunSqlScript(@"Ilr.Transient.Reference.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
                     RunSqlScript(@"Ilr.Transient.DataLock.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
                     RunSqlScript(@"Ilr.Transient.DataLock.DDL.Views.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+            using (var connection = new SqlConnection(GlobalTestContext.Instance.SubmissionDedsConnectionString))
+            {
+                connection.Open();
+
+                try
+                {
+                    // Pre-req scripts
+                    //RunSqlScript(@"Ilr.Deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDedsDatabaseName);
+
+                    // Component scripts
+                    RunSqlScript(@"Ilr.Deds.DataLock.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDedsDatabaseName);
                 }
                 finally
                 {
@@ -62,6 +80,25 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
 
                     RunSqlScript(@"PeriodEnd.Transient.DataLock.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);
                     RunSqlScript(@"PeriodEnd.Transient.DataLock.DDL.Views.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+            using (var connection = new SqlConnection(GlobalTestContext.Instance.PeriodEndDedsConnectionString))
+            {
+                connection.Open();
+
+                try
+                {
+                    // Pre-req scripts
+                    //RunSqlScript(@"Ilr.Deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDedsDatabaseName);
+                    //RunSqlScript(@"Summarisation.Deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDedsDatabaseName);
+
+                    // Component scripts
+                    RunSqlScript(@"PeriodEnd.Deds.DataLock.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDedsDatabaseName);
                 }
                 finally
                 {
