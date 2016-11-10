@@ -25,11 +25,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
         internal static void Clean()
         {
             Clean(GlobalTestContext.Instance.SubmissionConnectionString);
-        }
-
-        internal static void PeriodEndClean()
-        {
+            Clean(GlobalTestContext.Instance.SubmissionDedsConnectionString);
             Clean(GlobalTestContext.Instance.PeriodEndConnectionString);
+            Clean(GlobalTestContext.Instance.PeriodEndDedsConnectionString);
         }
 
         private static void Clean(string connectionString)
@@ -118,6 +116,20 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                 });
         }
 
+        internal static void AddValidProvider(long ukprn, bool inDeds = false)
+        {
+            var connectionString = inDeds
+                ? GlobalTestContext.Instance.SubmissionDedsConnectionString
+                : GlobalTestContext.Instance.SubmissionConnectionString;
+
+            Execute(connectionString,
+                "INSERT INTO [Valid].[LearningProvider] (UKPRN) VALUES (@ukprn)",
+                new
+                {
+                    ukprn = ukprn
+                });
+        }
+
         internal static void PeriodEndAddProvider(long ukprn)
         {
             Execute(GlobalTestContext.Instance.PeriodEndConnectionString,
@@ -137,14 +149,28 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                 });
         }
 
-        internal static LearnerCommitmentEntity[] GetLearnerAndCommitmentMatches()
+        internal static void PeriodEndAddCollectionPeriod()
         {
-            return GetLearnerAndCommitmentMatches(GlobalTestContext.Instance.SubmissionConnectionString);
+            Execute(GlobalTestContext.Instance.PeriodEndConnectionString,
+                "INSERT INTO [dbo].[Collection_Period_Mapping] ([Period_ID], [Collection_Period], [Period], [Calendar_Year], [Collection_Open], [ActualsSchemaPeriod]) VALUES (1, 'R01', 8, 2016, 1, 201608)");
         }
 
-        internal static LearnerCommitmentEntity[] PeriodEndGetLearnerAndCommitmentMatches()
+        internal static LearnerCommitmentEntity[] GetLearnerAndCommitmentMatches(bool inDeds = false)
         {
-            return GetLearnerAndCommitmentMatches(GlobalTestContext.Instance.PeriodEndConnectionString);
+            var connectionString = inDeds
+                ? GlobalTestContext.Instance.SubmissionDedsConnectionString
+                : GlobalTestContext.Instance.SubmissionConnectionString;
+
+            return GetLearnerAndCommitmentMatches(connectionString);
+        }
+
+        internal static LearnerCommitmentEntity[] PeriodEndGetLearnerAndCommitmentMatches(bool inDeds = false)
+        {
+            var connectionString = inDeds
+                ? GlobalTestContext.Instance.PeriodEndDedsConnectionString
+                : GlobalTestContext.Instance.PeriodEndConnectionString;
+
+            return GetLearnerAndCommitmentMatches(connectionString);
         }
 
         private static LearnerCommitmentEntity[] GetLearnerAndCommitmentMatches(string connectionString)
@@ -152,14 +178,22 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
             return Query<LearnerCommitmentEntity>(connectionString, "SELECT * FROM [DataLock].[DasLearnerCommitment]");
         }
 
-        internal static ValidationErrorEntity[] GetValidationErrors()
+        internal static ValidationErrorEntity[] GetValidationErrors(bool inDeds = false)
         {
-            return GetValidationErrors(GlobalTestContext.Instance.SubmissionConnectionString);
+            var connectionString = inDeds
+                ? GlobalTestContext.Instance.SubmissionDedsConnectionString
+                : GlobalTestContext.Instance.SubmissionConnectionString;
+
+            return GetValidationErrors(connectionString);
         }
 
-        internal static ValidationErrorEntity[] PeriodEndGetValidationErrors()
+        internal static ValidationErrorEntity[] PeriodEndGetValidationErrors(bool inDeds = false)
         {
-            return GetValidationErrors(GlobalTestContext.Instance.PeriodEndConnectionString);
+            var connectionString = inDeds
+                ? GlobalTestContext.Instance.PeriodEndDedsConnectionString
+                : GlobalTestContext.Instance.PeriodEndConnectionString;
+
+            return GetValidationErrors(connectionString);
         }
 
         private static ValidationErrorEntity[] GetValidationErrors(string connectionString)
@@ -167,11 +201,32 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
             return Query<ValidationErrorEntity>(connectionString, "SELECT * FROM [DataLock].[ValidationError]");
         }
 
-        internal static void PeriodEndExecuteScript(string script)
+        internal static void ExecuteScript(string script, bool inDeds = false)
         {
-            var scriptCommand = File.ReadAllText($@"{AppDomain.CurrentDomain.BaseDirectory}\Tools\Sql\{script}");
+            var databaseName = inDeds
+                ? GlobalTestContext.Instance.BracketedSubmissionDedsDatabaseName
+                : GlobalTestContext.Instance.BracketedSubmissionDatabaseName;
 
-            Execute(GlobalTestContext.Instance.PeriodEndConnectionString, scriptCommand);
+            var sql = File.ReadAllText($@"{AppDomain.CurrentDomain.BaseDirectory}\Tools\Sql\{script}");
+
+            ExecuteScript(
+                GlobalTestContext.Instance.SubmissionConnectionString,
+                databaseName,
+                sql);
+        }
+
+        internal static void PeriodEndExecuteScript(string script, bool inDeds = false)
+        {
+            var databaseName = inDeds
+                ? GlobalTestContext.Instance.BracketedPeriodEndDedsDatabaseName
+                : GlobalTestContext.Instance.BracketedPeriodEndDatabaseName;
+
+            var sql = File.ReadAllText($@"{AppDomain.CurrentDomain.BaseDirectory}\Tools\Sql\{script}");
+
+            ExecuteScript(
+                GlobalTestContext.Instance.PeriodEndConnectionString,
+                databaseName,
+                sql);
         }
 
         internal static void CopyReferenceData()
@@ -180,12 +235,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
             {
                 var sql = File.ReadAllText($@"{AppDomain.CurrentDomain.BaseDirectory}\Tools\Sql\Copy Reference Data\{script}");
 
-                var commands = ReplaceSqlTokens(sql, GlobalTestContext.Instance.BracketedSubmissionDatabaseName).Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (var command in commands)
-                {
-                    Execute(GlobalTestContext.Instance.SubmissionConnectionString, command);
-                }
+                ExecuteScript(
+                    GlobalTestContext.Instance.SubmissionConnectionString,
+                    GlobalTestContext.Instance.BracketedSubmissionDatabaseName,
+                    sql);
             }
         }
 
@@ -195,12 +248,20 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
             {
                 var sql = File.ReadAllText($@"{AppDomain.CurrentDomain.BaseDirectory}\Tools\Sql\Copy Reference Data\{script}");
 
-                var commands = ReplaceSqlTokens(sql, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName).Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+                ExecuteScript(
+                    GlobalTestContext.Instance.PeriodEndConnectionString,
+                    GlobalTestContext.Instance.BracketedPeriodEndDatabaseName,
+                    sql);
+            }
+        }
 
-                foreach (var command in commands)
-                {
-                    Execute(GlobalTestContext.Instance.PeriodEndConnectionString, command);
-                }
+        private static void ExecuteScript(string connectionString, string databaseName, string sql)
+        {
+            var commands = ReplaceSqlTokens(sql, databaseName).Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var command in commands)
+            {
+                Execute(connectionString, command);
             }
         }
 

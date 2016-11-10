@@ -12,7 +12,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
         [SetUp]
         public void Arrange()
         {
-            TestDataHelper.PeriodEndClean();
+            TestDataHelper.Clean();
 
             _providerRepository = new DataLock.Infrastructure.Data.Repositories.ProviderRepository(GlobalTestContext.Instance.PeriodEndConnectionString);
         }
