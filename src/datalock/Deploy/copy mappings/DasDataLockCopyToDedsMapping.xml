@@ -4,7 +4,7 @@
   <DestinationConnectionString>DestinationConnectionString</DestinationConnectionString>
   <TableMappings>
     <TableMapping>
-      <Source>[DataLock].[ValidationError]</Source>
+      <Source>[DataLock].[vw_ValidationError]</Source>
       <Destination>[DataLock].[ValidationError]</Destination>
       <Ordinal>1</Ordinal>
       <ColumnMappings>
@@ -39,7 +39,7 @@
       </ColumnMappings>
     </TableMapping>
     <TableMapping>
-      <Source>[DataLock].[DasLearnerCommitment]</Source>
+      <Source>[DataLock].[vw_DasLearnerCommitment]</Source>
       <Destination>[DataLock].[DasLearnerCommitment]</Destination>
       <Ordinal>2</Ordinal>
       <ColumnMappings>

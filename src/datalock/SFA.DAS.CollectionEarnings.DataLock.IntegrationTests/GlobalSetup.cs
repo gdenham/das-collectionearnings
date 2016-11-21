@@ -26,10 +26,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
                 {
                     // Pre-req scripts
                     RunSqlScript(@"Ilr.Transient.DDL.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
+                    RunSqlScript(@"Summarisation.Deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);
                     RunSqlScript(@"DasCommitments.deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
 
                     // Component scripts
                     RunSqlScript(@"Ilr.Transient.Reference.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
+                    RunSqlScript(@"Ilr.Transient.Reference.CollectionPeriods.ddl.tables.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
                     RunSqlScript(@"Ilr.Transient.DataLock.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
                     RunSqlScript(@"Ilr.Transient.DataLock.DDL.Views.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
                 }
@@ -45,9 +47,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
 
                 try
                 {
-                    // Pre-req scripts
-                    //RunSqlScript(@"Ilr.Deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDedsDatabaseName);
-
                     // Component scripts
                     RunSqlScript(@"Ilr.Deds.DataLock.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDedsDatabaseName);
                 }
@@ -93,10 +92,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
 
                 try
                 {
-                    // Pre-req scripts
-                    //RunSqlScript(@"Ilr.Deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDedsDatabaseName);
-                    //RunSqlScript(@"Summarisation.Deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDedsDatabaseName);
-
                     // Component scripts
                     RunSqlScript(@"PeriodEnd.Deds.DataLock.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDedsDatabaseName);
                 }
@@ -124,7 +119,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
             return sql.Replace("${ILR_Deds.FQ}", databaseName)
                       .Replace("${ILR_Summarisation.FQ}", databaseName)
                       .Replace("${DAS_Commitments.FQ}", databaseName)
-                      .Replace("${DAS_PeriodEnd.FQ}", databaseName);
+                      .Replace("${DAS_PeriodEnd.FQ}", databaseName)
+                      .Replace("${YearOfCollection}", "1617");
         }
     }
 }

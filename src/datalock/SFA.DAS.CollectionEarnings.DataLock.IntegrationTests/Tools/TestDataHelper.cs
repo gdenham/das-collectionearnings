@@ -19,7 +19,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
 
         private static readonly string[] SubmissionCopyReferenceDataScripts =
         {
-            "01 Ilr.DataLock.Populate.Reference.DasCommitments.dml.sql"
+            "01 Ilr.DataLock.Populate.Reference.DasCommitments.dml.sql",
+            "01 Ilr.Populate.Reference.CollectionPeriods.dml.sql"
         };
 
         internal static void Clean()
@@ -149,9 +150,19 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                 });
         }
 
+        internal static void AddCollectionPeriod()
+        {
+            AddCollectionPeriod(GlobalTestContext.Instance.SubmissionConnectionString);
+        }
+
         internal static void PeriodEndAddCollectionPeriod()
         {
-            Execute(GlobalTestContext.Instance.PeriodEndConnectionString,
+            AddCollectionPeriod(GlobalTestContext.Instance.PeriodEndConnectionString);
+        }
+
+        private static void AddCollectionPeriod(string connectionString)
+        {
+            Execute(connectionString,
                 "INSERT INTO [dbo].[Collection_Period_Mapping] ([Period_ID], [Collection_Period], [Period], [Calendar_Year], [Collection_Open], [ActualsSchemaPeriod]) VALUES (1, 'R01', 8, 2016, 1, 201608)");
         }
 

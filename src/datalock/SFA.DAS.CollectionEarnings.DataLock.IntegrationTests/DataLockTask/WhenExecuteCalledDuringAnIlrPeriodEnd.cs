@@ -22,6 +22,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void Arrange()
         {
             TestDataHelper.Clean();
+            TestDataHelper.PeriodEndAddCollectionPeriod();
 
             _task = new DataLock.DataLockTask();
 
