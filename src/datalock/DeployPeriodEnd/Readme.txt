@@ -69,12 +69,13 @@ DAS Data Lock Component - DAS Period End
   - value: one of the following is valid: Fatal, Error, Warn, Info, Debug, Trace, Off
 
 -------------------------------------------------------------------------------------
-3. Expected data set keys in the manifest that runs the component
+3. Expected data set keys / properties in the manifest that runs the component
 -------------------------------------------------------------------------------------
  3.1 Current ILR Collection: ${ILR_Deds.FQ}
  3.1 Current ILR Summarisation Collection: ${ILR_Summarisation.FQ}
  3.3 DAS Period End Collection: ${DAS_PeriodEnd.FQ}
  3.4 DAS Commitments Reference Data Collection: ${DAS_Commitments.FQ}
+ 3.5 Academic year of current ILR Collection: ${YearOfCollection}
 
 -------------------------------------------------------------------------------------
 4. Expected manifest steps for the das period end process - data lock period end
