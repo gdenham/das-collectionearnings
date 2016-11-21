@@ -190,12 +190,20 @@
       <Link>DbSetupScripts\Ilr.Transient.DataLock.DDL.Views.sql</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\Deploy\sql\ddl\Ilr.Transient.Reference.CollectionPeriods.ddl.tables.sql">
+      <Link>DbSetupScripts\Ilr.Transient.Reference.CollectionPeriods.ddl.tables.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\Deploy\sql\ddl\Ilr.Transient.Reference.DDL.Tables.sql">
       <Link>DbSetupScripts\Ilr.Transient.Reference.DDL.Tables.sql</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\Deploy\sql\dml\01 Ilr.DataLock.Populate.Reference.DasCommitments.dml.sql">
       <Link>Tools\Sql\Copy Reference Data\01 Ilr.DataLock.Populate.Reference.DasCommitments.dml.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Deploy\sql\dml\01 Ilr.Populate.Reference.CollectionPeriods.dml.sql">
+      <Link>Tools\Sql\Copy Reference Data\01 Ilr.Populate.Reference.CollectionPeriods.dml.sql</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\Deploy\sql\dml\Ilr.DataLock.Cleanup.Deds.DML.sql">

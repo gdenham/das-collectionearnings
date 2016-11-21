@@ -12,6 +12,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.CopyToDeds
         {
             TestDataHelper.Clean();
             TestDataHelper.AddValidProvider(Ukprn);
+            TestDataHelper.AddCollectionPeriod();
+
+            TestDataHelper.CopyReferenceData();
             TestDataHelper.ExecuteScript("SubmissionDataLockOutput.sql", true);
         }
 
