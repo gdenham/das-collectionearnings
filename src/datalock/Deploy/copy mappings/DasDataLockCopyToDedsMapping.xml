@@ -24,6 +24,18 @@
           <Source>RuleId</Source>
           <Destination>RuleId</Destination>
         </ColumnMapping>
+        <ColumnMapping>
+          <Source>CollectionPeriodName</Source>
+          <Destination>CollectionPeriodName</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>CollectionPeriodMonth</Source>
+          <Destination>CollectionPeriodMonth</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>CollectionPeriodYear</Source>
+          <Destination>CollectionPeriodYear</Destination>
+        </ColumnMapping>
       </ColumnMappings>
     </TableMapping>
     <TableMapping>
@@ -46,6 +58,18 @@
         <ColumnMapping>
           <Source>CommitmentId</Source>
           <Destination>CommitmentId</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>CollectionPeriodName</Source>
+          <Destination>CollectionPeriodName</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>CollectionPeriodMonth</Source>
+          <Destination>CollectionPeriodMonth</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>CollectionPeriodYear</Source>
+          <Destination>CollectionPeriodYear</Destination>
         </ColumnMapping>
       </ColumnMappings>
     </TableMapping>
