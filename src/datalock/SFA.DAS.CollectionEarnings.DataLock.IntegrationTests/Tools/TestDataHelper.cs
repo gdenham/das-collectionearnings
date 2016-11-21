@@ -313,7 +313,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
             return sql.Replace("${ILR_Deds.FQ}", databaseName)
                       .Replace("${ILR_Summarisation.FQ}", databaseName)
                       .Replace("${DAS_Commitments.FQ}", databaseName)
-                      .Replace("${DAS_PeriodEnd.FQ}", databaseName);
+                      .Replace("${DAS_PeriodEnd.FQ}", databaseName)
+                      .Replace("${YearOfCollection}", "1617");
         }
     }
 }

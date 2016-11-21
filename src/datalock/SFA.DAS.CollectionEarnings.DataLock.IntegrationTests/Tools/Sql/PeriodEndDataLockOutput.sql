@@ -12,7 +12,7 @@ INSERT INTO ${DAS_PeriodEnd.FQ}.[DataLock].[ValidationError] (
 	'Lrn001', 
 	1, 
 	'DLOCK_02',
-	(SELECT TOP 1 [Name] FROM Reference.CollectionPeriods WHERE [Open] = 1),
+	(SELECT TOP 1 '1617-' + [Name] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarMonth] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarYear] FROM Reference.CollectionPeriods WHERE [Open] = 1)
 )
@@ -31,7 +31,7 @@ INSERT INTO ${DAS_PeriodEnd.FQ}.[DataLock].[ValidationError] (
 	'Lrn002', 
 	1, 
 	'DLOCK_07',
-	(SELECT TOP 1 [Name] FROM Reference.CollectionPeriods WHERE [Open] = 1),
+	(SELECT TOP 1 '1617-' + [Name] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarMonth] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarYear] FROM Reference.CollectionPeriods WHERE [Open] = 1)
 )
@@ -50,7 +50,7 @@ INSERT INTO ${DAS_PeriodEnd.FQ}.[DataLock].[ValidationError] (
 	'Lrn003', 
 	1, 
 	'DLOCK_03',
-	(SELECT TOP 1 [Name] FROM Reference.CollectionPeriods WHERE [Open] = 1),
+	(SELECT TOP 1 '1617-' + [Name] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarMonth] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarYear] FROM Reference.CollectionPeriods WHERE [Open] = 1)
 )
@@ -70,7 +70,7 @@ INSERT INTO ${DAS_PeriodEnd.FQ}.[DataLock].[DasLearnerCommitment] (
 	'Lrn099', 
 	1, 
 	12345,
-	(SELECT TOP 1 [Name] FROM Reference.CollectionPeriods WHERE [Open] = 1),
+	(SELECT TOP 1 '1617-' + [Name] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarMonth] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarYear] FROM Reference.CollectionPeriods WHERE [Open] = 1)
 )
@@ -89,7 +89,7 @@ INSERT INTO ${DAS_PeriodEnd.FQ}.[DataLock].[DasLearnerCommitment] (
 	'Lrn098', 
 	1, 
 	54321,
-	(SELECT TOP 1 [Name] FROM Reference.CollectionPeriods WHERE [Open] = 1),
+	(SELECT TOP 1 '1617-' + [Name] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarMonth] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarYear] FROM Reference.CollectionPeriods WHERE [Open] = 1)
 )
@@ -108,7 +108,7 @@ INSERT INTO ${DAS_PeriodEnd.FQ}.[DataLock].[DasLearnerCommitment] (
 	'Lrn099', 
 	1, 
 	10101,
-	(SELECT TOP 1 [Name] FROM Reference.CollectionPeriods WHERE [Open] = 1),
+	(SELECT TOP 1 '1617-' + [Name] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarMonth] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarYear] FROM Reference.CollectionPeriods WHERE [Open] = 1)
 )
