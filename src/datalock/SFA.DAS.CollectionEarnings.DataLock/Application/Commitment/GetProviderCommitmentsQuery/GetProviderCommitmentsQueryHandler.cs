@@ -36,7 +36,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetProvider
                             StandardCode = c.StandardCode,
                             FrameworkCode = c.FrameworkCode,
                             ProgrammeType = c.ProgrammeType,
-                            PathwayCode = c.PathwayCode
+                            PathwayCode = c.PathwayCode,
+                            PaymentStatus = c.PaymentStatus,
+                            PaymentStatusDescription = c.PaymentStatusDescription,
+                            Payable = c.Payable,
+                            Priority = c.Priority,
+                            VersionId = c.VersionId
                         }).ToArray()
                 };
             }

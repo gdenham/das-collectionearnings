@@ -1,5 +1,6 @@
 ﻿using System;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Enums;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application
 {
@@ -16,6 +17,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application
         private int? _programmeType = 20;
         private int? _frameworkCode = 550;
         private int? _pathwayCode = 6;
+        private int _paymentStatus = 1;
+        private string _paymentStatusDescription = "Active";
+        private bool _payable = true;
 
         public Commitment Build()
         {
@@ -31,7 +35,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application
                 StandardCode = _standardCode,
                 ProgrammeType = _programmeType,
                 FrameworkCode = _frameworkCode,
-                PathwayCode = _pathwayCode
+                PathwayCode = _pathwayCode,
+                PaymentStatus = _paymentStatus,
+                PaymentStatusDescription = _paymentStatusDescription,
+                Payable = _payable
             };
         }
 
@@ -107,6 +114,15 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application
         public CommitmentBuilder WithPathwayCode(int? pathwayCode)
         {
             _pathwayCode = pathwayCode;
+
+            return this;
+        }
+
+        public CommitmentBuilder WithPaymentStatus(PaymentStatus paymentStatus)
+        {
+            _paymentStatus = (int)paymentStatus;
+            _paymentStatusDescription = paymentStatus.ToString();
+            _payable = paymentStatus == PaymentStatus.Active || paymentStatus == PaymentStatus.Completed;
 
             return this;
         }

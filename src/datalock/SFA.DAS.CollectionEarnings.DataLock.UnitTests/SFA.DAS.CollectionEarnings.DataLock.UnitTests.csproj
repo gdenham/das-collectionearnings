@@ -85,6 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\DataLock\Matcher\IsPayableMatchHandler\WhenMatching.cs" />
     <Compile Include="Application\DataLock\RunDataLockValidationQuery\RunDataLockValidationQueryHandler\WhenHandling.cs" />
     <Compile Include="Application\DataLock\Matcher\FrameworkMatchHandler\Match\WhenCalled.cs" />
     <Compile Include="Application\DataLock\Matcher\MultipleMatchHandler\Match\WhenCalled.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Tools\Application\LearnerBuilder.cs" />
     <Compile Include="Tools\Entities\CommitmentEntityBuilder.cs" />
     <Compile Include="Tools\Entities\LearnerEntityBuilder.cs" />
+    <Compile Include="Tools\Enums\PaymentStatus.cs" />
     <Compile Include="Tools\IBuilder.cs" />
     <Compile Include="Tools\Entities\LearnerCommitmentEntityBuilder.cs" />
     <Compile Include="Tools\Entities\ValidationErrorBuilder.cs" />

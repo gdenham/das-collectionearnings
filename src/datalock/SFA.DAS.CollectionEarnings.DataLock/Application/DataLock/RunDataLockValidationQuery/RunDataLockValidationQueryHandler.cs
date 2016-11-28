@@ -22,6 +22,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockVa
             var pathwaymatcher = new PathwayMatchHandler();
             var priceMatcher = new PriceMatchHandler();
             var startMonthMatcher = new StartMonthMatcher();
+            var isPayableMatcher = new IsPayableMatchHandler();
             var multipleMatcher = new MultipleMatchHandler();
 
             ukprnMatcher.SetNextMatchHandler(ulnMatcher);
@@ -31,7 +32,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockVa
             programmeMatcher.SetNextMatchHandler(pathwaymatcher);
             pathwaymatcher.SetNextMatchHandler(priceMatcher);
             priceMatcher.SetNextMatchHandler(startMonthMatcher);
-            startMonthMatcher.SetNextMatchHandler(multipleMatcher);
+            startMonthMatcher.SetNextMatchHandler(isPayableMatcher);
+            isPayableMatcher.SetNextMatchHandler(multipleMatcher);
 
             _initialHandler = ukprnMatcher;
         }
