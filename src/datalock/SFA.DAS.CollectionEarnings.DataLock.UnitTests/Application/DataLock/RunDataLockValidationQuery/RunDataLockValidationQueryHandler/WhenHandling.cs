@@ -4,6 +4,7 @@ using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application;
+using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Enums;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.RunDataLockValidationQuery.RunDataLockValidationQueryHandler
 {
@@ -364,6 +365,36 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
                                                                     l.LearnerReferenceNumber == learners[0].LearnerReferenceNumber &&
                                                                     learners[0].AimSequenceNumber.HasValue &&
                                                                     l.AimSequenceNumber == learners[0].AimSequenceNumber.Value));
+        }
+
+        [Test]
+        [TestCase(PaymentStatus.PendingApproval)]
+        [TestCase(PaymentStatus.Paused)]
+        [TestCase(PaymentStatus.Cancelled)]
+        [TestCase(PaymentStatus.Deleted)]
+        public void ThenErrorExpectedForNoPayableCommitments(PaymentStatus notPayablePaymentStatus)
+        {
+            // Arrange
+            _request = new RunDataLockValidationQueryRequest
+            {
+                Commitments = new[]
+                {
+                    new CommitmentBuilder().WithPaymentStatus(notPayablePaymentStatus).Build()
+                },
+                Learners = new[]
+                {
+                    new LearnerBuilder().Build()
+                }
+            };
+
+            // Act
+            var response = _handler.Handle(_request);
+
+            // Assert
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.IsValid);
+            Assert.AreEqual(1, response.ValidationErrors.Count(ve => ve.RuleId == DataLockErrorCodes.NotPayable));
+            Assert.AreEqual(0, response.LearnerCommitments.Length);
         }
     }
 }

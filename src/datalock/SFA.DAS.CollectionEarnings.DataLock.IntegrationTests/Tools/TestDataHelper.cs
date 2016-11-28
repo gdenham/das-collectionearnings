@@ -19,8 +19,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
 
         private static readonly string[] SubmissionCopyReferenceDataScripts =
         {
-            "01 Ilr.DataLock.Populate.Reference.DasCommitments.dml.sql",
-            "01 Ilr.Populate.Reference.CollectionPeriods.dml.sql"
+            "01 Ilr.Populate.Reference.CollectionPeriods.dml.sql",
+            "02 Ilr.DataLock.Populate.Reference.DasCommitments.dml.sql"
         };
 
         internal static void Clean()
@@ -74,7 +74,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                         FrameworkCode, 
                         PathwayCode,
                         Priority,
-                        VersionId
+                        VersionId,
+                        PaymentStatus,
+                        PaymentStatusDescription,
+                        Payable
                     ) VALUES (
                         @CommitmentId, 
                         @Uln, 
@@ -88,7 +91,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                         @FrameworkCode, 
                         @PathwayCode,
                         1,
-                        '1'
+                        '1',
+                        @PaymentStatus,
+                        @PaymentStatusDescription,
+                        @Payable
                     )",
                 new
                 {
@@ -102,7 +108,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                     StandardCode = commitment.StandardCode,
                     ProgrammeType = commitment.ProgrammeType,
                     FrameworkCode = commitment.FrameworkCode,
-                    PathwayCode = commitment.PathwayCode
+                    PathwayCode = commitment.PathwayCode,
+                    PaymentStatus = commitment.PaymentStatus,
+                    PaymentStatusDescription = commitment.PaymentStatusDescription,
+                    Payable = commitment.Payable
                 });
         }
 

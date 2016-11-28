@@ -16,7 +16,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories
                                                  "StandardCode," +
                                                  "ProgrammeType," +
                                                  "FrameworkCode," +
-                                                 "PathwayCode";
+                                                 "PathwayCode," +
+                                                 "PaymentStatus," +
+                                                 "PaymentStatusDescription," +
+                                                 "Payable," +
+                                                 "Priority," +
+                                                 "VersionId";
         private const string SelectCommitments = "SELECT " + CommitmentColumns + " FROM " + CommitmentSource;
         private const string SelectProviderCommitments = SelectCommitments + " WHERE Ukprn = @Ukprn";
 

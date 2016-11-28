@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Application\Commitment\Commitment.cs" />
     <Compile Include="Application\DataLock\DataLockErrorCodes.cs" />
+    <Compile Include="Application\DataLock\Matcher\IsPayableMatchHandler.cs" />
     <Compile Include="Application\DataLock\MatchResult.cs" />
     <Compile Include="Application\DataLock\RunDataLockValidationQuery\RunDataLockValidationQueryHandler.cs" />
     <Compile Include="Application\DataLock\RunDataLockValidationQuery\RunDataLockValidationQueryRequest.cs" />

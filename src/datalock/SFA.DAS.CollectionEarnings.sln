@@ -41,13 +41,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DDL", "DDL", "{40844862-C0D
 		Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Tables.sql = Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Tables.sql
 		Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Views.sql = Deploy\sql\ddl\Ilr.Transient.DataLock.DDL.Views.sql
 		Deploy\sql\ddl\Ilr.Transient.Reference.CollectionPeriods.ddl.tables.sql = Deploy\sql\ddl\Ilr.Transient.Reference.CollectionPeriods.ddl.tables.sql
+		Deploy\sql\ddl\Ilr.Transient.Reference.Commitments.ddl.tables.sql = Deploy\sql\ddl\Ilr.Transient.Reference.Commitments.ddl.tables.sql
 		Deploy\sql\ddl\Ilr.Transient.Reference.DDL.Tables.sql = Deploy\sql\ddl\Ilr.Transient.Reference.DDL.Tables.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DML", "DML", "{39C07E8F-F956-4896-8B08-7056BC637286}"
 	ProjectSection(SolutionItems) = preProject
-		Deploy\sql\dml\01 Ilr.DataLock.Populate.Reference.DasCommitments.dml.sql = Deploy\sql\dml\01 Ilr.DataLock.Populate.Reference.DasCommitments.dml.sql
 		Deploy\sql\dml\01 Ilr.Populate.Reference.CollectionPeriods.dml.sql = Deploy\sql\dml\01 Ilr.Populate.Reference.CollectionPeriods.dml.sql
+		Deploy\sql\dml\02 Ilr.DataLock.Populate.Reference.DasCommitments.dml.sql = Deploy\sql\dml\02 Ilr.DataLock.Populate.Reference.DasCommitments.dml.sql
 		Deploy\sql\dml\Ilr.DataLock.Cleanup.Deds.DML.sql = Deploy\sql\dml\Ilr.DataLock.Cleanup.Deds.DML.sql
 	EndProjectSection
 EndProject

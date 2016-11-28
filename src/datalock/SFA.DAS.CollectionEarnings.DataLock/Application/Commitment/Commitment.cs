@@ -15,5 +15,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.Commitment
         public int? ProgrammeType { get; set; }
         public int? FrameworkCode { get; set; }
         public int? PathwayCode { get; set; }
+
+        public int PaymentStatus { get; set; }
+        public string PaymentStatusDescription { get; set; }
+        public bool Payable { get; set; }
+
+        public int Priority { get; set; }
+        public string VersionId { get; set; }
     }
 }

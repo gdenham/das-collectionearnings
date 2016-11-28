@@ -13,7 +13,12 @@ INSERT INTO [Reference].[DasCommitments]
         [StandardCode],
         [ProgrammeType],
         [FrameworkCode],
-        [PathwayCode]
-	FROM ${DAS_Commitments.FQ}.[dbo].[DasCommitments]
+        [PathwayCode],
+        [PaymentStatus],
+        [PaymentStatusDescription],
+        [Payable],
+        [Priority],
+        [VersionId]
+    FROM ${DAS_Commitments.FQ}.[dbo].[DasCommitments]
     WHERE [Ukprn] IN (SELECT DISTINCT [Ukprn] FROM [Input].[LearningProvider])
 GO

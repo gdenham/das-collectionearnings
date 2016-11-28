@@ -19,6 +19,9 @@ CREATE TABLE [dbo].[DasCommitments](
 	[ProgrammeType] [int] NULL,
 	[FrameworkCode] [int] NULL,
 	[PathwayCode] [int] NULL,
+	[PaymentStatus] [int] NOT NULL,
+	[PaymentStatusDescription] [varchar](50) NOT NULL,
+	[Payable] [bit] NOT NULL,
 	[Priority] [int] NOT NULL,
 	[VersionId] [varchar](50) NOT NULL,
 	PRIMARY KEY CLUSTERED 
