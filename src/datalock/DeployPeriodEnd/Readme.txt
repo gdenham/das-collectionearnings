@@ -81,7 +81,7 @@ DAS Data Lock Component - DAS Period End
 4. Expected manifest steps for the das period end process - data lock period end
 -------------------------------------------------------------------------------------
  4.1 Build the transient database.
- 4.2 Copy reference data from deds to transient using the provided scripts in the 01 - 04 order
+ 4.2 Copy reference data from deds to transient using the provided scripts in the 01 - 05 order
  4.3 Execute the 'DAS Data Lock Component - DAS Period End' component
  4.4 Cleanup the deds data lock results using the 'PeriodEnd.DataLock.Cleanup.Deds.DML.sql' sql script
  4.5 Bulk copy the data lock results from transient to deds
