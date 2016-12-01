@@ -21,7 +21,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockVa
             var programmeMatcher = new ProgrammeMatchHandler();
             var pathwaymatcher = new PathwayMatchHandler();
             var priceMatcher = new PriceMatchHandler();
-            var startMonthMatcher = new StartMonthMatcher();
+            var startMonthMatcher = new StartDateMatcher();
             var isPayableMatcher = new IsPayableMatchHandler();
             var multipleMatcher = new MultipleMatchHandler();
 

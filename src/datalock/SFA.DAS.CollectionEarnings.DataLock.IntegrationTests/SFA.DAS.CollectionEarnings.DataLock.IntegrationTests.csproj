@@ -228,6 +228,10 @@
     <Content Include="Tools\Ilr\Files\DPP-222\IlrAcceptanceCriteria1.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Tools\Ilr\Files\IlrLearnerChangesEmployers.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Tools\Ilr\Files\IlrTnp1AndTnp2.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
