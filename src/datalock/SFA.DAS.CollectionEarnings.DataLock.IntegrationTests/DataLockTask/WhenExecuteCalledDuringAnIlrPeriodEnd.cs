@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CS.Common.External.Interfaces;
 using NUnit.Framework;
@@ -228,6 +229,36 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             };
 
             TestDataHelper.PeriodEndExecuteScript("PeriodEndMatchFound.sql");
+            SetupCommitmentData(commitments[0]);
+            SetupCommitmentData(commitments[1]);
+            TestDataHelper.PeriodEndCopyReferenceData();
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            var learnerAndCommitmentMatches = TestDataHelper.PeriodEndGetLearnerAndCommitmentMatches();
+            var errors = TestDataHelper.PeriodEndGetValidationErrors();
+
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(0, errors.Length);
+            Assert.IsNotNull(learnerAndCommitmentMatches);
+            Assert.AreEqual(2, learnerAndCommitmentMatches.Length);
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[0].CommitmentId));
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[1].CommitmentId));
+        }
+
+        [Test]
+        public void ThenForAChangeOfEmployersMatchingLearnerAndCommitmentsAreAddedWhenMatchesAreFound()
+        {
+            // Arrange
+            var commitments = new[]
+            {
+                new CommitmentEntityBuilder().WithStandardCode(27).WithStartDate(new DateTime(2017, 8, 1)).WithEndDate(new DateTime(2017, 10, 31)).Build(),
+                new CommitmentEntityBuilder().WithCommitmentId(2).WithStandardCode(27).WithStartDate(new DateTime(2017, 11, 1)).WithEndDate(new DateTime(2018, 8, 31)).WithAgreedCost(5625m).Build()
+            };
+
+            TestDataHelper.PeriodEndExecuteScript("PeriodEndLearnerChangesEmployers.sql");
             SetupCommitmentData(commitments[0]);
             SetupCommitmentData(commitments[1]);
             TestDataHelper.PeriodEndCopyReferenceData();

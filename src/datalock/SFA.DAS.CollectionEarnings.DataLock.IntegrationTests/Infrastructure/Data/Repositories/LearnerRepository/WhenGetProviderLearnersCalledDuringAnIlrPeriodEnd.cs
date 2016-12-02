@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Linq;
+using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data;
 using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
 
@@ -57,6 +59,23 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             // Assert
             Assert.IsNotNull(learners);
             Assert.AreEqual(8, learners.Length);
+        }
+
+        [Test]
+        public void ThenLearnersReturnedForOneLearnerWithMultipleNegotiatedPriceEpisodesInTheDatabase()
+        {
+            // Arrange
+            TestDataHelper.PeriodEndExecuteScript("PeriodEndLearnerChangesEmployers.sql");
+            TestDataHelper.PeriodEndCopyReferenceData();
+
+            // Act
+            var learners = _learnerRepository.GetProviderLearners(_ukprn);
+
+            // Assert
+            Assert.IsNotNull(learners);
+            Assert.AreEqual(2, learners.Length);
+            Assert.AreEqual(1, learners.Count(l => l.LearnStartDate.HasValue && l.LearnStartDate.Value == new DateTime(2017, 8, 1)));
+            Assert.AreEqual(1, learners.Count(l => l.LearnStartDate.HasValue && l.LearnStartDate.Value == new DateTime(2017, 11, 1)));
         }
     }
 }

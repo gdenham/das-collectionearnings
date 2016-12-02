@@ -274,6 +274,9 @@
     <Content Include="Tools\Sql\PeriodEndDataLockOutput.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Tools\Sql\PeriodEndLearnerChangesEmployers.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Tools\Sql\SubmissionDataLockOutput.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
