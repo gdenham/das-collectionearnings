@@ -7,5 +7,5 @@ DLOCK_05,E,No matching record found in the employer digital account for the prog
 DLOCK_06,E,No matching record found in the employer digital account for the pathway code
 DLOCK_07,E,No matching record found in the employer digital account for the negotiated cost of training
 DLOCK_08,E,Multiple matching records found in the employer digital account
-DLOCK_09,E,The start month recorded in the employer digital account is after the ILR learning delivery start month
+DLOCK_09,E,The start date for this negotiated price is before the corresponding price start date in the employer digital account
 DLOCK_10,E,The employer has stopped payments for this apprentice
