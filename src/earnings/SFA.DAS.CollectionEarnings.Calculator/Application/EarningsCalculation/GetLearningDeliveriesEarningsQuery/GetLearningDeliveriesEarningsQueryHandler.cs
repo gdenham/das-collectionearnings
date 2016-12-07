@@ -123,7 +123,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                          + 12 * (priceEpisode.StartDate.Year - firstDayAfterYearOfCollectionStart.Year)
                          + 1;
 
-            return period < 0
+            return period <= 0
                 ? 1
                 : period;
         }
