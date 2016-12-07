@@ -342,5 +342,35 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipE
                 Assert.AreEqual(0.00m, periodEntity.PriceEpisodeBalancePayment);
             }
         }
+
+        [Test]
+        public void ThenMultiplePriceEpisodesWithAssociatedPeriodisedValuesAreAdded()
+        {
+            // Arrange
+            TestDataHelper.ExecuteScript("IlrDataOneLearningDeliveryWitnMultiplePriceEpisodesToProcess.sql");
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            var priceEpisodes = TestDataHelper.GetApprenticeshipPriceEpisodes();
+            var periodisedValues = TestDataHelper.GetApprenticeshipPriceEpisodePeriodisedValues();
+            var periodValues = TestDataHelper.GetApprenticeshipPriceEpisodePeriods();
+
+            Assert.IsNotNull(priceEpisodes);
+            Assert.IsNotNull(periodisedValues);
+            Assert.IsNotNull(periodValues);
+
+            Assert.AreEqual(2, priceEpisodes.Length);
+
+            Assert.AreEqual(2, periodisedValues.Count(pv => pv.AttributeName == AttributeNames.PriceEpisodeOnProgPayment.ToString()));
+            Assert.AreEqual(2, periodisedValues.Count(pv => pv.AttributeName == AttributeNames.PriceEpisodeCompletionPayment.ToString()));
+            Assert.AreEqual(2, periodisedValues.Count(pv => pv.AttributeName == AttributeNames.PriceEpisodeBalancePayment.ToString()));
+
+            Assert.AreEqual(3, periodisedValues.Count(pv => pv.PriceEpisodeIdentifier == priceEpisodes[0].PriceEpisodeIdentifier));
+            Assert.AreEqual(3, periodisedValues.Count(pv => pv.PriceEpisodeIdentifier == priceEpisodes[1].PriceEpisodeIdentifier));
+
+            Assert.AreEqual(24, periodValues.Length);
+        }
     }
 }

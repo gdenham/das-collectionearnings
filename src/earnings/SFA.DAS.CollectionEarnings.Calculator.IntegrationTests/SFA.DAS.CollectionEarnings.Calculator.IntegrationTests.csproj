@@ -107,6 +107,9 @@
     <Content Include="DbSetupScripts\Ilr.Transient.DDL.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Tools\Sql\IlrDataOneLearningDeliveryWitnMultiplePriceEpisodesToProcess.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Tools\Sql\IlrDataOneLearningDeliveryToProcessEarlyFinisher.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
