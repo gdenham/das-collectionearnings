@@ -4,7 +4,7 @@ using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data;
 using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools;
-using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities;
+using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Builders;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.Data.Repositories.ProcessedLearningDeliveryPeriodisedValuesRepository.AddProcessedLearningDeliveryPeriodisedValues
 {
@@ -16,8 +16,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.
                 // Duplicate PK
                 new[]
                 {
-                    new ProcessedLearningDeliveryPeriodisedValuesBuilder().Build(),
-                    new ProcessedLearningDeliveryPeriodisedValuesBuilder().Build()
+                    new ApprenticeshipPriceEpisodePeriodisedValuesEntityBuilder().Build(),
+                    new ApprenticeshipPriceEpisodePeriodisedValuesEntityBuilder().Build()
                 },
                 typeof(SqlException)
             },
@@ -26,7 +26,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.
                 // Out of bounds Period_1 -> Period_12 values
                 new[]
                 {
-                    new ProcessedLearningDeliveryPeriodisedValuesBuilder().WithPeriodValue(12345678901.00m).Build()
+                    new ApprenticeshipPriceEpisodePeriodisedValuesEntityBuilder().WithPeriodValue(12345678901.00m).Build()
                 },
                 typeof(InvalidOperationException)
             }
@@ -34,14 +34,14 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.
 
         private readonly string _transientConnectionString = GlobalTestContext.Instance.ConnectionString;
 
-        private IProcessedLearningDeliveryPeriodisedValuesRepository _repository;
+        private IApprenticeshipPriceEpisodePeriodisedValuesRepository _repository;
 
         [SetUp]
         public void Arrange()
         {
             TestDataHelper.Clean();
 
-            _repository = new Calculator.Infrastructure.Data.Repositories.ProcessedLearningDeliveryPeriodisedValuesRepository(_transientConnectionString);
+            _repository = new Calculator.Infrastructure.Data.Repositories.ApprenticeshipPriceEpisodePeriodisedValuesRepository(_transientConnectionString);
         }
 
         [Test]
@@ -50,18 +50,18 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.
             // Arrange
             var periodisedValues = new[]
             {
-                new ProcessedLearningDeliveryPeriodisedValuesBuilder().Build(),
-                new ProcessedLearningDeliveryPeriodisedValuesBuilder().WithAimSeqNumber(2).Build(),
-                new ProcessedLearningDeliveryPeriodisedValuesBuilder().WithAimSeqNumber(3).Build(),
-                new ProcessedLearningDeliveryPeriodisedValuesBuilder().WithAimSeqNumber(4).Build(),
-                new ProcessedLearningDeliveryPeriodisedValuesBuilder().WithAimSeqNumber(5).Build()
+                new ApprenticeshipPriceEpisodePeriodisedValuesEntityBuilder().WithLearnRefNumber("1").Build(),
+                new ApprenticeshipPriceEpisodePeriodisedValuesEntityBuilder().WithLearnRefNumber("2").Build(),
+                new ApprenticeshipPriceEpisodePeriodisedValuesEntityBuilder().WithLearnRefNumber("3").Build(),
+                new ApprenticeshipPriceEpisodePeriodisedValuesEntityBuilder().WithLearnRefNumber("4").Build(),
+                new ApprenticeshipPriceEpisodePeriodisedValuesEntityBuilder().WithLearnRefNumber("5").Build()
             };
 
             // Act
-            _repository.AddProcessedLearningDeliveryPeriodisedValues(periodisedValues);
+            _repository.AddApprenticeshipPriceEpisodePeriodisedValues(periodisedValues);
 
             // Assert
-            var rows = TestDataHelper.GetProcessedLearningDeliveryPeriodisedValues();
+            var rows = TestDataHelper.GetApprenticeshipPriceEpisodePeriodisedValues();
 
             Assert.IsNotNull(rows);
             Assert.AreEqual(5, rows.Length);
@@ -69,10 +69,10 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.
 
         [Test]
         [TestCaseSource(nameof(InvalidProcessedLearningDeliveryPeriodisedValuesWithExpectedExceptionTypes))]
-        public void ThenExpectingExceptionForAddProcessedLearningDeliveryPeriodisedValuesWithInvalidInput(ProcessedLearningDeliveryPeriodisedValues[] periodisedValues, Type exceptionType)
+        public void ThenExpectingExceptionForAddProcessedLearningDeliveryPeriodisedValuesWithInvalidInput(ApprenticeshipPriceEpisodePeriodisedValuesEntity[] periodisedValues, Type exceptionType)
         {
             // Assert
-            Assert.Throws(exceptionType, () => _repository.AddProcessedLearningDeliveryPeriodisedValues(periodisedValues));
+            Assert.Throws(exceptionType, () => _repository.AddApprenticeshipPriceEpisodePeriodisedValues(periodisedValues));
         }
     }
 }

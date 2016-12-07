@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Linq;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.GetLearningDeliveriesEarningsQuery;
 using SFA.DAS.CollectionEarnings.Calculator.Tools.Providers;
-using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities;
+using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Builders;
+using System.Linq;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCalculation.GetLearningDeliveriesEarningsQuery.GetLearningDeliveriesEarningsQueryHandler
 {
@@ -42,8 +42,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
             // Arrange
             var learningDeliveries = new[]
             {
-                new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2017, 11, 1)).Build(),
-                new LearningDeliveryToProcessBuilder().WithLearnStartDate(new DateTime(2018, 1, 1)).WithLearnRefNumber("Lrn002").Build()
+                new LearningDeliveryBuilder().WithLearnStartDate(new DateTime(2017, 11, 1)).Build(),
+                new LearningDeliveryBuilder().WithLearnStartDate(new DateTime(2018, 1, 1)).WithLearnRefNumber("Lrn002").Build()
             };
 
             _request = new GetLearningDeliveriesEarningsQueryRequest
@@ -60,11 +60,11 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.EarningsCa
 
             for (var learnerIdx = 0; learnerIdx < learningDeliveries.Length; learnerIdx++)
             {
-                Assert.AreEqual(12, result.LearningDeliveryPeriodEarnings.Count(pe => pe.LearnerReferenceNumber == learningDeliveries[learnerIdx].LearnRefNumber && pe.AimSequenceNumber == learningDeliveries[learnerIdx].AimSeqNumber), $"expecting 12 period earnings for learner {learningDeliveries[learnerIdx].LearnRefNumber} with aim {learningDeliveries[learnerIdx].AimSeqNumber}");
+                Assert.AreEqual(12, result.PriceEpisodesPeriodsEarnings.Count(pe => pe.LearnerReferenceNumber == learningDeliveries[learnerIdx].LearnerReferenceNumber && pe.AimSequenceNumber == learningDeliveries[learnerIdx].AimSequenceNumber), $"expecting 12 period earnings for learner {learningDeliveries[learnerIdx].LearnerReferenceNumber} with aim {learningDeliveries[learnerIdx].AimSequenceNumber}");
 
                 for (var period = 1; period <= 12; period++)
                 {
-                    Assert.AreEqual(1, result.LearningDeliveryPeriodEarnings.Count(pe => pe.LearnerReferenceNumber == learningDeliveries[learnerIdx].LearnRefNumber && pe.AimSequenceNumber == learningDeliveries[learnerIdx].AimSeqNumber && pe.Period == period), $"expecting one period earning for learner {learningDeliveries[learnerIdx].LearnRefNumber} with aim {learningDeliveries[learnerIdx].AimSeqNumber} in period {period}");
+                    Assert.AreEqual(1, result.PriceEpisodesPeriodsEarnings.Count(pe => pe.LearnerReferenceNumber == learningDeliveries[learnerIdx].LearnerReferenceNumber && pe.AimSequenceNumber == learningDeliveries[learnerIdx].AimSequenceNumber && pe.Period == period), $"expecting one period earning for learner {learningDeliveries[learnerIdx].LearnerReferenceNumber} with aim {learningDeliveries[learnerIdx].AimSequenceNumber} in period {period}");
                 }
             }
         }

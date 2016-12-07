@@ -38,19 +38,19 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools
                 ");
         }
 
-        internal static ProcessedLearningDelivery[] GetProcessedLearningDeliveries()
+        internal static ApprenticeshipPriceEpisodeEntity[] GetApprenticeshipPriceEpisodes()
         {
-            return Query<ProcessedLearningDelivery>("SELECT * FROM [Rulebase].[AE_LearningDelivery]");
+            return Query<ApprenticeshipPriceEpisodeEntity>("SELECT * FROM [Rulebase].[AEC_ApprenticeshipPriceEpisode]");
         }
 
-        internal static ProcessedLearningDeliveryPeriodisedValues[] GetProcessedLearningDeliveryPeriodisedValues()
+        internal static ApprenticeshipPriceEpisodePeriodisedValuesEntity[] GetApprenticeshipPriceEpisodePeriodisedValues()
         {
-            return Query<ProcessedLearningDeliveryPeriodisedValues>("SELECT * FROM [Rulebase].[AE_LearningDelivery_PeriodisedValues]");
+            return Query<ApprenticeshipPriceEpisodePeriodisedValuesEntity>("SELECT * FROM [Rulebase].[AEC_ApprenticeshipPriceEpisode_PeriodisedValues]");
         }
 
-        internal static ProcessedLearningDeliveryPeriod[] GetProcessedLearningDeliveryPeriods()
+        internal static ApprenticeshipPriceEpisodePeriodEntity[] GetApprenticeshipPriceEpisodePeriods()
         {
-            return Query<ProcessedLearningDeliveryPeriod>("SELECT * FROM [Rulebase].[AE_LearningDelivery_Period]");
+            return Query<ApprenticeshipPriceEpisodePeriodEntity>("SELECT * FROM [Rulebase].[AEC_ApprenticeshipPriceEpisode_Period]");
         }
 
         internal static void ExecuteScript(string script)

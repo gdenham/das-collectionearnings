@@ -4,7 +4,7 @@ using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data;
 using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools;
-using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Entities;
+using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Builders;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.Data.Repositories.ProcessedLearningDeliveryRepository.AddProcessedLearningDeliveries
 {
@@ -16,44 +16,80 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.
                 // Duplicate PK
                 new[]
                 {
-                    new ProcessedLearningDeliveryBuilder().Build(),
-                    new ProcessedLearningDeliveryBuilder().Build()
+                    new ApprenticeshipPriceEpisodeEntityBuilder().Build(),
+                    new ApprenticeshipPriceEpisodeEntityBuilder().Build()
                 },
                 typeof(SqlException)
             },
             new object[]
             {
-                // Out of bounds MonthlyInstallment
+                // Out of bounds InstallmentValue
                 new[]
                 {
-                    new ProcessedLearningDeliveryBuilder().WithMonthlyInstallment(12345678901.00m).Build()
+                    new ApprenticeshipPriceEpisodeEntityBuilder().WithPriceEpisodeInstalmentValue(12345678901.00m).Build()
                 },
                 typeof(InvalidOperationException)
             },
             new object[]
             {
-                // Out of bounds MonthlyInstallmentUncapped
+                // Out of bounds BalanceValue
                 new[]
                 {
-                    new ProcessedLearningDeliveryBuilder().WithMonthlyInstallmentUncapped(12345678901.00m).Build()
+                    new ApprenticeshipPriceEpisodeEntityBuilder().WithPriceEpisodeBalanceValue(12345678901.00m).Build()
                 },
                 typeof(InvalidOperationException)
             },
             new object[]
             {
-                // Out of bounds CompletionPayment
+                // Out of bounds CompletionElement
                 new[]
                 {
-                    new ProcessedLearningDeliveryBuilder().WithCompletionPayment(12345678901.00m).Build()
+                    new ApprenticeshipPriceEpisodeEntityBuilder().WithPriceEpisodeCompletionElement(12345678901.00m).Build()
                 },
                 typeof(InvalidOperationException)
             },
             new object[]
             {
-                // Out of bounds CompletionPaymentUncapped
+                // Out of bounds TotalTnp
                 new[]
                 {
-                    new ProcessedLearningDeliveryBuilder().WithCompletionPaymentUncapped(12345678901.00m).Build()
+                    new ApprenticeshipPriceEpisodeEntityBuilder().WithPriceEpisodeTotalTnpPrice(12345678901.00m).Build()
+                },
+                typeof(InvalidOperationException)
+            },
+            new object[]
+            {
+                // Out of bounds Tnp1
+                new[]
+                {
+                    new ApprenticeshipPriceEpisodeEntityBuilder().WithTnp1(12345678901.00m).Build()
+                },
+                typeof(InvalidOperationException)
+            },
+            new object[]
+            {
+                // Out of bounds Tnp2
+                new[]
+                {
+                    new ApprenticeshipPriceEpisodeEntityBuilder().WithTnp2(12345678901.00m).Build()
+                },
+                typeof(InvalidOperationException)
+            },
+            new object[]
+            {
+                // Out of bounds Tnp3
+                new[]
+                {
+                    new ApprenticeshipPriceEpisodeEntityBuilder().WithTnp3(12345678901.00m).Build()
+                },
+                typeof(InvalidOperationException)
+            },
+            new object[]
+            {
+                // Out of bounds Tnp4
+                new[]
+                {
+                    new ApprenticeshipPriceEpisodeEntityBuilder().WithTnp4(12345678901.00m).Build()
                 },
                 typeof(InvalidOperationException)
             }
@@ -61,14 +97,14 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.
 
         private readonly string _transientConnectionString = GlobalTestContext.Instance.ConnectionString;
 
-        private IProcessedLearningDeliveryRepository _repository;
+        private IApprenticeshipPriceEpisodeRepository _repository;
 
         [SetUp]
         public void Arrange()
         {
             TestDataHelper.Clean();
 
-            _repository = new Calculator.Infrastructure.Data.Repositories.ProcessedLearningDeliveryRepository(_transientConnectionString);
+            _repository = new Calculator.Infrastructure.Data.Repositories.ApprenticeshipPriceEpisodeRepository(_transientConnectionString);
         }
 
         [Test]
@@ -77,18 +113,18 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.
             // Arrange
             var deliveries = new[]
             {
-                new ProcessedLearningDeliveryBuilder().Build(),
-                new ProcessedLearningDeliveryBuilder().WithAimSeqNumber(2).Build(),
-                new ProcessedLearningDeliveryBuilder().WithAimSeqNumber(3).Build(),
-                new ProcessedLearningDeliveryBuilder().WithAimSeqNumber(4).Build(),
-                new ProcessedLearningDeliveryBuilder().WithAimSeqNumber(5).Build()
+                new ApprenticeshipPriceEpisodeEntityBuilder().WithLearnRefNumber("1").Build(),
+                new ApprenticeshipPriceEpisodeEntityBuilder().WithLearnRefNumber("2").Build(),
+                new ApprenticeshipPriceEpisodeEntityBuilder().WithLearnRefNumber("3").Build(),
+                new ApprenticeshipPriceEpisodeEntityBuilder().WithLearnRefNumber("4").Build(),
+                new ApprenticeshipPriceEpisodeEntityBuilder().WithLearnRefNumber("5").Build()
             };
 
             // Act
-            _repository.AddProcessedLearningDeliveries(deliveries);
+            _repository.AddApprenticeshipPriceEpisodes(deliveries);
 
             // Assert
-            var rows = TestDataHelper.GetProcessedLearningDeliveries();
+            var rows = TestDataHelper.GetApprenticeshipPriceEpisodes();
 
             Assert.IsNotNull(rows);
             Assert.AreEqual(5, rows.Length);
@@ -96,10 +132,10 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.
 
         [Test]
         [TestCaseSource(nameof(InvalidProcessedLearningDeliveriesWithExpectedExceptionTypes))]
-        public void ThenExpectingExceptionForAddProcessedLearningDeliveriesWithInvalidInput(ProcessedLearningDelivery[] deliveries, Type exceptionType)
+        public void ThenExpectingExceptionForAddProcessedLearningDeliveriesWithInvalidInput(ApprenticeshipPriceEpisodeEntity[] entities, Type exceptionType)
         {
             // Assert
-            Assert.Throws(exceptionType, () => _repository.AddProcessedLearningDeliveries(deliveries));
+            Assert.Throws(exceptionType, () => _repository.AddApprenticeshipPriceEpisodes(entities));
         }
     }
 }
