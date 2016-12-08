@@ -15,7 +15,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
         private long? _frameworkCode = 550;
         private long? _pwayCode = 6;
         private long? _negotiatedPrice = 15000;
-        private DateTime? _learnStartDate = new DateTime(2016, 9, 1);
+        private DateTime _learnStartDate = new DateTime(2016, 9, 1);
 
         public LearnerEntity Build()
         {
@@ -105,7 +105,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
             return this;
         }
 
-        public LearnerEntityBuilder WithLearnStartDate(DateTime? learnStartDate)
+        public LearnerEntityBuilder WithLearnStartDate(DateTime learnStartDate)
         {
             _learnStartDate = learnStartDate;
 

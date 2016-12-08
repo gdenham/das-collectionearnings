@@ -52,6 +52,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DML", "DML", "{39C07E8F-F95
 		Deploy\sql\dml\Ilr.DataLock.Cleanup.Deds.DML.sql = Deploy\sql\dml\Ilr.DataLock.Cleanup.Deds.DML.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Copy mappings - Ilr Submission", "Copy mappings - Ilr Submission", "{95789FD2-A404-4040-A9BE-5FBC61E74FF8}"
+	ProjectSection(SolutionItems) = preProject
+		Deploy\copy mappings\DasDataLockCopyToDedsMapping.xml = Deploy\copy mappings\DasDataLockCopyToDedsMapping.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

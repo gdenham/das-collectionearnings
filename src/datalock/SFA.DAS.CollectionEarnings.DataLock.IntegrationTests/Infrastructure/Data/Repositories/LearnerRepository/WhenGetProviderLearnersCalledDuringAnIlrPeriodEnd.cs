@@ -74,8 +74,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             // Assert
             Assert.IsNotNull(learners);
             Assert.AreEqual(2, learners.Length);
-            Assert.AreEqual(1, learners.Count(l => l.LearnStartDate.HasValue && l.LearnStartDate.Value == new DateTime(2017, 8, 1)));
-            Assert.AreEqual(1, learners.Count(l => l.LearnStartDate.HasValue && l.LearnStartDate.Value == new DateTime(2017, 11, 1)));
+            Assert.AreEqual(1, learners.Count(l => l.LearnStartDate == new DateTime(2017, 8, 1)));
+            Assert.AreEqual(1, learners.Count(l => l.LearnStartDate == new DateTime(2017, 11, 1)));
         }
     }
 }

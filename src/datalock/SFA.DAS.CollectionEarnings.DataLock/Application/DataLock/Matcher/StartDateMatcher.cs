@@ -7,9 +7,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
     {
         public override MatchResult Match(List<Commitment.Commitment> commitments, Learner.Learner learner)
         {
-            var commitmentsToMatch = commitments.Where(c => learner.LearningStartDate.HasValue
-                                                            && learner.LearningStartDate.Value >= c.StartDate
-                                                            && learner.LearningStartDate.Value < c.EndDate).ToList();
+            var commitmentsToMatch = commitments.Where(c => learner.LearningStartDate >= c.StartDate
+                                                            && learner.LearningStartDate < c.EndDate).ToList();
 
             if (!commitmentsToMatch.Any())
             {
