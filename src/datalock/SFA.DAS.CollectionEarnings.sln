@@ -57,6 +57,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Copy mappings - Ilr Submiss
 		Deploy\copy mappings\DasDataLockCopyToDedsMapping.xml = Deploy\copy mappings\DasDataLockCopyToDedsMapping.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Copy mappings - Ilr Period End", "Copy mappings - Ilr Period End", "{CE782C50-00F6-4E73-B2AF-FDD63A4B70EF}"
+	ProjectSection(SolutionItems) = preProject
+		DeployPeriodEnd\copy mappings\DasPeriodEndDataLockCopyToDedsMapping.xml = DeployPeriodEnd\copy mappings\DasPeriodEndDataLockCopyToDedsMapping.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -202,6 +202,9 @@
     <Content Include="DbSetupScripts\Ilr.Deds.DDL.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="DbSetupScripts\Ilr.Deds.Earnings.DDL.Tables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="DbSetupScripts\Ilr.Transient.DDL.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -271,7 +274,7 @@
     <Content Include="Tools\Sql\PeriodEndPathwayMismatch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tools\Sql\PeriodEndEarlierStartMonth.sql">
+    <Content Include="Tools\Sql\PeriodEndEarlierStartDateMismatch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tools\Sql\PeriodEndProgrammeMismatch.sql">

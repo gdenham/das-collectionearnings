@@ -177,10 +177,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         }
 
         [Test]
-        public void ThenValidationErrorsAddedForIlrEarlierStartMonth()
+        public void ThenValidationErrorsAddedForIlrEarlierStartDate()
         {
             // Arrange
-            TestDataHelper.PeriodEndExecuteScript("PeriodEndEarlierStartMonth.sql");
+            TestDataHelper.PeriodEndExecuteScript("PeriodEndEarlierStartDateMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithUln(1000000000).WithStandardCode(999).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId(2).WithUln(1000000027).WithStandardCode(null).Build());
             TestDataHelper.PeriodEndCopyReferenceData();
@@ -244,8 +244,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             Assert.AreEqual(0, errors.Length);
             Assert.IsNotNull(learnerAndCommitmentMatches);
             Assert.AreEqual(2, learnerAndCommitmentMatches.Length);
-            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[0].CommitmentId));
-            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[1].CommitmentId));
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[0].CommitmentId && l.PriceEpisodeIdentifier == "27-25-2016-09-17" && l.EpisodeStartDate == new DateTime(2016, 9, 17)));
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[1].CommitmentId && l.PriceEpisodeIdentifier == "27-25-2016-09-19" && l.EpisodeStartDate == new DateTime(2016, 9, 19)));
         }
 
         [Test]
@@ -274,8 +274,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             Assert.AreEqual(0, errors.Length);
             Assert.IsNotNull(learnerAndCommitmentMatches);
             Assert.AreEqual(2, learnerAndCommitmentMatches.Length);
-            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[0].CommitmentId));
-            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[1].CommitmentId));
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[0].CommitmentId && l.PriceEpisodeIdentifier == "27-25-2017-08-01" && l.EpisodeStartDate == new DateTime(2017, 8, 1)));
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[1].CommitmentId && l.PriceEpisodeIdentifier == "27-25-2017-11-01" && l.EpisodeStartDate == new DateTime(2017, 11, 1)));
         }
     }
 }
