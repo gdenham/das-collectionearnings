@@ -3,6 +3,7 @@ using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data;
 using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
+using System;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Data.Repositories.ValidationErrorRepository
 {
@@ -33,7 +34,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
                 new ValidationErrorBuilder().WithAimSeqNumber(null).Build(),
 
                 new ValidationErrorBuilder().WithRuleId(string.Empty).Build(),
-                new ValidationErrorBuilder().WithRuleId(null).Build()
+                new ValidationErrorBuilder().WithRuleId(null).Build(),
+
+                 new ValidationErrorBuilder().WithPriceEpisodeIdentifier("A").Build(),
+                  new ValidationErrorBuilder().WithEpisodeStartDate(DateTime.MinValue).Build()
             };
 
             // Act
@@ -43,7 +47,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             var errors = TestDataHelper.GetValidationErrors();
 
             Assert.IsNotNull(errors);
-            Assert.AreEqual(7, errors.Length);
+            Assert.AreEqual(9, errors.Length);
         }
     }
 }

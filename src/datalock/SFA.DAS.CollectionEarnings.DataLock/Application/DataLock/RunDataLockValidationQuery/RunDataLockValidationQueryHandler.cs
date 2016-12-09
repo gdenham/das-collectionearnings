@@ -64,7 +64,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockVa
                                 Ukprn = learner.Ukprn,
                                 LearnRefNumber = learner.LearnerReferenceNumber,
                                 AimSeqNumber = learner.AimSequenceNumber,
-                                RuleId = matchResult.ErrorCode
+                                RuleId = matchResult.ErrorCode,
+                                PriceEpisodeIdentifier=learner.PriceEpisodeIdentifier,
+                                EpisodeStartDate=learner.LearningStartDate
                             });
                         }
 
