@@ -21,8 +21,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.ApprenticeshipPriceE
                     new ApprenticeshipPriceEpisodePeriodEntity
                     {
                         LearnRefNumber = pe.LearnerReferenceNumber,
-                        AimSeqNumber = pe.AimSequenceNumber,
-                        EpisodeStartDate = pe.PriceEpisodeStartDate,
                         PriceEpisodeIdentifier = pe.PriceEpisodeId,
                         Period = pe.Period,
                         PriceEpisodeBalancePayment = pe.PriceEpisodeBalancePayment,

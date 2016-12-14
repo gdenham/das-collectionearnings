@@ -1,13 +1,10 @@
-﻿using System;
-using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
+﻿using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Builders
 {
     public class ApprenticeshipPriceEpisodePeriodEntityBuilder : IEntityBuilder<ApprenticeshipPriceEpisodePeriodEntity>
     {
         private string _learnRefNumber = "Lrn001";
-        private int _aimSeqNumber = 99;
-        private DateTime _episodeStartDate = new DateTime(2016, 9, 1);
         private string _priceEpisodeIdentifier = "550-20-6-2016-09-01";
         private int _period = 1;
         private decimal _priceEpisodeOnProgPayment = 1000m;
@@ -19,8 +16,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Builders
             return new ApprenticeshipPriceEpisodePeriodEntity
             {
                 LearnRefNumber = _learnRefNumber,
-                AimSeqNumber = _aimSeqNumber,
-                EpisodeStartDate = _episodeStartDate,
                 PriceEpisodeIdentifier = _priceEpisodeIdentifier,
                 Period = _period,
                 PriceEpisodeOnProgPayment = _priceEpisodeOnProgPayment,
@@ -32,20 +27,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Builders
         public ApprenticeshipPriceEpisodePeriodEntityBuilder WithLearnRefNumber(string learnRefNumber)
         {
             _learnRefNumber = learnRefNumber;
-
-            return this;
-        }
-
-        public ApprenticeshipPriceEpisodePeriodEntityBuilder WithAimSeqNumber(int aimseqNumber)
-        {
-            _aimSeqNumber = aimseqNumber;
-
-            return this;
-        }
-
-        public ApprenticeshipPriceEpisodePeriodEntityBuilder WithEpisodeStartDate(DateTime episodeStartDate)
-        {
-            _episodeStartDate = episodeStartDate;
 
             return this;
         }

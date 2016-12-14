@@ -186,8 +186,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.Apprentice
         {
             return entity.PriceEpisodeIdentifier == periodisedValues.PriceEpisodeId &&
                    entity.LearnRefNumber == periodisedValues.LearnerReferenceNumber &&
-                   entity.AimSeqNumber == periodisedValues.AimSequenceNumber &&
-                   entity.PriceEpisodeIdentifier == periodisedValues.PriceEpisodeId &&
                    entity.AttributeName == periodisedValues.AttributeName.ToString() &&
                    entity.Period_1 == periodisedValues.Period1Amount &&
                    entity.Period_2 == periodisedValues.Period2Amount &&

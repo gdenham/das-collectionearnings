@@ -32,15 +32,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Infrastructure.
             },
             new object[]
             {
-                // Out of bounds BalanceValue
-                new[]
-                {
-                    new ApprenticeshipPriceEpisodeEntityBuilder().WithPriceEpisodeBalanceValue(12345678901.00m).Build()
-                },
-                typeof(InvalidOperationException)
-            },
-            new object[]
-            {
                 // Out of bounds CompletionElement
                 new[]
                 {

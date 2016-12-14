@@ -6,12 +6,12 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities
     public class ApprenticeshipPriceEpisodeEntity
     {
         public string LearnRefNumber { get; set; }
-        public int AimSeqNumber { get; set; }
-        public DateTime EpisodeStartDate { get; set; }
         public string PriceEpisodeIdentifier { get; set; }
+        public DateTime EpisodeEffectiveTNPStartDate { get; set; }
+        public DateTime EpisodeStartDate { get; set; }
         public DateTime? PriceEpisodeActualEndDate { get; set; }
         public int? PriceEpisodeActualInstalments { get; set; }
-        public decimal? PriceEpisodeBalanceValue { get; set; }
+        public int PriceEpisodeAimSeqNumber { get; set; }
         public decimal? PriceEpisodeCappedRemainingTNPAmount { get; set; }
         public bool? PriceEpisodeCompleted { get; set; }
         public decimal? PriceEpisodeCompletionElement { get; set; }

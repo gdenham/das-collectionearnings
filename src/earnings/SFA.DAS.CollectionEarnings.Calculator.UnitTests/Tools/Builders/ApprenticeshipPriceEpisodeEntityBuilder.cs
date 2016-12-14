@@ -10,7 +10,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Builders
         private DateTime _episodeStartDate = new DateTime(2016, 9, 1);
         private string _priceEpisodeIdentifier = "550-20-6-2016-09-01";
         private DateTime? _priceEpisodeActualEndDate;
-        private decimal? _priceEpisodeBalanceValue;
         private bool? _priceEpisodeCompleted;
         private decimal? _priceEpisodeCompletionElement = 3000m;
         private decimal? _priceEpisodeInstalmentValue = 1000m;
@@ -27,11 +26,11 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Builders
             return new ApprenticeshipPriceEpisodeEntity
             {
                 LearnRefNumber = _learnRefNumber,
-                AimSeqNumber = _aimSeqNumber,
+                PriceEpisodeAimSeqNumber = _aimSeqNumber,
                 EpisodeStartDate = _episodeStartDate,
+                EpisodeEffectiveTNPStartDate = _episodeStartDate,
                 PriceEpisodeIdentifier = _priceEpisodeIdentifier,
                 PriceEpisodeActualEndDate = _priceEpisodeActualEndDate,
-                PriceEpisodeBalanceValue = _priceEpisodeBalanceValue,
                 PriceEpisodeCompleted = _priceEpisodeCompleted,
                 PriceEpisodeCompletionElement = _priceEpisodeCompletionElement,
                 PriceEpisodeInstalmentValue = _priceEpisodeInstalmentValue,
@@ -75,13 +74,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Builders
         public ApprenticeshipPriceEpisodeEntityBuilder WithPriceEpisodeActualEndDate(DateTime? priceEpisodeActualEndDate)
         {
             _priceEpisodeActualEndDate = priceEpisodeActualEndDate;
-
-            return this;
-        }
-
-        public ApprenticeshipPriceEpisodeEntityBuilder WithPriceEpisodeBalanceValue(decimal? priceEpisodeBalanceValue)
-        {
-            _priceEpisodeBalanceValue = priceEpisodeBalanceValue;
 
             return this;
         }

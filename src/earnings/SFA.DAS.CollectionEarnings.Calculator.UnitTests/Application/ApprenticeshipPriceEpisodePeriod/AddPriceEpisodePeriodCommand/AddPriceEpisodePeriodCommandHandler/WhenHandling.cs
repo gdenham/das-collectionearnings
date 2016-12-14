@@ -118,8 +118,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Application.Apprentice
         {
             return entity.PriceEpisodeIdentifier == periodEarning.PriceEpisodeId &&
                    entity.LearnRefNumber == periodEarning.LearnerReferenceNumber &&
-                   entity.AimSeqNumber == periodEarning.AimSequenceNumber &&
-                   entity.PriceEpisodeIdentifier == periodEarning.PriceEpisodeId &&
                    entity.Period == periodEarning.Period &&
                    entity.PriceEpisodeOnProgPayment == periodEarning.PriceEpisodeOnProgPayment &&
                    entity.PriceEpisodeCompletionPayment == periodEarning.PriceEpisodeCompletionPayment &&

@@ -17,16 +17,16 @@
           <Destination>LearnRefNumber</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>AimSeqNumber</Source>
-          <Destination>AimSeqNumber</Destination>
+          <Source>PriceEpisodeIdentifier</Source>
+          <Destination>PriceEpisodeIdentifier</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>EpisodeEffectiveTNPStartDate</Source>
+          <Destination>EpisodeEffectiveTNPStartDate</Destination>
         </ColumnMapping>
         <ColumnMapping>
           <Source>EpisodeStartDate</Source>
           <Destination>EpisodeStartDate</Destination>
-        </ColumnMapping>
-        <ColumnMapping>
-          <Source>PriceEpisodeIdentifier</Source>
-          <Destination>PriceEpisodeIdentifier</Destination>
         </ColumnMapping>
         <ColumnMapping>
           <Source>PriceEpisodeActualEndDate</Source>
@@ -37,8 +37,8 @@
           <Destination>PriceEpisodeActualInstalments</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>PriceEpisodeBalanceValue</Source>
-          <Destination>PriceEpisodeBalanceValue</Destination>
+          <Source>PriceEpisodeAimSeqNumber</Source>
+          <Destination>PriceEpisodeAimSeqNumber</Destination>
         </ColumnMapping>
         <ColumnMapping>
           <Source>PriceEpisodeCappedRemainingTNPAmount</Source>
@@ -128,14 +128,6 @@
           <Destination>LearnRefNumber</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>AimSeqNumber</Source>
-          <Destination>AimSeqNumber</Destination>
-        </ColumnMapping>
-        <ColumnMapping>
-          <Source>EpisodeStartDate</Source>
-          <Destination>EpisodeStartDate</Destination>
-        </ColumnMapping>
-        <ColumnMapping>
           <Source>PriceEpisodeIdentifier</Source>
           <Destination>PriceEpisodeIdentifier</Destination>
         </ColumnMapping>
@@ -205,14 +197,6 @@
         <ColumnMapping>
           <Source>LearnRefNumber</Source>
           <Destination>LearnRefNumber</Destination>
-        </ColumnMapping>
-        <ColumnMapping>
-          <Source>AimSeqNumber</Source>
-          <Destination>AimSeqNumber</Destination>
-        </ColumnMapping>
-        <ColumnMapping>
-          <Source>EpisodeStartDate</Source>
-          <Destination>EpisodeStartDate</Destination>
         </ColumnMapping>
         <ColumnMapping>
           <Source>PriceEpisodeIdentifier</Source>

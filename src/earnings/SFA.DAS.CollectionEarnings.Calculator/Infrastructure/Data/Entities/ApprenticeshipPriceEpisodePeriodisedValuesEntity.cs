@@ -1,13 +1,10 @@
 ﻿// ReSharper disable InconsistentNaming
-using System;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities
 {
     public class ApprenticeshipPriceEpisodePeriodisedValuesEntity
     {
         public string LearnRefNumber { get; set; }
-        public int AimSeqNumber { get; set; }
-        public DateTime EpisodeStartDate { get; set; }
         public string PriceEpisodeIdentifier { get; set; }
         public string AttributeName { get; set; }
         public decimal Period_1 { get; set; }
@@ -22,6 +19,5 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities
         public decimal Period_10 { get; set; }
         public decimal Period_11 { get; set; }
         public decimal Period_12 { get; set; }
-
     }
 }

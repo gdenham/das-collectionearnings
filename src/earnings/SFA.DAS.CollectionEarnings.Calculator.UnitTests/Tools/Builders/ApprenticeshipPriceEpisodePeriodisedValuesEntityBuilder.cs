@@ -1,5 +1,4 @@
-﻿using System;
-using SFA.DAS.CollectionEarnings.Calculator.Application.ApprenticeshipPriceEpisodePeriodisedValues;
+﻿using SFA.DAS.CollectionEarnings.Calculator.Application.ApprenticeshipPriceEpisodePeriodisedValues;
 using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Builders
@@ -7,8 +6,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Builders
     public class ApprenticeshipPriceEpisodePeriodisedValuesEntityBuilder : IEntityBuilder<ApprenticeshipPriceEpisodePeriodisedValuesEntity>
     {
         private string _learnRefNumber = "Lrn001";
-        private int _aimSeqNumber = 1;
-        private DateTime _episodeStartDate = new DateTime(2016, 9, 1);
         private string _priceEpisodeIdentifier = "550-20-6-2016-09-01";
         private string _attributeName = AttributeNames.PriceEpisodeOnProgPayment.ToString();
         private decimal _period1 = 1000m;
@@ -29,8 +26,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Builders
             return new ApprenticeshipPriceEpisodePeriodisedValuesEntity
             {
                 LearnRefNumber = _learnRefNumber,
-                AimSeqNumber = _aimSeqNumber,
-                EpisodeStartDate = _episodeStartDate,
                 PriceEpisodeIdentifier = _priceEpisodeIdentifier,
                 AttributeName = _attributeName,
                 Period_1 = _period1,
@@ -51,20 +46,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Builders
         public ApprenticeshipPriceEpisodePeriodisedValuesEntityBuilder WithLearnRefNumber(string learnRefNumber)
         {
             _learnRefNumber = learnRefNumber;
-
-            return this;
-        }
-
-        public ApprenticeshipPriceEpisodePeriodisedValuesEntityBuilder WithAimSeqNumber(int aimseqNumber)
-        {
-            _aimSeqNumber = aimseqNumber;
-
-            return this;
-        }
-
-        public ApprenticeshipPriceEpisodePeriodisedValuesEntityBuilder WithEpisodeStartDate(DateTime episodeStartDate)
-        {
-            _episodeStartDate = episodeStartDate;
 
             return this;
         }
