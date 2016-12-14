@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SFA.DAS.CollectionEarnings.DataLock.Application.Learner
+﻿namespace SFA.DAS.CollectionEarnings.DataLock.Application.Learner
 {
     public class LearnerCommitment
     {
@@ -8,7 +6,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.Learner
         public string LearnerReferenceNumber { get; set; }
         public long AimSequenceNumber { get; set; }
         public long CommitmentId { get; set; }
-        public DateTime EpisodeStartDate { get; set; }
         public string PriceEpisodeIdentifier { get; set; }
     }
 }
