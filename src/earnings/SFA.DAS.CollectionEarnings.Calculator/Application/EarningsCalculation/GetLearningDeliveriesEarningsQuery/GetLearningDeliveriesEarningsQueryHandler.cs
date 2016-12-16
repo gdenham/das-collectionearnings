@@ -86,7 +86,9 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                 result++;
             }
 
-            return result;
+            return result <= 0
+                ? 1
+                : result;
         }
 
         private decimal CalculateCompletionPayment(PriceEpisode priceEpisode)

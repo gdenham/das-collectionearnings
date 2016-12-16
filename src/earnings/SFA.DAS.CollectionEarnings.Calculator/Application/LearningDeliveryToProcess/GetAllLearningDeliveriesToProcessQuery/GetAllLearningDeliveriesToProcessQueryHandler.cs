@@ -149,8 +149,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.LearningDeliveryToPr
         private string GetPriceEpisodeId(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery, FinancialRecordEntity financialRecord)
         {
             return learningDelivery.StandardCode.HasValue
-                ? learningDelivery.StandardCode + "-" + learningDelivery.ProgrammeType + "-" + financialRecord.FinDate.ToString("yyyy-MM-dd")
-                : learningDelivery.FrameworkCode + "-" + learningDelivery.ProgrammeType + "-" + learningDelivery.PathwayCode + "-" + financialRecord.FinDate.ToString("yyyy-MM-dd");
+                ? learningDelivery.ProgrammeType + "-" + learningDelivery.StandardCode + "-" + financialRecord.FinDate.ToString("dd/MM/yyyy")
+                : learningDelivery.ProgrammeType + "-" + learningDelivery.FrameworkCode + "-" + learningDelivery.PathwayCode + "-" + financialRecord.FinDate.ToString("dd/MM/yyyy");
         }
     }
 }
