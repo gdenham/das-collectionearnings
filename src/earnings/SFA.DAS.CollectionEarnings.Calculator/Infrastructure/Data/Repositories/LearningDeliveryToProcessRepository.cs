@@ -5,7 +5,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Repositories
 {
     public class LearningDeliveryToProcessRepository : DcfsRepository, ILearningDeliveryToProcessRepository
     {
-        private const string LearningDeliveryToProcessSource = "Rulebase.vw_AE_LearningDeliveriesToProcess";
+        private const string LearningDeliveryToProcessSource = "Rulebase.vw_AEC_LearnersToProcess";
+
         private const string LearningDeliveryToProcessColumns = "Ukprn," +
                                                                 "LearnRefNumber," +
                                                                 "Uln," +
@@ -19,8 +20,8 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Repositories
                                                                 "OrigLearnStartDate," +
                                                                 "LearnPlanEndDate," +
                                                                 "LearnActEndDate," +
-                                                                "CompletionStatus," +
-                                                                "NegotiatedPrice";
+                                                                "CompletionStatus";
+
         private const string SelectLearningDeliveriesToProcess = "SELECT " + LearningDeliveryToProcessColumns + " FROM " + LearningDeliveryToProcessSource;
 
         public LearningDeliveryToProcessRepository(string connectionString)

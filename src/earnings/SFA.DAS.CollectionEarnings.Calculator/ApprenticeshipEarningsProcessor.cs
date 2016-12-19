@@ -1,13 +1,15 @@
 ﻿using System;
 using MediatR;
 using NLog;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ApprenticeshipPriceEpisode;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ApprenticeshipPriceEpisode.ProcessAddPriceEpisodesCommand;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ApprenticeshipPriceEpisodePeriod;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ApprenticeshipPriceEpisodePeriod.AddPriceEpisodePeriodCommand;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ApprenticeshipPriceEpisodePeriodisedValues;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ApprenticeshipPriceEpisodePeriodisedValues.ProcessAddPeriodisedValuesCommand;
 using SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.GetLearningDeliveriesEarningsQuery;
+using SFA.DAS.CollectionEarnings.Calculator.Application.LearningDeliveryToProcess;
 using SFA.DAS.CollectionEarnings.Calculator.Application.LearningDeliveryToProcess.GetAllLearningDeliveriesToProcessQuery;
-using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDelivery.AddProcessedLearningDeliveriesCommand;
-using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriod;
-using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriod.AddProcessedLearningDeliveryPeriodCommand;
-using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriodisedValues.AddProcessedLearningDeliveryPeriodisedValuesCommand;
-using SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.Calculator
 {
@@ -36,9 +38,9 @@ namespace SFA.DAS.CollectionEarnings.Calculator
             {
                 var processedEarnings = CalculateEarningsOrThrow(learningDeliveriesToProcess.Items);
 
-                WriteProcessedLearningDeliveriesOrThrow(processedEarnings.ProcessedLearningDeliveries);
-                WriteProcessedLearningDeliveryPeriodisedValuesOrThrow(processedEarnings.ProcessedLearningDeliveryPeriodisedValues);
-                WriteProcessedLearningDeliveriesPeriodEarningsOrThrow(processedEarnings.LearningDeliveryPeriodEarnings);
+                WriteApprenticeshipPriceEpisodesOrThrow(processedEarnings.PriceEpisodes);
+                WriteApprenticeshipPriceEpisodePeriodisedValuesOrThrow(processedEarnings.PriceEpisodesPeriodisedValues);
+                WriteApprenticeshipPriceEpisodePeriodEarningsOrThrow(processedEarnings.PriceEpisodesPeriodsEarnings);
             }
             else
             {
@@ -63,7 +65,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator
             return learningDeliveries;
         }
 
-        private GetLearningDeliveriesEarningsQueryResponse CalculateEarningsOrThrow(LearningDeliveryToProcess[] learningDeliveriesToProcess)
+        private GetLearningDeliveriesEarningsQueryResponse CalculateEarningsOrThrow(LearningDelivery[] learningDeliveriesToProcess)
         {
             _logger.Debug("Started calculating the earnings for the found learning deliveries.");
 
@@ -82,15 +84,15 @@ namespace SFA.DAS.CollectionEarnings.Calculator
             return earnings;
         }
 
-        private void WriteProcessedLearningDeliveriesOrThrow(ProcessedLearningDelivery[] processedLearningDeliveries)
+        private void WriteApprenticeshipPriceEpisodesOrThrow(ApprenticeshipPriceEpisode[] priceEpisodes)
         {
             _logger.Debug("Started writing processed learning deliveries.");
 
             try
             {
-                _mediator.Send(new AddProcessedLearningDeliveriesCommandRequest
+                _mediator.Send(new ProcessAddPriceEpisodesCommandRequest
                 {
-                    LearningDeliveries = processedLearningDeliveries
+                    PriceEpisodes = priceEpisodes
                 });
             }
             catch (Exception ex)
@@ -101,15 +103,15 @@ namespace SFA.DAS.CollectionEarnings.Calculator
             _logger.Debug("Finished writing processed learning deliveries.");
         }
 
-        private void WriteProcessedLearningDeliveryPeriodisedValuesOrThrow(ProcessedLearningDeliveryPeriodisedValues[] processedLearningDeliveryPeriodisedValues)
+        private void WriteApprenticeshipPriceEpisodePeriodisedValuesOrThrow(ApprenticeshipPriceEpisodePeriodisedValues[] periodisedValues)
         {
             _logger.Debug("Started writing processed learning deliveries periodised values.");
 
             try
             {
-                _mediator.Send(new AddProcessedLearningDeliveryPeriodisedValuesCommandRequest
+                _mediator.Send(new ProcessAddPeriodisedValuesCommandRequest
                 {
-                    PeriodisedValues = processedLearningDeliveryPeriodisedValues
+                    PeriodisedValues = periodisedValues
                 });
             }
             catch (Exception ex)
@@ -120,15 +122,15 @@ namespace SFA.DAS.CollectionEarnings.Calculator
             _logger.Debug("Finished writing processed learning deliveries periodised values.");
         }
 
-        private void WriteProcessedLearningDeliveriesPeriodEarningsOrThrow(LearningDeliveryPeriodEarning[] learningDeliveriesPeriodEarnings)
+        private void WriteApprenticeshipPriceEpisodePeriodEarningsOrThrow(ApprenticeshipPriceEpisodePeriod[] periodEarnings)
         {
             _logger.Debug("Started writing learning deliveries period earnings.");
 
             try
             {
-                _mediator.Send(new AddProcessedLearningDeliveryPeriodCommandRequest
+                _mediator.Send(new AddPriceEpisodePeriodCommandRequest
                 {
-                    PeriodEarnings = learningDeliveriesPeriodEarnings
+                    PeriodEarnings = periodEarnings
                 });
             }
             catch (Exception ex)
