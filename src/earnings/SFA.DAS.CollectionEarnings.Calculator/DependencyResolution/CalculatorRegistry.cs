@@ -24,10 +24,11 @@ namespace SFA.DAS.CollectionEarnings.Calculator.DependencyResolution
             For<ILogger>().Use(() => LogManager.GetLogger(taskType.FullName));
 
             // TODO: Fix so can be registered with convention
+            For<IFinancialRecordRepository>().Use<FinancialRecordRepository>();
             For<ILearningDeliveryToProcessRepository>().Use<LearningDeliveryToProcessRepository>();
-            For<IProcessedLearningDeliveryRepository>().Use<ProcessedLearningDeliveryRepository>();
-            For<IProcessedLearningDeliveryPeriodisedValuesRepository>().Use<ProcessedLearningDeliveryPeriodisedValuesRepository>();
-            For<IProcessedLearningDeliveryPeriodRepository>().Use<ProcessedLearningDeliveryPeriodRepository>();
+            For<IApprenticeshipPriceEpisodeRepository>().Use<ApprenticeshipPriceEpisodeRepository>();
+            For<IApprenticeshipPriceEpisodePeriodisedValuesRepository>().Use<ApprenticeshipPriceEpisodePeriodisedValuesRepository>();
+            For<IApprenticeshipPriceEpisodePeriodRepository>().Use<ApprenticeshipPriceEpisodePeriodRepository>();
             For<IDateTimeProvider>().Use<DateTimeProvider>();
 
             For<SingleInstanceFactory>().Use<SingleInstanceFactory>(ctx => t => GetInstance(ctx, t));

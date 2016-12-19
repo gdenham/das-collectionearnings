@@ -11,11 +11,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.CollectionEarnings.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.CollectionEarnings.Calculator.IntegrationTests", "SFA.DAS.CollectionEarnings.Calculator.IntegrationTests\SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.csproj", "{3D3E1EF2-C096-416A-B431-B102B25FF6B7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{D53DFB72-0240-4DB9-953B-DD626D871E76}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql - ddl", "Sql - ddl", "{D53DFB72-0240-4DB9-953B-DD626D871E76}"
 	ProjectSection(SolutionItems) = preProject
 		Deploy\sql\ddl\Ilr.Deds.Earnings.DDL.Tables.sql = Deploy\sql\ddl\Ilr.Deds.Earnings.DDL.Tables.sql
 		Deploy\sql\ddl\Ilr.Transient.Earnings.DDL.Tables.sql = Deploy\sql\ddl\Ilr.Transient.Earnings.DDL.Tables.sql
 		Deploy\sql\ddl\Ilr.Transient.Earnings.DDL.Views.sql = Deploy\sql\ddl\Ilr.Transient.Earnings.DDL.Views.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Copy mappings", "Copy mappings", "{08481AC9-6344-4489-B22C-5DFDEAA55001}"
+	ProjectSection(SolutionItems) = preProject
+		Deploy\copy mappings\DasEarningsCopyToDedsMapping.xml = Deploy\copy mappings\DasEarningsCopyToDedsMapping.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql - dml", "Sql - dml", "{6B82B1A1-86E9-4F14-AB35-C0E18EBB340E}"
+	ProjectSection(SolutionItems) = preProject
+		Deploy\sql\dml\Ilr.Earnings.Cleanup.Deds.DML.sql = Deploy\sql\dml\Ilr.Earnings.Cleanup.Deds.DML.sql
 	EndProjectSection
 EndProject
 Global
