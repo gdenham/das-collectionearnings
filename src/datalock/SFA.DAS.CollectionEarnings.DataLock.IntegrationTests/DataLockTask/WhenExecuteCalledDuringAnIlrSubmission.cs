@@ -193,7 +193,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(2, errors.Length);
-            Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartMonth));
+            Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartDate));
         }
 
         [Test]

@@ -14,7 +14,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
             {
                 return new MatchResult
                 {
-                    ErrorCode = DataLockErrorCodes.EarlierStartMonth
+                    ErrorCode = DataLockErrorCodes.EarlierStartDate
                 };
             }
 
