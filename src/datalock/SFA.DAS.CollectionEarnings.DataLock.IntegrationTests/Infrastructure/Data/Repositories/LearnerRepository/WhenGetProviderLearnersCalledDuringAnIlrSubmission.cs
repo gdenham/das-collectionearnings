@@ -3,7 +3,6 @@ using System.Linq;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data;
 using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
-using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools.Ilr;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Data.Repositories.LearnerRepository
 {
@@ -37,8 +36,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
         public void ThenNoLearnersReturnedForAUkprnWithNoEntriesInTheDatabase()
         {
             // Arrange
-            var shredder = new Shredder(GlobalTestContext.Instance.SubmissionConnectionString);
-            shredder.Shred();
+            TestDataHelper.ExecuteScript("IlrSubmissionMultipleLearningDeliveries.sql");
 
             // Act
             var learners = _learnerRepository.GetProviderLearners(_ukprnNoLearners);
@@ -52,32 +50,30 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
         public void ThenLearnersReturnedForMultipleEntriesInTheDatabase()
         {
             // Arrange
-            var shredder = new Shredder(GlobalTestContext.Instance.SubmissionConnectionString);
-            shredder.Shred();
+            TestDataHelper.ExecuteScript("IlrSubmissionMultipleLearningDeliveries.sql");
 
             // Act
             var learners = _learnerRepository.GetProviderLearners(_ukprn);
 
             // Assert
             Assert.IsNotNull(learners);
-            Assert.AreEqual(2, learners.Length);
+            Assert.AreEqual(8, learners.Length);
         }
 
         [Test]
         public void ThenLearnersReturnedForOneLearnerWithMultipleNegotiatedPriceEpisodesInTheDatabase()
         {
             // Arrange
-            var shredder = new Shredder(GlobalTestContext.Instance.SubmissionConnectionString, @"\Tools\Ilr\Files\IlrLearnerChangesEmployers.xml");
-            shredder.Shred();
+            TestDataHelper.ExecuteScript("IlrSubmissionLearnerChangesEmployers.sql");
 
             // Act
-            var learners = _learnerRepository.GetProviderLearners(_ukprn);
+            var singleLearnerPriceEpisodes = _learnerRepository.GetProviderLearners(_ukprn);
 
             // Assert
-            Assert.IsNotNull(learners);
-            Assert.AreEqual(2, learners.Length);
-            Assert.AreEqual(1, learners.Count(l => l.LearnStartDate.HasValue && l.LearnStartDate.Value == new DateTime(2017, 8, 1)));
-            Assert.AreEqual(1, learners.Count(l => l.LearnStartDate.HasValue && l.LearnStartDate.Value == new DateTime(2017, 11, 1)));
+            Assert.IsNotNull(singleLearnerPriceEpisodes);
+            Assert.AreEqual(2, singleLearnerPriceEpisodes.Length);
+            Assert.AreEqual(1, singleLearnerPriceEpisodes.Count(l => l.LearnStartDate == new DateTime(2017, 8, 1)));
+            Assert.AreEqual(1, singleLearnerPriceEpisodes.Count(l => l.LearnStartDate == new DateTime(2017, 11, 1)));
         }
     }
 }

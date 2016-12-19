@@ -42,8 +42,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
 
         private static readonly object[] LearnersWithMismatchingStartDates =
        {
-            new object[] {new LearnerBuilder().WithLearnStartDate(new DateTime(2016, 8, 31)).Build()},
-            new object[] {new LearnerBuilder().WithLearnStartDate(null).Build()}
+            new object[] {new LearnerBuilder().WithLearnStartDate(new DateTime(2016, 8, 31)).Build()}
         };
 
         private RunDataLockValidationQueryRequest _request;
@@ -285,7 +284,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
             // Assert
             Assert.IsNotNull(response);
             Assert.IsTrue(response.IsValid);
-            Assert.AreEqual(1, response.ValidationErrors.Count(ve => ve.RuleId == DataLockErrorCodes.EarlierStartMonth));
+            Assert.AreEqual(1, response.ValidationErrors.Count(ve => ve.RuleId == DataLockErrorCodes.EarlierStartDate));
             Assert.AreEqual(0, response.LearnerCommitments.Length);
         }
 
@@ -342,8 +341,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
                 new LearnerBuilder().WithLearnRefNumber("Lrn011").WithPathwayCode(null).Build(),
                 new LearnerBuilder().WithLearnRefNumber("Lrn012").WithNegotiatedPrice(999).Build(),
                 new LearnerBuilder().WithLearnRefNumber("Lrn013").WithNegotiatedPrice(null).Build(),
-                new LearnerBuilder().WithLearnRefNumber("Lrn014").WithLearnStartDate(new DateTime(2016, 8, 31)).Build(),
-                new LearnerBuilder().WithLearnRefNumber("Lrn015").WithLearnStartDate(null).Build()
+                new LearnerBuilder().WithLearnRefNumber("Lrn014").WithLearnStartDate(new DateTime(2016, 8, 31)).Build()
             };
 
             _request = new RunDataLockValidationQueryRequest
@@ -358,7 +356,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
             // Assert
             Assert.IsNotNull(response);
             Assert.IsTrue(response.IsValid);
-            Assert.AreEqual(14, response.ValidationErrors.Length);
+            Assert.AreEqual(13, response.ValidationErrors.Length);
             Assert.AreEqual(1, response.LearnerCommitments.Count(l =>
                                                                     l.CommitmentId == commitments[0].CommitmentId &&
                                                                     l.Ukprn == learners[0].Ukprn &&

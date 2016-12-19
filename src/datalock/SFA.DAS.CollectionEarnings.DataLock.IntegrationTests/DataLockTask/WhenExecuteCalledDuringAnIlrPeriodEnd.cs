@@ -177,10 +177,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         }
 
         [Test]
-        public void ThenValidationErrorsAddedForIlrEarlierStartMonth()
+        public void ThenValidationErrorsAddedForIlrEarlierStartDate()
         {
             // Arrange
-            TestDataHelper.PeriodEndExecuteScript("PeriodEndEarlierStartMonth.sql");
+            TestDataHelper.PeriodEndExecuteScript("PeriodEndEarlierStartDateMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithUln(1000000000).WithStandardCode(999).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId(2).WithUln(1000000027).WithStandardCode(null).Build());
             TestDataHelper.PeriodEndCopyReferenceData();
@@ -193,7 +193,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(2, errors.Length);
-            Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartMonth));
+            Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartDate));
         }
 
         [Test]
@@ -244,8 +244,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             Assert.AreEqual(0, errors.Length);
             Assert.IsNotNull(learnerAndCommitmentMatches);
             Assert.AreEqual(2, learnerAndCommitmentMatches.Length);
-            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[0].CommitmentId));
-            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[1].CommitmentId));
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[0].CommitmentId && l.PriceEpisodeIdentifier == "27-25-2016-09-17"));
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[1].CommitmentId && l.PriceEpisodeIdentifier == "27-25-2016-09-19"));
         }
 
         [Test]
@@ -274,8 +274,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             Assert.AreEqual(0, errors.Length);
             Assert.IsNotNull(learnerAndCommitmentMatches);
             Assert.AreEqual(2, learnerAndCommitmentMatches.Length);
-            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[0].CommitmentId));
-            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[1].CommitmentId));
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[0].CommitmentId && l.PriceEpisodeIdentifier == "27-25-2017-08-01"));
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[1].CommitmentId && l.PriceEpisodeIdentifier == "27-25-2017-11-01"));
         }
     }
 }

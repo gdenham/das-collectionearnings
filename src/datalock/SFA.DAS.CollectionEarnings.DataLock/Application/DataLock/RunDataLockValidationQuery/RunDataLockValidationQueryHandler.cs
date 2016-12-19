@@ -21,7 +21,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockVa
             var programmeMatcher = new ProgrammeMatchHandler();
             var pathwaymatcher = new PathwayMatchHandler();
             var priceMatcher = new PriceMatchHandler();
-            var startMonthMatcher = new StartDateMatcher();
+            var startDateMatcher = new StartDateMatcher();
             var isPayableMatcher = new IsPayableMatchHandler();
             var multipleMatcher = new MultipleMatchHandler();
 
@@ -31,8 +31,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockVa
             frameworkMatcher.SetNextMatchHandler(programmeMatcher);
             programmeMatcher.SetNextMatchHandler(pathwaymatcher);
             pathwaymatcher.SetNextMatchHandler(priceMatcher);
-            priceMatcher.SetNextMatchHandler(startMonthMatcher);
-            startMonthMatcher.SetNextMatchHandler(isPayableMatcher);
+            priceMatcher.SetNextMatchHandler(startDateMatcher);
+            startDateMatcher.SetNextMatchHandler(isPayableMatcher);
             isPayableMatcher.SetNextMatchHandler(multipleMatcher);
 
             _initialHandler = ukprnMatcher;
@@ -75,7 +75,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockVa
                                 Ukprn = learner.Ukprn,
                                 LearnerReferenceNumber = learner.LearnerReferenceNumber,
                                 AimSequenceNumber = learner.AimSequenceNumber ?? -1,
-                                CommitmentId = matchResult.Commitment.CommitmentId
+                                CommitmentId = matchResult.Commitment.CommitmentId,
+                                PriceEpisodeIdentifier = learner.PriceEpisodeIdentifier
                             });
                         }
                     }

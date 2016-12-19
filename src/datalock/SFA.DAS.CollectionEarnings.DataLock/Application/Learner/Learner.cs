@@ -14,6 +14,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.Learner
         public long? FrameworkCode { get; set; }
         public long? PathwayCode { get; set; }
         public long? NegotiatedPrice { get; set; }
-        public DateTime? LearningStartDate { get; set; }
+        public DateTime LearningStartDate { get; set; }
+        public string PriceEpisodeIdentifier { get; set; }
     }
 }

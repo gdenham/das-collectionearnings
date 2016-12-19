@@ -17,14 +17,16 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Learner.AddL
                 Ukprn = 10007459,
                 LearnerReferenceNumber = "Lrn001",
                 AimSequenceNumber = 1,
-                CommitmentId = 1
+                CommitmentId = 1,
+                PriceEpisodeIdentifier = "27-25-2016-09-01"
             },
             new LearnerCommitment
             {
                 Ukprn = 10007459,
                 LearnerReferenceNumber = "Lrn002",
                 AimSequenceNumber = 9,
-                CommitmentId = 2
+                CommitmentId = 2,
+                PriceEpisodeIdentifier = "27-25-2016-10-15"
             }
         };
 
@@ -101,7 +103,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Learner.AddL
             return entity.Ukprn == learnerCommitment.Ukprn &&
                    entity.LearnRefNumber == learnerCommitment.LearnerReferenceNumber &&
                    entity.AimSeqNumber == learnerCommitment.AimSequenceNumber &&
-                   entity.CommitmentId == learnerCommitment.CommitmentId;
+                   entity.CommitmentId == learnerCommitment.CommitmentId &&
+                   entity.PriceEpisodeIdentifier == learnerCommitment.PriceEpisodeIdentifier;
         }
     }
 }

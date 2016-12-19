@@ -26,6 +26,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
                 {
                     // Pre-req scripts
                     RunSqlScript(@"Ilr.Transient.DDL.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
+                    RunSqlScript(@"Ilr.Transient.Earnings.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
                     RunSqlScript(@"Summarisation.Deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);
                     RunSqlScript(@"DasCommitments.deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedSubmissionDatabaseName);
 
@@ -69,6 +70,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests
                     RunSqlScript(@"Ilr.Deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);
                     RunSqlScript(@"Summarisation.Deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);
                     RunSqlScript(@"DasCommitments.deds.DDL.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);
+                    RunSqlScript(@"Ilr.Deds.Earnings.DDL.Tables.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);
 
                     // Component scripts
                     RunSqlScript(@"PeriodEnd.Transient.DataLock.Reference.ddl.tables.sql", connection, GlobalTestContext.Instance.BracketedPeriodEndDatabaseName);

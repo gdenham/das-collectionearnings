@@ -71,6 +71,10 @@
           <Source>CollectionPeriodYear</Source>
           <Destination>CollectionPeriodYear</Destination>
         </ColumnMapping>
+        <ColumnMapping>
+          <Source>PriceEpisodeIdentifier</Source>
+          <Destination>PriceEpisodeIdentifier</Destination>
+        </ColumnMapping>
       </ColumnMappings>
     </TableMapping>
   </TableMappings>

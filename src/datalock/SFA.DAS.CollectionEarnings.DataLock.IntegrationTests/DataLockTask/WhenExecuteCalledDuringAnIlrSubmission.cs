@@ -6,7 +6,6 @@ using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
-using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools.Ilr;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 using SFA.DAS.Payments.DCFS.Context;
@@ -38,12 +37,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             };
         }
 
-        private void SetupIlrData(string ilrFile)
-        {
-            var shredder = new Shredder(GlobalTestContext.Instance.SubmissionConnectionString, ilrFile);
-            shredder.Shred();
-        }
-
         private void SetupCommitmentData(CommitmentEntity commitment)
         {
             TestDataHelper.AddCommitment(commitment);
@@ -53,8 +46,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void ThenValidationErrorAddedForMismatchingUkprn()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrUkprnMismatch.xml");
-            SetupCommitmentData(new CommitmentEntityBuilder().Build());
+            TestDataHelper.ExecuteScript("IlrSubmissionUkprnMismatch.sql");
+            SetupCommitmentData(new CommitmentEntityBuilder().Withukprn(999).Build());
             TestDataHelper.CopyReferenceData();
 
             // Act
@@ -72,7 +65,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void ThenValidationErrorAddedForMismatchingUln()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrUlnMismatch.xml");
+            TestDataHelper.ExecuteScript("IlrSubmissionUlnMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().Build());
             TestDataHelper.CopyReferenceData();
 
@@ -91,7 +84,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void ThenValidationErrorAddedForMismatchingStandard()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrStandardMismatch.xml");
+            TestDataHelper.ExecuteScript("IlrSubmissionStandardMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).WithProgrammeType(null).WithFrameworkCode(null).WithPathwayCode(null).Build());
             TestDataHelper.CopyReferenceData();
 
@@ -110,7 +103,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void ThenValidationErrorAddedForMismatchingFramework()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrFrameworkMismatch.xml");
+            TestDataHelper.ExecuteScript("IlrSubmissionFrameworkMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(null).WithFrameworkCode(999).Build());
             TestDataHelper.CopyReferenceData();
 
@@ -129,7 +122,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void ThenValidationErrorAddedForMismatchingProgramme()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrProgrammeMismatch.xml");
+            TestDataHelper.ExecuteScript("IlrSubmissionProgrammeMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(null).WithProgrammeType(999).Build());
             TestDataHelper.CopyReferenceData();
 
@@ -148,7 +141,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void ThenValidationErrorAddedForMismatchingPathway()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrPathwayMismatch.xml");
+            TestDataHelper.ExecuteScript("IlrSubmissionPathwayMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(null).WithPathwayCode(999).Build());
             TestDataHelper.CopyReferenceData();
 
@@ -167,7 +160,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         public void ThenValidationErrorsAddedForMismatchingPrice()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrPriceMismatch.xml");
+            TestDataHelper.ExecuteScript("IlrSubmissionPriceMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId(2).WithUln(1000000027).WithStandardCode(null).Build());
             TestDataHelper.CopyReferenceData();
@@ -184,10 +177,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
         }
 
         [Test]
-        public void ThenValidationErrorsAddedForIlrEarlierStartMonth()
+        public void ThenValidationErrorsAddedForIlrEarlierStartDate()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrEarlierStartMonth.xml");
+            TestDataHelper.ExecuteScript("IlrSubmissionEarlierStartDateMismatch.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId(2).WithUln(1000000027).WithStandardCode(null).Build());
             TestDataHelper.CopyReferenceData();
@@ -200,14 +193,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(2, errors.Length);
-            Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartMonth));
+            Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartDate));
         }
 
         [Test]
         public void ThenValidationErrorsAddedForMultipleMatchingCommitments()
         {
             // Arrange
-            SetupIlrData(@"\Tools\Ilr\Files\IlrMultipleMatchingCommitments.xml");
+            TestDataHelper.ExecuteScript("IlrSubmissionMultipleMatches.sql");
             SetupCommitmentData(new CommitmentEntityBuilder().WithStandardCode(999).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId(2).WithUln(1000000027).WithStandardCode(null).Build());
             SetupCommitmentData(new CommitmentEntityBuilder().WithCommitmentId(3).WithStandardCode(999).Build());
@@ -225,9 +218,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             Assert.AreEqual(2, errors.Count(e => e.RuleId == DataLockErrorCodes.MultipleMatches));
         }
 
-        [TestCase("IlrLearnerAndCommitmentMatch.xml")]
-        [TestCase("IlrTnp1AndTnp2.xml")]
-        public void ThenMatchingLearnerAndCommitmentAddedForMatchFound(string ilrFile)
+        [Test]
+        public void ThenMatchingLearnerAndCommitmentAddedForMatchFound()
         {
             // Arrange
             var commitments = new[]
@@ -236,7 +228,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
                 new CommitmentEntityBuilder().WithCommitmentId(2).WithUln(1000000027).WithStandardCode(null).Build()
             };
 
-            SetupIlrData(@"\Tools\Ilr\Files\" + ilrFile);
+            TestDataHelper.ExecuteScript("IlrSubmissionMatchFound.sql");
             SetupCommitmentData(commitments[0]);
             SetupCommitmentData(commitments[1]);
             TestDataHelper.CopyReferenceData();
@@ -252,8 +244,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             Assert.AreEqual(0, errors.Length);
             Assert.IsNotNull(learnerAndCommitmentMatches);
             Assert.AreEqual(2, learnerAndCommitmentMatches.Length);
-            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[0].CommitmentId));
-            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[1].CommitmentId));
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[0].CommitmentId && l.PriceEpisodeIdentifier == "27-25-2016-09-17"));
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[1].CommitmentId && l.PriceEpisodeIdentifier == "27-25-2016-09-19"));
         }
 
         [Test]
@@ -266,7 +258,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
                 new CommitmentEntityBuilder().WithCommitmentId(2).WithStandardCode(27).WithStartDate(new DateTime(2017, 11, 1)).WithEndDate(new DateTime(2018, 8, 31)).WithAgreedCost(5625m).Build()
             };
 
-            SetupIlrData(@"\Tools\Ilr\Files\IlrLearnerChangesEmployers.xml");
+            TestDataHelper.ExecuteScript("IlrSubmissionLearnerChangesEmployers.sql");
             SetupCommitmentData(commitments[0]);
             SetupCommitmentData(commitments[1]);
             TestDataHelper.CopyReferenceData();
@@ -282,8 +274,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
             Assert.AreEqual(0, errors.Length);
             Assert.IsNotNull(learnerAndCommitmentMatches);
             Assert.AreEqual(2, learnerAndCommitmentMatches.Length);
-            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[0].CommitmentId));
-            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[1].CommitmentId));
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[0].CommitmentId && l.PriceEpisodeIdentifier == "27-25-2017-08-01"));
+            Assert.AreEqual(1, learnerAndCommitmentMatches.Count(l => l.CommitmentId == commitments[1].CommitmentId && l.PriceEpisodeIdentifier == "27-25-2017-11-01"));
         }
     }
 }

@@ -16,7 +16,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories
                                               "FrameworkCode," +
                                               "PathwayCode," +
                                               "LearnStartDate," +
-                                              "NegotiatedPrice";
+                                              "NegotiatedPrice, " +
+                                              "PriceEpisodeIdentifier";
         private const string SelectLearners = "SELECT " + LearnerColumns + " FROM " + LearnerSource;
         private const string SelectProviderLearners = SelectLearners + " WHERE Ukprn = @Ukprn";
 

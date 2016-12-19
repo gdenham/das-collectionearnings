@@ -4,7 +4,6 @@ using CS.Common.External.Interfaces;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools;
-using SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools.Ilr;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 using SFA.DAS.Payments.DCFS.Context;
@@ -41,8 +40,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.AcceptanceCriteri
             TestDataHelper.Clean();
 
             // ILR data
-            var shredder = new Shredder(GlobalTestContext.Instance.SubmissionConnectionString, @"\Tools\Ilr\Files\DPP-222\IlrAcceptanceCriteria2.xml");
-            shredder.Shred();
+            TestDataHelper.ExecuteScript(@"DPP-222\IlrAcceptanceCriteria2.sql");
 
             // Commitment data
             TestDataHelper.AddCommitment(
@@ -70,7 +68,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.AcceptanceCriteri
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(1, errors.Length);
-            Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartMonth));
+            Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartDate));
         }
     }
 }

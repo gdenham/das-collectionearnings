@@ -8,6 +8,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
         private string _learnRefNumber = "Lrn001";
         private long _aimSeqNumber = 1;
         private long _commitmentId = 1;
+        private string _priceEpisodeIdentifier = "27-25-2016-09-01";
 
         public LearnerCommitmentEntity Build()
         {
@@ -16,7 +17,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
                 Ukprn = _ukprn,
                 LearnRefNumber = _learnRefNumber,
                 AimSeqNumber = _aimSeqNumber,
-                CommitmentId = _commitmentId
+                CommitmentId = _commitmentId,
+                PriceEpisodeIdentifier = _priceEpisodeIdentifier
             };
         }
 

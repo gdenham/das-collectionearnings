@@ -41,7 +41,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                         FROM sys.objects o WITH (NOWAIT)
                         JOIN sys.schemas s WITH (NOWAIT) ON o.[schema_id] = s.[schema_id]
                         WHERE o.[type] = 'U'
-                            AND s.name IN ('dbo', 'Input', 'Valid', 'Invalid', 'Reference', 'DataLock')
+                            AND s.name IN ('dbo', 'Input', 'Valid', 'Invalid', 'Reference', 'DataLock', 'Rulebase')
                         FOR XML PATH(''), TYPE).value('.', 'NVARCHAR(MAX)')
 
                     EXEC sys.sp_executesql @SQL                

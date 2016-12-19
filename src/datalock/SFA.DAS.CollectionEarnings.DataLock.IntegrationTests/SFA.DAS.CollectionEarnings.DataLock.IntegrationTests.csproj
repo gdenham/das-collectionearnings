@@ -30,25 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Amor.DCFT.BinaryTask, Version=1.1.0.0, Culture=neutral, PublicKeyToken=32bb07491246f85f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\Amor.DCFT.BinaryTask.dll</HintPath>
-    </Reference>
     <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="CS.Common, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\CS.Common.dll</HintPath>
-    </Reference>
     <Reference Include="CS.Common.External, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SFA.DAS.Payments.DCFS.1.0.0.11709\lib\net45\CS.Common.External.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="CS.Common.XmlToSql, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\CS.Common.XmlToSql.dll</HintPath>
     </Reference>
     <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.2\lib\net45\Dapper.dll</HintPath>
@@ -108,8 +96,6 @@
     <Compile Include="GlobalTestContext.cs" />
     <Compile Include="GlobalTestContextSetupException.cs" />
     <Compile Include="Tools\TestDataHelper.cs" />
-    <Compile Include="Tools\Ilr\PreProcessingCallback.cs" />
-    <Compile Include="Tools\Ilr\Shredder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -216,65 +202,64 @@
     <Content Include="DbSetupScripts\Ilr.Deds.DDL.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="DbSetupScripts\Ilr.Deds.Earnings.DDL.Tables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="DbSetupScripts\Ilr.Transient.DDL.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DbSetupScripts\Ilr.Transient.Earnings.DDL.Tables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DbSetupScripts\Summarisation.Deds.DDL.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tools\Ilr\Files\DPP-222\IlrAcceptanceCriteria2.xml">
+    <Content Include="Tools\Sql\DPP-222\IlrAcceptanceCriteria2.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tools\Ilr\Files\DPP-222\IlrAcceptanceCriteria1.xml">
+    <Content Include="Tools\Sql\DPP-222\IlrAcceptanceCriteria1.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tools\Ilr\Files\IlrLearnerChangesEmployers.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Tools\Ilr\Files\IlrTnp1AndTnp2.xml">
+    <Content Include="Tools\Sql\IlrSubmissionMatchFound.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tools\Ilr\Files\IlrMultipleLearners.xml">
+    <Content Include="Tools\Sql\IlrSubmissionMultipleMatches.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tools\Ilr\Files\IlrLearnerAndCommitmentMatch.xml">
+    <Content Include="Tools\Sql\IlrSubmissionPathwayMismatch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tools\Ilr\Files\IlrMultipleMatchingCommitments.xml">
+    <Content Include="Tools\Sql\IlrSubmissionEarlierStartDateMismatch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tools\Ilr\Files\IlrEarlierStartMonth.xml">
+    <Content Include="Tools\Sql\IlrSubmissionProgrammeMismatch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tools\Ilr\Files\IlrPriceMismatch.xml">
+    <Content Include="Tools\Sql\IlrSubmissionLearnerChangesEmployers.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tools\Ilr\Files\IlrPathwayMismatch.xml">
+    <Content Include="Tools\Sql\IlrSubmissionFrameworkMismatch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tools\Ilr\Files\IlrProgrammeMismatch.xml">
+    <Content Include="Tools\Sql\IlrSubmissionStandardMismatch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tools\Ilr\Files\IlrFrameworkMismatch.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tools\Ilr\Files\IlrStandardMismatch.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tools\Ilr\Files\IlrUlnMismatch.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tools\Ilr\Files\IlrUkprnMismatch.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tools\Ilr\Files\IlrTableMap.xml">
+    <Content Include="Tools\Sql\IlrSubmissionUlnMismatch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tools\Sql\PeriodEndDataLockOutput.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tools\Sql\PeriodEndLearnerChangesEmployers.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Sql\IlrSubmissionMultipleLearningDeliveries.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Sql\IlrSubmissionUkprnMismatch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Sql\IlrSubmissionPriceMismatch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tools\Sql\SubmissionDataLockOutput.sql">
@@ -289,7 +274,7 @@
     <Content Include="Tools\Sql\PeriodEndPathwayMismatch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tools\Sql\PeriodEndEarlierStartMonth.sql">
+    <Content Include="Tools\Sql\PeriodEndEarlierStartDateMismatch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tools\Sql\PeriodEndProgrammeMismatch.sql">
