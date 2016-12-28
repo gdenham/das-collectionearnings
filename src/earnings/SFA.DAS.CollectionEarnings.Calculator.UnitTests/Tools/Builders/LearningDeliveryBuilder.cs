@@ -18,7 +18,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools.Builders
         private DateTime? _origLearnStartDate;
         private DateTime _learnPlanEndDate = new DateTime(2018, 9, 8);
         private DateTime? _learnActEndDate;
-        private int? _completionStatus = 1;
+        private int? _completionStatus = 2;
         private PriceEpisode[] _priceEpisodes =
         {
             new PriceEpisode
