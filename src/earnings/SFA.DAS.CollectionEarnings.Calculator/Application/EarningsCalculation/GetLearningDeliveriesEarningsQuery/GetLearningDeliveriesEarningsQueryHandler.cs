@@ -42,31 +42,12 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                         continue;
                     }
 
-                    //get any learning deliveries from previous months
-                    int previousMonths = 0;
-
-                    foreach (var x in learningDeliveries)
-                    {
-                        if (x.LearnerReferenceNumber == learningDelivery.LearnerReferenceNumber &&
-                                                            x.FrameworkCode == learningDelivery.FrameworkCode &&
-                                                            x.StandardCode == learningDelivery.StandardCode &&
-                                                            x.PathwayCode == learningDelivery.PathwayCode &&
-                                                            x.ProgrammeType == learningDelivery.ProgrammeType &&
-                                                            x.Uln == learningDelivery.Uln &&
-                                                            x.Ukprn == learningDelivery.Ukprn &&
-                                                            x.CompletionStatus == 6 &&
-                                                            learningDelivery.AimSequenceNumber > x.AimSequenceNumber
-                                                        )
-                            previousMonths += CalculateNumberOfPeriods(learningDelivery.LearningStartDate, learningDelivery.LearningPlannedEndDate);
-                    }
-
-                    //CalculatePreviousPeriods(message.LearningDeliveries, learningDelivery);
 
 
                     foreach (var priceEpisode in learningDelivery.PriceEpisodes)
                     {
                         var completionAmount = CalculateCompletionPayment(priceEpisode);
-                        var monthlyAmount = CalculateMonthlyInstallment(learningDelivery, priceEpisode, previousMonths);
+                        var monthlyAmount = CalculateMonthlyInstallment(learningDelivery, priceEpisode, message.LearningDeliveries);
 
                         var apprenticeshipPriceEpisode = GetApprenticeshipPriceEpisode(learningDelivery, priceEpisode, monthlyAmount, completionAmount);
 
@@ -95,38 +76,6 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
             }
         }
 
-        //private int CalculatePreviousPeriods(LearningDelivery[] learningDeliveries, LearningDelivery currentLearningDelivery)
-        //{
-        //    int previousMonths = 0;
-        //    //var prevLearningDeliveries = learningDeliveries.Where
-        //    //                                     (x => x.LearnerReferenceNumber == currentLearningDelivery.LearnerReferenceNumber &&
-        //    //                                         x.FrameworkCode == currentLearningDelivery.FrameworkCode &&
-        //    //                                         x.StandardCode == currentLearningDelivery.StandardCode &&
-        //    //                                         x.PathwayCode == currentLearningDelivery.PathwayCode &&
-        //    //                                         x.ProgrammeType == currentLearningDelivery.ProgrammeType &&
-        //    //                                         x.Uln == currentLearningDelivery.Uln &&
-        //    //                                         x.Ukprn == currentLearningDelivery.Ukprn &&
-        //    //                                         x.CompletionStatus == 6 &&
-        //    //                                         currentLearningDelivery.AimSequenceNumber > x.AimSequenceNumber
-        //    //                                     );
-
-        //    foreach (var x in learningDeliveries)
-        //    {
-        //        if (x.LearnerReferenceNumber == currentLearningDelivery.LearnerReferenceNumber &&
-        //                                            x.FrameworkCode == currentLearningDelivery.FrameworkCode &&
-        //                                            x.StandardCode == currentLearningDelivery.StandardCode &&
-        //                                            x.PathwayCode == currentLearningDelivery.PathwayCode &&
-        //                                            x.ProgrammeType == currentLearningDelivery.ProgrammeType &&
-        //                                            x.Uln == currentLearningDelivery.Uln &&
-        //                                            x.Ukprn == currentLearningDelivery.Ukprn &&
-        //                                            x.CompletionStatus == 6 &&
-        //                                            currentLearningDelivery.AimSequenceNumber > x.AimSequenceNumber
-        //                                        )
-        //            previousMonths += CalculateNumberOfPeriods(currentLearningDelivery.LearningStartDate, currentLearningDelivery.LearningPlannedEndDate);
-        //    }
-        //    return previousMonths;
-        //}
-
         private int CalculateNumberOfPeriods(DateTime startDate, DateTime endDate)
         {
             var result = 0;
@@ -149,14 +98,45 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
             return decimal.Round(priceEpisode.NegotiatedPrice * CompletionPaymentRatio, 5);
         }
 
-        private decimal CalculateMonthlyInstallment(LearningDelivery learningDelivery, PriceEpisode priceEpisode, int previousNumberofPeriods)
+        private decimal CalculateMonthlyInstallment(LearningDelivery learningDelivery, PriceEpisode priceEpisode, LearningDelivery[] learningDeliveries)
         {
-            if (priceEpisode.StartDate == learningDelivery.LearningStartDate)
+            decimal prevEarnedAmount = 0m;
+
+            //accumulate all the previous earnings for same learner for same programme
+            foreach (var x in learningDeliveries)
             {
-                return decimal.Round(priceEpisode.NegotiatedPrice * InLearningPaymentRatio / (CalculateNumberOfPeriods(learningDelivery.LearningStartDate, learningDelivery.LearningPlannedEndDate) - previousNumberofPeriods), 5);
+                if (x.LearnerReferenceNumber == learningDelivery.LearnerReferenceNumber &&
+                                                    x.FrameworkCode == learningDelivery.FrameworkCode &&
+                                                    x.StandardCode == learningDelivery.StandardCode &&
+                                                    x.PathwayCode == learningDelivery.PathwayCode &&
+                                                    x.ProgrammeType == learningDelivery.ProgrammeType &&
+                                                    x.Uln == learningDelivery.Uln &&
+                                                    x.Ukprn == learningDelivery.Ukprn &&
+                                                    x.CompletionStatus == 6 &&
+                                                    learningDelivery.AimSequenceNumber > x.AimSequenceNumber
+                                                )
+                    foreach (var pe in x.PriceEpisodes)
+                    {
+
+                        prevEarnedAmount += _apprenticeshipPriceEpisodePeriodEarnings.Where(y => y.PriceEpisodeId == pe.Id).Sum(z=> z.PriceEpisodeOnProgPayment);
+
+                    }
             }
 
-            return decimal.Round(priceEpisode.NegotiatedPrice * InLearningPaymentRatio / (CalculateNumberOfPeriods(priceEpisode.StartDate, learningDelivery.LearningPlannedEndDate) - previousNumberofPeriods), 5);
+
+            //var prevEarnedAmount =  _apprenticeshipPriceEpisodePeriodEarnings.Where(x => x.LearnerReferenceNumber == learningDelivery.LearnerReferenceNumber &&
+            //                                                    && x.AimSequenceNumber < learningDelivery.AimSequenceNumber
+            //                                                    && learningDelivery.).
+            //                                                    Sum(x => x.PriceEpisodeOnProgPayment);
+
+            var totalAvailableAmount = (priceEpisode.NegotiatedPrice * InLearningPaymentRatio) - prevEarnedAmount;
+
+            if (priceEpisode.StartDate == learningDelivery.LearningStartDate)
+            {
+                return decimal.Round(totalAvailableAmount / CalculateNumberOfPeriods(learningDelivery.LearningStartDate, learningDelivery.LearningPlannedEndDate), 5);
+            }
+
+            return decimal.Round(totalAvailableAmount / CalculateNumberOfPeriods(priceEpisode.StartDate, learningDelivery.LearningPlannedEndDate), 5);
         }
 
 

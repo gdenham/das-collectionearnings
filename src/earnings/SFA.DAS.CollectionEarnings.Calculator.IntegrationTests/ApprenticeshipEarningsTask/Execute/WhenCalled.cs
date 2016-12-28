@@ -7,6 +7,7 @@ using SFA.DAS.CollectionEarnings.Calculator.Context;
 using SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.Tools;
 using SFA.DAS.CollectionEarnings.Calculator.UnitTests.Tools;
 using SFA.DAS.Payments.DCFS.Context;
+using System;
 
 namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipEarningsTask.Execute
 {
@@ -372,5 +373,40 @@ namespace SFA.DAS.CollectionEarnings.Calculator.IntegrationTests.ApprenticeshipE
 
             Assert.AreEqual(24, periodValues.Length);
         }
+
+        [Test]
+        public void ThenNoEarningsAreCalculatedForPlannedBreak()
+        {
+            // Arrange
+            TestDataHelper.ExecuteScript("IlrDataPlannedBreakLearningDeliveriesToProcess.sql");
+
+            // Act
+            _task.Execute(_context);
+
+            // Assert
+            var periodisedValues = TestDataHelper.GetApprenticeshipPriceEpisodePeriodisedValues();
+
+            Assert.IsNotNull(periodisedValues);
+
+            var monthlyEarnings = periodisedValues.Where(pv => pv.AttributeName == AttributeNames.PriceEpisodeOnProgPayment.ToString()).ToArray();
+
+            Assert.IsNotNull(monthlyEarnings);
+          
+
+            Assert.AreEqual(1000.00m, monthlyEarnings[0].Period_2);
+            Assert.AreEqual(1000.00m, monthlyEarnings[0].Period_3);
+
+            Assert.AreEqual(0.00m, monthlyEarnings[1].Period_4);
+            Assert.AreEqual(0.00m, monthlyEarnings[1].Period_5);
+
+            Assert.AreEqual(909.09m, Math.Round( monthlyEarnings[1].Period_6,2));
+            Assert.AreEqual(909.09m, Math.Round(monthlyEarnings[1].Period_7, 2));
+            Assert.AreEqual(909.09m, Math.Round(monthlyEarnings[1].Period_8, 2));
+            Assert.AreEqual(909.09m, Math.Round(monthlyEarnings[1].Period_9, 2));
+            Assert.AreEqual(909.09m, Math.Round(monthlyEarnings[1].Period_10, 2));
+            Assert.AreEqual(909.09m, Math.Round(monthlyEarnings[1].Period_11, 2));
+            Assert.AreEqual(909.09m, Math.Round(monthlyEarnings[1].Period_12,2));
+        }
+
     }
 }
