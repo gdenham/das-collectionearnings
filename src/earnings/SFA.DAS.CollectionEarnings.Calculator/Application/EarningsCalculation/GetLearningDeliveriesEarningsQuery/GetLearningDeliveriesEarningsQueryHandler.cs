@@ -124,11 +124,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
             }
 
 
-            //var prevEarnedAmount =  _apprenticeshipPriceEpisodePeriodEarnings.Where(x => x.LearnerReferenceNumber == learningDelivery.LearnerReferenceNumber &&
-            //                                                    && x.AimSequenceNumber < learningDelivery.AimSequenceNumber
-            //                                                    && learningDelivery.).
-            //                                                    Sum(x => x.PriceEpisodeOnProgPayment);
-
+          
             var totalAvailableAmount = (priceEpisode.NegotiatedPrice * InLearningPaymentRatio) - prevEarnedAmount;
 
             if (priceEpisode.StartDate == learningDelivery.LearningStartDate)
