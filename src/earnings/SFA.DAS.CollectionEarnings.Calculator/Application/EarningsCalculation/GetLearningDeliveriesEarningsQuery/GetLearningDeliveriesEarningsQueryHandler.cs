@@ -42,6 +42,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                         continue;
                     }
 
+                  
                     foreach (var priceEpisode in learningDelivery.PriceEpisodes)
                     {
                         var completionAmount = CalculateCompletionPayment(priceEpisode);
@@ -184,9 +185,11 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
             };
 
             var shouldAddCompletionPayment = learningDelivery.LearningActualEndDate.HasValue
-                                             && priceEpisode.LastEpisode;
+                                             && priceEpisode.LastEpisode
+                                             && learningDelivery.CompletionStatus == 2;
             var shouldAddBalancingPayment = shouldAddCompletionPayment
-                                            && learningDelivery.LearningActualEndDate.Value < learningDelivery.LearningPlannedEndDate;
+                                            && learningDelivery.LearningActualEndDate.Value < learningDelivery.LearningPlannedEndDate
+                                            && learningDelivery.CompletionStatus == 2;
 
             var censusDate = CalculateFirstCensusDateForThePriceEpisode(priceEpisode);
             var period = CalculateFirstPeriodForThePriceEpisode(priceEpisode);
