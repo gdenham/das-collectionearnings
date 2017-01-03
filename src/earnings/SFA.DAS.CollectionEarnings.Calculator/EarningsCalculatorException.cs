@@ -2,6 +2,7 @@
 
 namespace SFA.DAS.CollectionEarnings.Calculator
 {
+    [Serializable]
     public class EarningsCalculatorException : Exception
     {
         public const string ContextPropertiesNoYearOfCollectionMessage = "The context does not contain the year of collection property.";

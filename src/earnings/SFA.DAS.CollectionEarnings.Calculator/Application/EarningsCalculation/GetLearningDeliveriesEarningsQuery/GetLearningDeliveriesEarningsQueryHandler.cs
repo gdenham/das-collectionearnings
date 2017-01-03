@@ -18,7 +18,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
 
         private List<ApprenticeshipPriceEpisode.ApprenticeshipPriceEpisode> _apprenticeshipPriceEpisodes;
         private List<ApprenticeshipPriceEpisodePeriodisedValues.ApprenticeshipPriceEpisodePeriodisedValues> _apprenticeshipPriceEpisodePeriodisedValueses;
-        private List<ApprenticeshipPriceEpisodePeriod.ApprenticeshipPriceEpisodePeriod> _apprenticeshipPriceEpisodePeriodEarnings;  
+        private List<ApprenticeshipPriceEpisodePeriod.ApprenticeshipPriceEpisodePeriod> _apprenticeshipPriceEpisodePeriodEarnings;
 
         public GetLearningDeliveriesEarningsQueryHandler(IDateTimeProvider dateTimeProvider)
         {
@@ -42,11 +42,12 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                         continue;
                     }
 
-                  
+
+
                     foreach (var priceEpisode in learningDelivery.PriceEpisodes)
                     {
                         var completionAmount = CalculateCompletionPayment(priceEpisode);
-                        var monthlyAmount = CalculateMonthlyInstallment(learningDelivery, priceEpisode);
+                        var monthlyAmount = CalculateMonthlyInstallment(learningDelivery, priceEpisode, message.LearningDeliveries);
 
                         var apprenticeshipPriceEpisode = GetApprenticeshipPriceEpisode(learningDelivery, priceEpisode, monthlyAmount, completionAmount);
 
@@ -97,14 +98,41 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
             return decimal.Round(priceEpisode.NegotiatedPrice * CompletionPaymentRatio, 5);
         }
 
-        private decimal CalculateMonthlyInstallment(LearningDelivery learningDelivery, PriceEpisode priceEpisode)
+        private decimal CalculateMonthlyInstallment(LearningDelivery learningDelivery, PriceEpisode priceEpisode, LearningDelivery[] learningDeliveries)
         {
-            if (priceEpisode.StartDate == learningDelivery.LearningStartDate)
+            decimal prevEarnedAmount = 0m;
+
+            //accumulate all the previous earnings for same learner for same programme
+            foreach (var x in learningDeliveries)
             {
-                return decimal.Round(priceEpisode.NegotiatedPrice * InLearningPaymentRatio / CalculateNumberOfPeriods(learningDelivery.LearningStartDate, learningDelivery.LearningPlannedEndDate), 5);
+                if (x.LearnerReferenceNumber == learningDelivery.LearnerReferenceNumber &&
+                                                    x.FrameworkCode == learningDelivery.FrameworkCode &&
+                                                    x.StandardCode == learningDelivery.StandardCode &&
+                                                    x.PathwayCode == learningDelivery.PathwayCode &&
+                                                    x.ProgrammeType == learningDelivery.ProgrammeType &&
+                                                    x.Uln == learningDelivery.Uln &&
+                                                    x.Ukprn == learningDelivery.Ukprn &&
+                                                    x.CompletionStatus == 6 &&
+                                                    learningDelivery.AimSequenceNumber > x.AimSequenceNumber
+                                                )
+                    foreach (var pe in x.PriceEpisodes)
+                    {
+
+                        prevEarnedAmount += _apprenticeshipPriceEpisodePeriodEarnings.Where(y => y.PriceEpisodeId == pe.Id).Sum(z=> z.PriceEpisodeOnProgPayment);
+
+                    }
             }
 
-            return decimal.Round(priceEpisode.NegotiatedPrice * InLearningPaymentRatio / CalculateNumberOfPeriods(priceEpisode.StartDate, learningDelivery.LearningPlannedEndDate), 5);
+
+          
+            var totalAvailableAmount = (priceEpisode.NegotiatedPrice * InLearningPaymentRatio) - prevEarnedAmount;
+
+            if (priceEpisode.StartDate == learningDelivery.LearningStartDate)
+            {
+                return decimal.Round(totalAvailableAmount / CalculateNumberOfPeriods(learningDelivery.LearningStartDate, learningDelivery.LearningPlannedEndDate), 5);
+            }
+
+            return decimal.Round(totalAvailableAmount / CalculateNumberOfPeriods(priceEpisode.StartDate, learningDelivery.LearningPlannedEndDate), 5);
         }
 
 
