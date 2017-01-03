@@ -26,6 +26,6 @@ INSERT INTO [Reference].[Learners]
 			AND ld.[AimSeqNumber] = ldf.[AimSeqNumber]
 	WHERE ldf.[LearnDelFAMType] = 'ACT'
 		AND ldf.[LearnDelFAMCode] IN ('1', '3')
-        AND ldf.[LearnDelFAMDateFrom] <= ape.[EpisodeStartDate]
+        AND ldf.[LearnDelFAMDateFrom] <= ape.[EpisodeEffectiveTNPStartDate]
         AND ldf.[LearnDelFAMDateTo] >= COALESCE(ape.[PriceEpisodeActualEndDate], ape.[PriceEpisodePlannedEndDate], ld.[LearnActEndDate], ld.[LearnPlanEndDate])
 GO
