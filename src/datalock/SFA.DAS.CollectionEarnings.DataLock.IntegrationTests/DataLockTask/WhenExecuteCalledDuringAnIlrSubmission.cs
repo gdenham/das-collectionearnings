@@ -58,7 +58,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.DataLockTask
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(1, errors.Length);
-            Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingUkprn));
+            Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.MismatchingUkprn && e.PriceEpisodeIdentifier == "27-25-2016-07-17"));
         }
 
         [Test]

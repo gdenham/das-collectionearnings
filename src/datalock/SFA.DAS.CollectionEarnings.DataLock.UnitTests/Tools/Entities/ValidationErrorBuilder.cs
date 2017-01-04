@@ -9,7 +9,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
         private string _learnRefNumber = "Lrn001";
         private long? _aimSeqNumber = 1;
         private string _ruleId = DataLockErrorCodes.MismatchingUkprn;
-        private string _priceEpisodeIdentifier = string.Empty;
+        private string _priceEpisodeIdentifier = "27-25-2016-09-01";
 
         public ValidationErrorEntity Build()
         {
