@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities
+﻿namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities
 {
     public class ValidationErrorEntity
     {
@@ -9,7 +7,5 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities
         public long? AimSeqNumber { get; set; }
         public string RuleId { get; set; }
         public string PriceEpisodeIdentifier { get; set; }
-        public DateTime EpisodeStartDate { get; set; }
-       
     }
 }

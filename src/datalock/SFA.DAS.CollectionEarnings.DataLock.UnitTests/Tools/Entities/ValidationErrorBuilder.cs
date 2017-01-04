@@ -1,6 +1,5 @@
 ﻿using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
-using System;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
 {
@@ -11,7 +10,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
         private long? _aimSeqNumber = 1;
         private string _ruleId = DataLockErrorCodes.MismatchingUkprn;
         private string _priceEpisodeIdentifier = string.Empty;
-        private DateTime _episodeStartDate = new DateTime(2016,1,1);
 
         public ValidationErrorEntity Build()
         {
@@ -21,8 +19,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
                 LearnRefNumber = _learnRefNumber,
                 AimSeqNumber = _aimSeqNumber,
                 RuleId = _ruleId,
-                PriceEpisodeIdentifier=_priceEpisodeIdentifier,
-                EpisodeStartDate=_episodeStartDate
+                PriceEpisodeIdentifier=_priceEpisodeIdentifier
             };
         }
 
@@ -57,13 +54,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
         public ValidationErrorBuilder WithPriceEpisodeIdentifier(string priceEpisodeIdentifier)
         {
             _priceEpisodeIdentifier = priceEpisodeIdentifier;
-
-            return this;
-        }
-
-        public ValidationErrorBuilder WithEpisodeStartDate(DateTime episodeStartDate)
-        {
-            _episodeStartDate = episodeStartDate;
 
             return this;
         }

@@ -7,8 +7,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories
     {
         private const string ValidationErrorDestination = "DataLock.ValidationError";
         private const string AddValidationErrorCommand = "INSERT INTO " + ValidationErrorDestination +
-                                                        " (Ukprn, LearnRefNumber, AimSeqNumber, RuleId, PriceEpisodeIdentifier,EpisodeStartDate)" +
-                                                        " VALUES (@Ukprn, @LearnRefNumber, @AimSeqNumber, @RuleId,@PriceEpisodeIdentifier,@EpisodeStartDate)";
+                                                        " (Ukprn, LearnRefNumber, AimSeqNumber, RuleId, PriceEpisodeIdentifier)" +
+                                                        " VALUES (@Ukprn, @LearnRefNumber, @AimSeqNumber, @RuleId,@PriceEpisodeIdentifier)";
 
         public ValidationErrorRepository(string connectionString)
             : base(connectionString)
@@ -23,8 +23,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories
                 LearnRefNumber = validationError.LearnRefNumber,
                 AimSeqNumber = validationError.AimSeqNumber,
                 RuleId = validationError.RuleId,
-                PriceEpisodeIdentifier = validationError.PriceEpisodeIdentifier,
-                EpisodeStartDate = validationError.EpisodeStartDate
+                PriceEpisodeIdentifier = validationError.PriceEpisodeIdentifier
             });
         }
 

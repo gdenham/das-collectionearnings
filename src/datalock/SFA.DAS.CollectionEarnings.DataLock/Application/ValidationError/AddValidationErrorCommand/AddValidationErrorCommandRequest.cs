@@ -4,6 +4,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddVal
 {
     public class AddValidationErrorCommandRequest : IRequest
     {
-        public Infrastructure.Data.Entities.ValidationErrorEntity ValidationError { get; set; } 
+        public ValidationError ValidationError { get; set; } 
     }
 }

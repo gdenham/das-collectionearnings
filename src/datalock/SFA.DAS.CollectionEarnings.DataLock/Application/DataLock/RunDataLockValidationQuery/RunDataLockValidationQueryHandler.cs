@@ -42,7 +42,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockVa
         {
             try
             {
-                var validationErrors = new ConcurrentBag<Infrastructure.Data.Entities.ValidationErrorEntity>();
+                var validationErrors = new ConcurrentBag<ValidationError.ValidationError>();
                 var learnerCommitments = new ConcurrentBag<LearnerCommitment>();
 
                 var learners = message.Learners.ToList();
@@ -59,14 +59,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockVa
 
                         if (!string.IsNullOrEmpty(matchResult.ErrorCode))
                         {
-                            validationErrors.Add(new Infrastructure.Data.Entities.ValidationErrorEntity
+                            validationErrors.Add(new ValidationError.ValidationError
                             {
                                 Ukprn = learner.Ukprn,
-                                LearnRefNumber = learner.LearnerReferenceNumber,
-                                AimSeqNumber = learner.AimSequenceNumber,
+                                LearnerReferenceNumber = learner.LearnerReferenceNumber,
+                                AimSequenceNumber = learner.AimSequenceNumber,
                                 RuleId = matchResult.ErrorCode,
-                                PriceEpisodeIdentifier=learner.PriceEpisodeIdentifier,
-                                EpisodeStartDate=learner.LearningStartDate
+                                PriceEpisodeIdentifier = learner.PriceEpisodeIdentifier
                             });
                         }
 
