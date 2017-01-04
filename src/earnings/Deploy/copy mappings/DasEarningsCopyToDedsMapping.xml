@@ -4,87 +4,119 @@
   <DestinationConnectionString>DestinationConnectionString</DestinationConnectionString>
   <TableMappings>
     <TableMapping>
-      <Source>[Rulebase].[AE_LearningDelivery]</Source>
-      <Destination>[Rulebase].[AE_LearningDelivery]</Destination>
+      <Source>[Rulebase].[vw_AEC_ApprenticeshipPriceEpisode]</Source>
+      <Destination>[Rulebase].[AEC_ApprenticeshipPriceEpisode]</Destination>
       <Ordinal>1</Ordinal>
       <ColumnMappings>
-        <ColumnMapping>
-          <Source>LearnRefNumber</Source>
-          <Destination>LearnRefNumber</Destination>
-        </ColumnMapping>
-        <ColumnMapping>
-          <Source>AimSeqNumber</Source>
-          <Destination>AimSeqNumber</Destination>
-        </ColumnMapping>
         <ColumnMapping>
           <Source>Ukprn</Source>
           <Destination>Ukprn</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>Uln</Source>
-          <Destination>Uln</Destination>
+          <Source>LearnRefNumber</Source>
+          <Destination>LearnRefNumber</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>NiNumber</Source>
-          <Destination>NiNumber</Destination>
+          <Source>PriceEpisodeIdentifier</Source>
+          <Destination>PriceEpisodeIdentifier</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>StdCode</Source>
-          <Destination>StdCode</Destination>
+          <Source>EpisodeEffectiveTNPStartDate</Source>
+          <Destination>EpisodeEffectiveTNPStartDate</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>ProgType</Source>
-          <Destination>ProgType</Destination>
+          <Source>EpisodeStartDate</Source>
+          <Destination>EpisodeStartDate</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>FworkCode</Source>
-          <Destination>FworkCode</Destination>
+          <Source>PriceEpisodeActualEndDate</Source>
+          <Destination>PriceEpisodeActualEndDate</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>PwayCode</Source>
-          <Destination>PwayCode</Destination>
+          <Source>PriceEpisodeActualInstalments</Source>
+          <Destination>PriceEpisodeActualInstalments</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>NegotiatedPrice</Source>
-          <Destination>NegotiatedPrice</Destination>
+          <Source>PriceEpisodeAimSeqNumber</Source>
+          <Destination>PriceEpisodeAimSeqNumber</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>LearnStartDate</Source>
-          <Destination>LearnStartDate</Destination>
+          <Source>PriceEpisodeCappedRemainingTNPAmount</Source>
+          <Destination>PriceEpisodeCappedRemainingTNPAmount</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>OrigLearnStartDate</Source>
-          <Destination>OrigLearnStartDate</Destination>
+          <Source>PriceEpisodeCompleted</Source>
+          <Destination>PriceEpisodeCompleted</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>LearnPlanEndDate</Source>
-          <Destination>LearnPlanEndDate</Destination>
+          <Source>PriceEpisodeCompletionElement</Source>
+          <Destination>PriceEpisodeCompletionElement</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>LearnActEndDate</Source>
-          <Destination>LearnActEndDate</Destination>
+          <Source>PriceEpisodeExpectedTotalMonthlyValue</Source>
+          <Destination>PriceEpisodeExpectedTotalMonthlyValue</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>MonthlyInstallment</Source>
-          <Destination>MonthlyInstallment</Destination>
+          <Source>PriceEpisodeInstalmentValue</Source>
+          <Destination>PriceEpisodeInstalmentValue</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>MonthlyInstallmentUncapped</Source>
-          <Destination>MonthlyInstallmentUncapped</Destination>
+          <Source>PriceEpisodePlannedEndDate</Source>
+          <Destination>PriceEpisodePlannedEndDate</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>CompletionPayment</Source>
-          <Destination>CompletionPayment</Destination>
+          <Source>PriceEpisodePlannedInstalments</Source>
+          <Destination>PriceEpisodePlannedInstalments</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>CompletionPaymentUncapped</Source>
-          <Destination>CompletionPaymentUncapped</Destination>
+          <Source>PriceEpisodePreviousEarnings</Source>
+          <Destination>PriceEpisodePreviousEarnings</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>PriceEpisodeRemainingAmountWithinUpperLimit</Source>
+          <Destination>PriceEpisodeRemainingAmountWithinUpperLimit</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>PriceEpisodeRemainingTNPAmount</Source>
+          <Destination>PriceEpisodeRemainingTNPAmount</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>PriceEpisodeTotalEarnings</Source>
+          <Destination>PriceEpisodeTotalEarnings</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>PriceEpisodeTotalTNPPrice</Source>
+          <Destination>PriceEpisodeTotalTNPPrice</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>PriceEpisodeUpperBandLimit</Source>
+          <Destination>PriceEpisodeUpperBandLimit</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>PriceEpisodeUpperLimitAdjustment</Source>
+          <Destination>PriceEpisodeUpperLimitAdjustment</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>TNP1</Source>
+          <Destination>TNP1</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>TNP2</Source>
+          <Destination>TNP2</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>TNP3</Source>
+          <Destination>TNP3</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>TNP4</Source>
+          <Destination>TNP4</Destination>
         </ColumnMapping>
       </ColumnMappings>
     </TableMapping>
     <TableMapping>
-      <Source>[Rulebase].[vw_AE_LearningDelivery_PeriodisedValues]</Source>
-      <Destination>[Rulebase].[AE_LearningDelivery_PeriodisedValues]</Destination>
+      <Source>[Rulebase].[vw_AEC_ApprenticeshipPriceEpisode_PeriodisedValues]</Source>
+      <Destination>[Rulebase].[AEC_ApprenticeshipPriceEpisode_PeriodisedValues]</Destination>
       <Ordinal>2</Ordinal>
       <ColumnMappings>
         <ColumnMapping>
@@ -96,8 +128,8 @@
           <Destination>LearnRefNumber</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>AimSeqNumber</Source>
-          <Destination>AimSeqNumber</Destination>
+          <Source>PriceEpisodeIdentifier</Source>
+          <Destination>PriceEpisodeIdentifier</Destination>
         </ColumnMapping>
         <ColumnMapping>
           <Source>AttributeName</Source>
@@ -154,8 +186,8 @@
       </ColumnMappings>
     </TableMapping>
     <TableMapping>
-      <Source>[Rulebase].[vw_AE_LearningDelivery_Period]</Source>
-      <Destination>[Rulebase].[AE_LearningDelivery_Period]</Destination>
+      <Source>[Rulebase].[vw_AEC_ApprenticeshipPriceEpisode_Period]</Source>
+      <Destination>[Rulebase].[AEC_ApprenticeshipPriceEpisode_Period]</Destination>
       <Ordinal>3</Ordinal>
       <ColumnMappings>
         <ColumnMapping>
@@ -167,24 +199,28 @@
           <Destination>LearnRefNumber</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>AimSeqNumber</Source>
-          <Destination>AimSeqNumber</Destination>
+          <Source>PriceEpisodeIdentifier</Source>
+          <Destination>PriceEpisodeIdentifier</Destination>
         </ColumnMapping>
         <ColumnMapping>
           <Source>Period</Source>
           <Destination>Period</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>ProgrammeAimOnProgPayment</Source>
-          <Destination>ProgrammeAimOnProgPayment</Destination>
+          <Source>PriceEpisodeBalancePayment</Source>
+          <Destination>PriceEpisodeBalancePayment</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>ProgrammeAimCompletionPayment</Source>
-          <Destination>ProgrammeAimCompletionPayment</Destination>
+          <Source>PriceEpisodeCompletionPayment</Source>
+          <Destination>PriceEpisodeCompletionPayment</Destination>
         </ColumnMapping>
         <ColumnMapping>
-          <Source>ProgrammeAimBalPayment</Source>
-          <Destination>ProgrammeAimBalPayment</Destination>
+          <Source>PriceEpisodeInstalmentsThisPeriod</Source>
+          <Destination>PriceEpisodeInstalmentsThisPeriod</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
+          <Source>PriceEpisodeOnProgPayment</Source>
+          <Destination>PriceEpisodeOnProgPayment</Destination>
         </ColumnMapping>
       </ColumnMappings>
     </TableMapping>

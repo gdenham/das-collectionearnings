@@ -78,7 +78,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
             var matchResult = _matcher.Match(commitments, learner);
 
             // Assert
-            Assert.AreEqual(DataLockErrorCodes.EarlierStartMonth, matchResult.ErrorCode);
+            Assert.AreEqual(DataLockErrorCodes.EarlierStartDate, matchResult.ErrorCode);
             _nextMatcher.Verify(
                 m =>
                     m.Match(It.IsAny<List<CollectionEarnings.DataLock.Application.Commitment.Commitment>>(), It.IsAny<CollectionEarnings.DataLock.Application.Learner.Learner>()),

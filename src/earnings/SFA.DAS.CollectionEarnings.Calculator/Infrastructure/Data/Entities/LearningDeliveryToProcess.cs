@@ -18,6 +18,5 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Infrastructure.Data.Entities
         public DateTime LearnPlanEndDate { get; set; }
         public DateTime? LearnActEndDate { get; set; }
         public int? CompletionStatus { get; set; }
-        public int NegotiatedPrice { get; set; }
     }
 }

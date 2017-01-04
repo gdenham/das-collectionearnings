@@ -12,7 +12,7 @@ INSERT INTO [Reference].[Learners]
 		ld.[ProgType] AS [ProgrammeType],
 		ld.[FworkCode] AS [FrameworkCode],
 		ld.[PwayCode] AS [PathwayCode],
-		ape.[EpisodeStartDate] AS [LearnStartDate],
+		ape.[EpisodeEffectiveTNPStartDate] AS [LearnStartDate],
 		ape.[PriceEpisodeTotalTNPPrice] AS [NegotiatedPrice],
 		ape.[PriceEpisodeIdentifier]
 	FROM ${ILR_Deds.FQ}.[Rulebase].[AEC_ApprenticeshipPriceEpisode] ape
@@ -20,10 +20,12 @@ INSERT INTO [Reference].[Learners]
 			AND ape.[LearnRefNumber] = l.[LearnRefNumber]
 		JOIN ${ILR_Deds.FQ}.[Valid].[LearningDelivery] ld ON ape.[Ukprn] = ld.[Ukprn]
 			AND ape.[LearnRefNumber] = ld.[LearnRefNumber]
-			AND ape.[AimSeqNumber] = ld.[AimSeqNumber]
+			AND ape.[PriceEpisodeAimSeqNumber] = ld.[AimSeqNumber]
 		JOIN ${ILR_Deds.FQ}.[Valid].[LearningDeliveryFAM] ldf ON ld.[Ukprn] = ldf.[Ukprn]
 			AND ld.[LearnRefNumber] = ldf.[LearnRefNumber]
 			AND ld.[AimSeqNumber] = ldf.[AimSeqNumber]
 	WHERE ldf.[LearnDelFAMType] = 'ACT'
 		AND ldf.[LearnDelFAMCode] IN ('1', '3')
+        AND ldf.[LearnDelFAMDateFrom] <= ape.[EpisodeEffectiveTNPStartDate]
+        AND ldf.[LearnDelFAMDateTo] >= COALESCE(ape.[PriceEpisodeActualEndDate], ape.[PriceEpisodePlannedEndDate], ld.[LearnActEndDate], ld.[LearnPlanEndDate])
 GO

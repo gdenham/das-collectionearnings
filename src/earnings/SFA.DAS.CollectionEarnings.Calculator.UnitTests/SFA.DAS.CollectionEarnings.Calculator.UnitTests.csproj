@@ -76,21 +76,22 @@
     <Compile Include="Application\EarningsCalculation\GetLearningDeliveriesEarningsQuery\GetLearningDeliveriesEarningsQueryHandler\WhenHandlingLateFinishers.cs" />
     <Compile Include="Application\EarningsCalculation\GetLearningDeliveriesEarningsQuery\GetLearningDeliveriesEarningsQueryHandler\WhenHandlingInLearningOrOnTimeFinishers.cs" />
     <Compile Include="Application\EarningsCalculation\GetLearningDeliveriesEarningsQuery\GetLearningDeliveriesEarningsQueryHandler\WhenHandlingMultipleLearners.cs" />
-    <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryHandler\Handle\WhenCalled.cs" />
-    <Compile Include="Application\ProcessedLearningDeliveryPeriodisedValues\AddProcessedLearningDeliveryPeriodisedValuesCommand\CommandHandler\Handle\WhenCalled.cs" />
-    <Compile Include="Application\ProcessedLearningDeliveryPeriod\AddProcessedLearningDeliveryPeriodCommand\CommandHandler\WhenHandling.cs" />
-    <Compile Include="Application\ProcessedLearningDelivery\AddProcessedLearningDeliveriesCommand\AddProcessedLearningDeliveriesCommandHandler\Handle\WhenCalled.cs" />
-    <Compile Include="ApprenticeshipEarningsProcessor\Process\WhenCalled.cs" />
+    <Compile Include="Application\LearningDeliveryToProcess\GetAllLearningDeliveriesToProcessQuery\GetAllLearningDeliveriesToProcessQueryHandler\WhenHandling.cs" />
+    <Compile Include="Application\ApprenticeshipPriceEpisodePeriodisedValues\ProcessAddPeriodisedValuesCommand\CommandHandler\WhenHandling.cs" />
+    <Compile Include="Application\ApprenticeshipPriceEpisodePeriod\AddPriceEpisodePeriodCommand\AddPriceEpisodePeriodCommandHandler\WhenHandling.cs" />
+    <Compile Include="Application\ApprenticeshipPriceEpisode\ProcessAddPriceEpisodesCommand\ProcessAddPriceEpisodesCommandHandler\WhenHandling.cs" />
+    <Compile Include="ApprenticeshipEarningsProcessor\WhenProcessing.cs" />
     <Compile Include="ApprenticeshipEarningsTask\Execute\WhenCalledWithInvalidContext.cs" />
     <Compile Include="ApprenticeshipEarningsTask\Execute\WhenCalledWithValidContext.cs" />
     <Compile Include="DependencyResolution\TaskDependencyResolver\GetInstance\WhenCalled.cs" />
     <Compile Include="DependencyResolution\TaskDependencyResolver\Init\WhenCalled.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tools\Entities\IEntityBuilder.cs" />
-    <Compile Include="Tools\Entities\LearningDeliveryToProcessBuilder.cs" />
-    <Compile Include="Tools\Entities\ProcessedLearningDeliveryBuilder.cs" />
-    <Compile Include="Tools\Entities\ProcessedLearningDeliveryPeriodBuilder.cs" />
-    <Compile Include="Tools\Entities\ProcessedLearningDeliveryPeriodisedValuesBuilder.cs" />
+    <Compile Include="Tools\Builders\ApprenticeshipPriceEpisodeBuilder.cs" />
+    <Compile Include="Tools\Builders\IEntityBuilder.cs" />
+    <Compile Include="Tools\Builders\LearningDeliveryBuilder.cs" />
+    <Compile Include="Tools\Builders\ApprenticeshipPriceEpisodeEntityBuilder.cs" />
+    <Compile Include="Tools\Builders\ApprenticeshipPriceEpisodePeriodEntityBuilder.cs" />
+    <Compile Include="Tools\Builders\ApprenticeshipPriceEpisodePeriodisedValuesEntityBuilder.cs" />
     <Compile Include="Tools\ExternalContextStub.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -102,7 +103,9 @@
       <Name>SFA.DAS.CollectionEarnings.Calculator</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

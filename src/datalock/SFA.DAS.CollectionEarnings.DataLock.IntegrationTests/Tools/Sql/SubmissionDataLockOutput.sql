@@ -77,8 +77,7 @@ INSERT INTO ${ILR_Deds.FQ}.[DataLock].[DasLearnerCommitment] (
     [CollectionPeriodName],
     [CollectionPeriodMonth],
     [CollectionPeriodYear],
-	[PriceEpisodeIdentifier],
-	[EpisodeStartDate]
+	[PriceEpisodeIdentifier]
 ) VALUES (
 	(SELECT TOP 1 [UKPRN] FROM [Valid].[LearningProvider]), 
 	'Lrn099', 
@@ -87,8 +86,7 @@ INSERT INTO ${ILR_Deds.FQ}.[DataLock].[DasLearnerCommitment] (
 	(SELECT TOP 1 '1617-' + [Name] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarMonth] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarYear] FROM Reference.CollectionPeriods WHERE [Open] = 1),
-	'27-25-2016-09-01',
-	'2016-09-01'
+	'27-25-2016-09-01'
 )
 GO
 
@@ -100,8 +98,7 @@ INSERT INTO ${ILR_Deds.FQ}.[DataLock].[DasLearnerCommitment] (
     [CollectionPeriodName],
     [CollectionPeriodMonth],
     [CollectionPeriodYear],
-	[PriceEpisodeIdentifier],
-	[EpisodeStartDate]
+	[PriceEpisodeIdentifier]
 ) VALUES (
 	(SELECT TOP 1 [UKPRN] FROM [Valid].[LearningProvider]), 
 	'Lrn098', 
@@ -110,8 +107,7 @@ INSERT INTO ${ILR_Deds.FQ}.[DataLock].[DasLearnerCommitment] (
 	(SELECT TOP 1 '1617-' + [Name] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarMonth] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarYear] FROM Reference.CollectionPeriods WHERE [Open] = 1),
-	'27-25-2016-09-01',
-	'2016-09-01'
+	'27-25-2016-09-01'
 )
 GO
 
@@ -123,8 +119,7 @@ INSERT INTO ${ILR_Deds.FQ}.[DataLock].[DasLearnerCommitment] (
     [CollectionPeriodName],
     [CollectionPeriodMonth],
     [CollectionPeriodYear],
-	[PriceEpisodeIdentifier],
-	[EpisodeStartDate]
+	[PriceEpisodeIdentifier]
 ) VALUES (
 	(SELECT TOP 1 [UKPRN] FROM [Valid].[LearningProvider]), 
 	'Lrn099', 
@@ -133,7 +128,6 @@ INSERT INTO ${ILR_Deds.FQ}.[DataLock].[DasLearnerCommitment] (
 	(SELECT TOP 1 '1617-' + [Name] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarMonth] FROM Reference.CollectionPeriods WHERE [Open] = 1),
 	(SELECT TOP 1 [CalendarYear] FROM Reference.CollectionPeriods WHERE [Open] = 1),
-	'27-25-2016-09-01',
-	'2016-09-01'
+	'27-25-2016-09-01'
 )
 GO

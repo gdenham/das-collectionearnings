@@ -284,7 +284,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
             // Assert
             Assert.IsNotNull(response);
             Assert.IsTrue(response.IsValid);
-            Assert.AreEqual(1, response.ValidationErrors.Count(ve => ve.RuleId == DataLockErrorCodes.EarlierStartMonth));
+            Assert.AreEqual(1, response.ValidationErrors.Count(ve => ve.RuleId == DataLockErrorCodes.EarlierStartDate));
             Assert.AreEqual(0, response.LearnerCommitments.Length);
         }
 

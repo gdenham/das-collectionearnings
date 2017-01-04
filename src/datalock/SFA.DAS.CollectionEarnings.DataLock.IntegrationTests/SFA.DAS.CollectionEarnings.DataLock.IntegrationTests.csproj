@@ -220,6 +220,9 @@
     <Content Include="Tools\Sql\DPP-222\IlrAcceptanceCriteria1.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Tools\Sql\IlrSubmissionLearnerChangesEmployersDasToNonDas.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Tools\Sql\IlrSubmissionMatchFound.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -248,6 +251,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tools\Sql\PeriodEndDataLockOutput.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\Sql\PeriodEndLearnerChangesEmployersDasToNonDas.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tools\Sql\PeriodEndLearnerChangesEmployers.sql">

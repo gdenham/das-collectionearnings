@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using MediatR;
-using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriod;
-using SFA.DAS.CollectionEarnings.Calculator.Application.ProcessedLearningDeliveryPeriodisedValues;
+using SFA.DAS.CollectionEarnings.Calculator.Application.ApprenticeshipPriceEpisodePeriodisedValues;
+using SFA.DAS.CollectionEarnings.Calculator.Application.LearningDeliveryToProcess;
 using SFA.DAS.CollectionEarnings.Calculator.Tools.Extensions;
 using SFA.DAS.CollectionEarnings.Calculator.Tools.Providers;
 
@@ -16,9 +16,9 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
 
         private readonly IDateTimeProvider _dateTimeProvider;
 
-        private List<Infrastructure.Data.Entities.ProcessedLearningDelivery> _processedLearningDeliveries;
-        private List<Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues> _processedLearningDeliveryPeriodisedValues;
-        private List<LearningDeliveryPeriodEarning> _learningDeliveryPeriodEarnings;
+        private List<ApprenticeshipPriceEpisode.ApprenticeshipPriceEpisode> _apprenticeshipPriceEpisodes;
+        private List<ApprenticeshipPriceEpisodePeriodisedValues.ApprenticeshipPriceEpisodePeriodisedValues> _apprenticeshipPriceEpisodePeriodisedValueses;
+        private List<ApprenticeshipPriceEpisodePeriod.ApprenticeshipPriceEpisodePeriod> _apprenticeshipPriceEpisodePeriodEarnings;
 
         public GetLearningDeliveriesEarningsQueryHandler(IDateTimeProvider dateTimeProvider)
         {
@@ -27,39 +27,43 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
 
         public GetLearningDeliveriesEarningsQueryResponse Handle(GetLearningDeliveriesEarningsQueryRequest message)
         {
-            _processedLearningDeliveries = new List<Infrastructure.Data.Entities.ProcessedLearningDelivery>();
-            _processedLearningDeliveryPeriodisedValues = new List<Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues>();
-            _learningDeliveryPeriodEarnings = new List<LearningDeliveryPeriodEarning>();
+            _apprenticeshipPriceEpisodes = new List<ApprenticeshipPriceEpisode.ApprenticeshipPriceEpisode>();
+            _apprenticeshipPriceEpisodePeriodisedValueses = new List<ApprenticeshipPriceEpisodePeriodisedValues.ApprenticeshipPriceEpisodePeriodisedValues>();
+            _apprenticeshipPriceEpisodePeriodEarnings = new List<ApprenticeshipPriceEpisodePeriod.ApprenticeshipPriceEpisodePeriod>();
 
             try
             {
                 var learningDeliveries = message.LearningDeliveries.ToList();
 
-                learningDeliveries.ForEach(
-                    learningDelivery =>
+                foreach (var learningDelivery in learningDeliveries)
+                {
+                    if (learningDelivery.PriceEpisodes == null)
                     {
-                        var completionPaymentUncapped = CalculateCompletionPayment(learningDelivery);
-                        var monthlyInstallmentUncapped = CalculateMonthlyInstallment(learningDelivery);
+                        continue;
+                    }
 
-                        BuildProcessedLearningDelivery(
-                            learningDelivery,
-                            monthlyInstallmentUncapped,
-                            monthlyInstallmentUncapped,
-                            completionPaymentUncapped,
-                            completionPaymentUncapped);
 
-                        BuildPeriodEarningsAndPeriodisedValues(
-                            learningDelivery,
-                            monthlyInstallmentUncapped,
-                            completionPaymentUncapped);
-                    });
+
+                    foreach (var priceEpisode in learningDelivery.PriceEpisodes)
+                    {
+                        var completionAmount = CalculateCompletionPayment(priceEpisode);
+                        var monthlyAmount = CalculateMonthlyInstallment(learningDelivery, priceEpisode, message.LearningDeliveries);
+
+                        var apprenticeshipPriceEpisode = GetApprenticeshipPriceEpisode(learningDelivery, priceEpisode, monthlyAmount, completionAmount);
+
+                        _apprenticeshipPriceEpisodes.Add(apprenticeshipPriceEpisode);
+
+                        BuildPriceEpisodePeriodEarningsAndPeriodisedValues(learningDelivery, apprenticeshipPriceEpisode, monthlyAmount, completionAmount);
+                    }
+                }
 
                 return new GetLearningDeliveriesEarningsQueryResponse
                 {
                     IsValid = true,
-                    ProcessedLearningDeliveries = _processedLearningDeliveries.ToArray(),
-                    ProcessedLearningDeliveryPeriodisedValues = _processedLearningDeliveryPeriodisedValues.ToArray(),
-                    LearningDeliveryPeriodEarnings = _learningDeliveryPeriodEarnings.ToArray()
+
+                    PriceEpisodes = _apprenticeshipPriceEpisodes.ToArray(),
+                    PriceEpisodesPeriodisedValues = _apprenticeshipPriceEpisodePeriodisedValueses.ToArray(),
+                    PriceEpisodesPeriodsEarnings = _apprenticeshipPriceEpisodePeriodEarnings.ToArray()
                 };
             }
             catch (Exception ex)
@@ -72,145 +76,187 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
             }
         }
 
-        private int CalculateNumberOfPeriods(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
+        private int CalculateNumberOfPeriods(DateTime startDate, DateTime endDate)
         {
             var result = 0;
 
-            var censusDate = learningDelivery.LearnStartDate.LastDayOfMonth();
+            var censusDate = startDate.LastDayOfMonth();
 
-            while (censusDate <= learningDelivery.LearnPlanEndDate)
+            while (censusDate <= endDate)
             {
                 censusDate = censusDate.AddMonths(1).LastDayOfMonth();
                 result++;
             }
 
-            return result;
+            return result <= 0
+                ? 1
+                : result;
         }
 
-        private decimal CalculateCompletionPayment(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
+        private decimal CalculateCompletionPayment(PriceEpisode priceEpisode)
         {
-            return decimal.Round(learningDelivery.NegotiatedPrice * CompletionPaymentRatio, 5);
+            return decimal.Round(priceEpisode.NegotiatedPrice * CompletionPaymentRatio, 5);
         }
 
-        private decimal CalculateMonthlyInstallment(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
+        private decimal CalculateMonthlyInstallment(LearningDelivery learningDelivery, PriceEpisode priceEpisode, LearningDelivery[] learningDeliveries)
         {
-            return decimal.Round(learningDelivery.NegotiatedPrice * InLearningPaymentRatio / CalculateNumberOfPeriods(learningDelivery), 5);
+            decimal prevEarnedAmount = 0m;
+
+            //accumulate all the previous earnings for same learner for same programme
+            foreach (var x in learningDeliveries)
+            {
+                if (x.LearnerReferenceNumber == learningDelivery.LearnerReferenceNumber &&
+                                                    x.FrameworkCode == learningDelivery.FrameworkCode &&
+                                                    x.StandardCode == learningDelivery.StandardCode &&
+                                                    x.PathwayCode == learningDelivery.PathwayCode &&
+                                                    x.ProgrammeType == learningDelivery.ProgrammeType &&
+                                                    x.Uln == learningDelivery.Uln &&
+                                                    x.Ukprn == learningDelivery.Ukprn &&
+                                                    x.CompletionStatus == 6 &&
+                                                    learningDelivery.AimSequenceNumber > x.AimSequenceNumber
+                                                )
+                    foreach (var pe in x.PriceEpisodes)
+                    {
+
+                        prevEarnedAmount += _apprenticeshipPriceEpisodePeriodEarnings.Where(y => y.PriceEpisodeId == pe.Id).Sum(z=> z.PriceEpisodeOnProgPayment);
+
+                    }
+            }
+
+
+          
+            var totalAvailableAmount = (priceEpisode.NegotiatedPrice * InLearningPaymentRatio) - prevEarnedAmount;
+
+            if (priceEpisode.StartDate == learningDelivery.LearningStartDate)
+            {
+                return decimal.Round(totalAvailableAmount / CalculateNumberOfPeriods(learningDelivery.LearningStartDate, learningDelivery.LearningPlannedEndDate), 5);
+            }
+
+            return decimal.Round(totalAvailableAmount / CalculateNumberOfPeriods(priceEpisode.StartDate, learningDelivery.LearningPlannedEndDate), 5);
         }
 
-        private DateTime CalculateFirstCensusDateForTheLearningDelivery(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
+
+        private DateTime CalculateFirstCensusDateForThePriceEpisode(ApprenticeshipPriceEpisode.ApprenticeshipPriceEpisode priceEpisode)
         {
             var firstCensusDateAfterYearOfCollectionStart = _dateTimeProvider.YearOfCollectionStart.LastDayOfMonth();
-            var firstCensusDateAfterLearningStart = learningDelivery.LearnStartDate.LastDayOfMonth();
+            var firstCensusDateAfterLearningStart = priceEpisode.StartDate.LastDayOfMonth();
 
             return firstCensusDateAfterYearOfCollectionStart < firstCensusDateAfterLearningStart
                 ? firstCensusDateAfterLearningStart
                 : firstCensusDateAfterYearOfCollectionStart;
         }
 
-        private int CalculateFirstPeriodForTheLearningDelivery(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
+        private int CalculateFirstPeriodForThePriceEpisode(ApprenticeshipPriceEpisode.ApprenticeshipPriceEpisode priceEpisode)
         {
             var firstDayAfterYearOfCollectionStart = _dateTimeProvider.YearOfCollectionStart.FirstDayOfMonth();
 
-            var period = learningDelivery.LearnStartDate.Month - firstDayAfterYearOfCollectionStart.Month
-                         + 12 * (learningDelivery.LearnStartDate.Year - firstDayAfterYearOfCollectionStart.Year)
+            var period = priceEpisode.StartDate.Month - firstDayAfterYearOfCollectionStart.Month
+                         + 12 * (priceEpisode.StartDate.Year - firstDayAfterYearOfCollectionStart.Year)
                          + 1;
 
-            return period < 0
+            return period <= 0
                 ? 1
                 : period;
         }
 
-        private void BuildProcessedLearningDelivery(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery, decimal monthlyInstallment, decimal monthlyInstallmentUncapped, decimal completionPayment, decimal completionPaymentUncapped)
+        private ApprenticeshipPriceEpisode.ApprenticeshipPriceEpisode GetApprenticeshipPriceEpisode(LearningDelivery learningDelivery, PriceEpisode priceEpisode, decimal monthlyAmount, decimal completionAmount)
         {
-            _processedLearningDeliveries.Add(
-                new Infrastructure.Data.Entities.ProcessedLearningDelivery
-                {
-                    Ukprn = learningDelivery.Ukprn,
-                    LearnRefNumber = learningDelivery.LearnRefNumber,
-                    Uln = learningDelivery.Uln,
-                    NiNumber = learningDelivery.NiNumber,
-                    AimSeqNumber = learningDelivery.AimSeqNumber,
-                    StdCode = learningDelivery.StandardCode,
-                    ProgType = learningDelivery.ProgrammeType,
-                    FworkCode = learningDelivery.FrameworkCode,
-                    PwayCode = learningDelivery.PathwayCode,
-                    NegotiatedPrice = learningDelivery.NegotiatedPrice,
-                    LearnStartDate = learningDelivery.LearnStartDate,
-                    OrigLearnStartDate = learningDelivery.OrigLearnStartDate,
-                    LearnPlanEndDate = learningDelivery.LearnPlanEndDate,
-                    LearnActEndDate = learningDelivery.LearnActEndDate,
-                    MonthlyInstallment = monthlyInstallment,
-                    MonthlyInstallmentUncapped = monthlyInstallmentUncapped,
-                    CompletionPayment = completionPayment,
-                    CompletionPaymentUncapped = completionPaymentUncapped
-                });
+            return new ApprenticeshipPriceEpisode.ApprenticeshipPriceEpisode
+            {
+                Id = priceEpisode.Id,
+                LearnerReferenceNumber = learningDelivery.LearnerReferenceNumber,
+                AimSequenceNumber = learningDelivery.AimSequenceNumber,
+                StartDate = priceEpisode.StartDate,
+                PlannedEndDate = priceEpisode.EndDate.HasValue ? priceEpisode.EndDate : learningDelivery.LearningPlannedEndDate,
+                ActualEndDate = priceEpisode.EndDate.HasValue ? priceEpisode.EndDate : learningDelivery.LearningActualEndDate,
+                NegotiatedPrice = priceEpisode.NegotiatedPrice,
+                Tnp1 = priceEpisode.Tnp1,
+                Tnp2 = priceEpisode.Tnp2,
+                Tnp3 = priceEpisode.Tnp3,
+                Tnp4 = priceEpisode.Tnp4,
+                MonthlyAmount = monthlyAmount,
+                CompletionAmount = completionAmount,
+                Completed = priceEpisode.EndDate.HasValue || learningDelivery.LearningActualEndDate.HasValue ? true : (bool?)null,
+                LastEpisode = priceEpisode.LastEpisode
+            };
         }
 
-        private void BuildPeriodEarningsAndPeriodisedValues(Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery, decimal monthlyInstallment, decimal completionPayment)
+        private void BuildPriceEpisodePeriodEarningsAndPeriodisedValues(LearningDelivery learningDelivery, ApprenticeshipPriceEpisode.ApprenticeshipPriceEpisode priceEpisode, decimal monthlyAmount, decimal completionAmount)
         {
-            var periodEarnings = new List<LearningDeliveryPeriodEarning>();
+            var periodEarnings = new List<ApprenticeshipPriceEpisodePeriod.ApprenticeshipPriceEpisodePeriod>();
 
-            var onProgrammeEarning = new Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues
+            var onProgrammeEarning = new ApprenticeshipPriceEpisodePeriodisedValues.ApprenticeshipPriceEpisodePeriodisedValues
             {
-                LearnRefNumber = learningDelivery.LearnRefNumber,
-                AimSeqNumber = learningDelivery.AimSeqNumber,
-                AttributeName = AttributeNames.OnProgrammePayment
+                PriceEpisodeId = priceEpisode.Id,
+                LearnerReferenceNumber = learningDelivery.LearnerReferenceNumber,
+                AimSequenceNumber = learningDelivery.AimSequenceNumber,
+                PriceEpisodeStartDate = priceEpisode.StartDate,
+                AttributeName = AttributeNames.PriceEpisodeOnProgPayment
             };
 
-            var completionEarning = new Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues
+            var completionEarning = new ApprenticeshipPriceEpisodePeriodisedValues.ApprenticeshipPriceEpisodePeriodisedValues
             {
-                LearnRefNumber = learningDelivery.LearnRefNumber,
-                AimSeqNumber = learningDelivery.AimSeqNumber,
-                AttributeName = AttributeNames.CompletionPayment
+                PriceEpisodeId = priceEpisode.Id,
+                LearnerReferenceNumber = learningDelivery.LearnerReferenceNumber,
+                AimSequenceNumber = learningDelivery.AimSequenceNumber,
+                PriceEpisodeStartDate = priceEpisode.StartDate,
+                AttributeName = AttributeNames.PriceEpisodeCompletionPayment
             };
 
-            var balancingEarning = new Infrastructure.Data.Entities.ProcessedLearningDeliveryPeriodisedValues
+            var balancingEarning = new ApprenticeshipPriceEpisodePeriodisedValues.ApprenticeshipPriceEpisodePeriodisedValues
             {
-                LearnRefNumber = learningDelivery.LearnRefNumber,
-                AimSeqNumber = learningDelivery.AimSeqNumber,
-                AttributeName = AttributeNames.BalancingPayment
+                PriceEpisodeId = priceEpisode.Id,
+                LearnerReferenceNumber = learningDelivery.LearnerReferenceNumber,
+                AimSequenceNumber = learningDelivery.AimSequenceNumber,
+                PriceEpisodeStartDate = priceEpisode.StartDate,
+                AttributeName = AttributeNames.PriceEpisodeBalancePayment
             };
 
-            var shouldAddCompletionPayment = learningDelivery.LearnActEndDate.HasValue;
-            var shouldAddBalancingPayment = shouldAddCompletionPayment &&
-                                            learningDelivery.LearnActEndDate.Value < learningDelivery.LearnPlanEndDate;
+            var shouldAddCompletionPayment = learningDelivery.LearningActualEndDate.HasValue
+                                             && priceEpisode.LastEpisode
+                                             && learningDelivery.CompletionStatus == 2;
+            var shouldAddBalancingPayment = shouldAddCompletionPayment
+                                            && learningDelivery.LearningActualEndDate.Value < learningDelivery.LearningPlannedEndDate
+                                            && learningDelivery.CompletionStatus == 2;
 
-            var censusDate = CalculateFirstCensusDateForTheLearningDelivery(learningDelivery);
-            var period = CalculateFirstPeriodForTheLearningDelivery(learningDelivery);
+            var censusDate = CalculateFirstCensusDateForThePriceEpisode(priceEpisode);
+            var period = CalculateFirstPeriodForThePriceEpisode(priceEpisode);
 
-            var plannedEndDate = learningDelivery.LearnPlanEndDate;
-            var learningEndCensusDate = learningDelivery.LearnActEndDate?.LastDayOfMonth() ?? plannedEndDate.LastDayOfMonth();
+            var plannedEndDate = priceEpisode.PlannedEndDate ?? learningDelivery.LearningPlannedEndDate;
+            var learningEndCensusDate = priceEpisode.ActualEndDate?.LastDayOfMonth() ?? plannedEndDate.LastDayOfMonth();
 
             while (censusDate <= learningEndCensusDate && period <= 12)
             {
-                var periodEarning = new LearningDeliveryPeriodEarning
+                var periodEarning = new ApprenticeshipPriceEpisodePeriod.ApprenticeshipPriceEpisodePeriod
                 {
-                    LearnerReferenceNumber = learningDelivery.LearnRefNumber,
-                    AimSequenceNumber = learningDelivery.AimSeqNumber,
+                    PriceEpisodeId = priceEpisode.Id,
+                    LearnerReferenceNumber = priceEpisode.LearnerReferenceNumber,
+                    AimSequenceNumber = priceEpisode.AimSequenceNumber,
+                    PriceEpisodeStartDate = priceEpisode.StartDate,
                     Period = period
                 };
 
                 if (censusDate <= plannedEndDate)
                 {
-                    onProgrammeEarning.SetPeriodValue(period, monthlyInstallment);
+                    onProgrammeEarning.SetPeriodValue(period, monthlyAmount);
 
-                    periodEarning.OnProgrammeEarning = monthlyInstallment;
+                    periodEarning.PriceEpisodeOnProgPayment = monthlyAmount;
                 }
 
                 if (shouldAddCompletionPayment && censusDate == learningEndCensusDate)
                 {
-                    completionEarning.SetPeriodValue(period, completionPayment);
+                    completionEarning.SetPeriodValue(period, completionAmount);
 
-                    periodEarning.CompletionEarning = completionPayment;
+                    periodEarning.PriceEpisodeCompletionPayment = completionAmount;
                 }
 
                 if (shouldAddBalancingPayment && censusDate == learningEndCensusDate)
                 {
-                    var balancingPayment = CalculateBalancingPaymentAmount(monthlyInstallment, completionPayment, learningDelivery);
+                    var balancingPayment = CalculateBalancingPaymentAmount(monthlyAmount, completionAmount, priceEpisode);
 
                     balancingEarning.SetPeriodValue(period, balancingPayment);
 
-                    periodEarning.BalancingEarning = balancingPayment;
+                    periodEarning.PriceEpisodeBalancePayment = balancingPayment;
                 }
 
                 periodEarnings.Add(periodEarning);
@@ -219,28 +265,33 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                 period++;
             }
 
-            FillMissingPeriodEarnings(periodEarnings, learningDelivery);
+            FillMissingPeriodEarnings(periodEarnings, priceEpisode);
 
-            _processedLearningDeliveryPeriodisedValues.Add(onProgrammeEarning);
-            _processedLearningDeliveryPeriodisedValues.Add(completionEarning);
-            _processedLearningDeliveryPeriodisedValues.Add(balancingEarning);
+            _apprenticeshipPriceEpisodePeriodisedValueses.Add(onProgrammeEarning);
+            _apprenticeshipPriceEpisodePeriodisedValueses.Add(completionEarning);
+            _apprenticeshipPriceEpisodePeriodisedValueses.Add(balancingEarning);
 
-            _learningDeliveryPeriodEarnings.AddRange(periodEarnings);
+            _apprenticeshipPriceEpisodePeriodEarnings.AddRange(periodEarnings);
         }
 
-        private decimal CalculateBalancingPaymentAmount(decimal monthlyInstallment, decimal completionPayment, Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
+        private decimal CalculateBalancingPaymentAmount(decimal monthlyInstallment, decimal completionPayment, ApprenticeshipPriceEpisode.ApprenticeshipPriceEpisode priceEpisode)
         {
-            if (!learningDelivery.LearnActEndDate.HasValue)
+            if (!priceEpisode.ActualEndDate.HasValue)
             {
                 return 0.00m;
             }
 
-            var numberOfPeriods = CalculateNumberOfPeriods(learningDelivery);
-            var numberOfPeriodsToBalance = CalculateNumberOfPeriodsToBalance(learningDelivery.LearnPlanEndDate, learningDelivery.LearnActEndDate.Value);
+            if (!priceEpisode.PlannedEndDate.HasValue)
+            {
+                return 0.00m;
+            }
+
+            var numberOfPeriods = CalculateNumberOfPeriods(priceEpisode.StartDate, priceEpisode.PlannedEndDate.Value);
+            var numberOfPeriodsToBalance = CalculateNumberOfPeriodsToBalance(priceEpisode.PlannedEndDate.Value, priceEpisode.ActualEndDate.Value);
 
             var amountEarnedSoFar = monthlyInstallment * (numberOfPeriods - numberOfPeriodsToBalance);
 
-            return decimal.Round(learningDelivery.NegotiatedPrice - completionPayment - amountEarnedSoFar, 5);
+            return decimal.Round(priceEpisode.NegotiatedPrice - completionPayment - amountEarnedSoFar, 5);
         }
 
         private int CalculateNumberOfPeriodsToBalance(DateTime plannedEndDate, DateTime actualEndDate)
@@ -259,7 +310,7 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
         }
 
 
-        private void FillMissingPeriodEarnings(List<LearningDeliveryPeriodEarning>  periodEarnings, Infrastructure.Data.Entities.LearningDeliveryToProcess learningDelivery)
+        private void FillMissingPeriodEarnings(List<ApprenticeshipPriceEpisodePeriod.ApprenticeshipPriceEpisodePeriod> periodEarnings, ApprenticeshipPriceEpisode.ApprenticeshipPriceEpisode priceEpisode)
         {
             if (periodEarnings.Count == 12)
             {
@@ -273,12 +324,15 @@ namespace SFA.DAS.CollectionEarnings.Calculator.Application.EarningsCalculation.
                     continue;
                 }
 
-                _learningDeliveryPeriodEarnings.Add(new LearningDeliveryPeriodEarning
-                {
-                    LearnerReferenceNumber = learningDelivery.LearnRefNumber,
-                    AimSequenceNumber = learningDelivery.AimSeqNumber,
-                    Period = period
-                });
+                _apprenticeshipPriceEpisodePeriodEarnings.Add(
+                    new ApprenticeshipPriceEpisodePeriod.ApprenticeshipPriceEpisodePeriod
+                    {
+                        PriceEpisodeId = priceEpisode.Id,
+                        LearnerReferenceNumber = priceEpisode.LearnerReferenceNumber,
+                        AimSequenceNumber = priceEpisode.AimSequenceNumber,
+                        PriceEpisodeStartDate = priceEpisode.StartDate,
+                        Period = period
+                    });
             }
         }
     }

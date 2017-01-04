@@ -68,7 +68,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.AcceptanceCriteri
 
             Assert.IsNotNull(errors);
             Assert.AreEqual(1, errors.Length);
-            Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartMonth));
+            Assert.AreEqual(1, errors.Count(e => e.RuleId == DataLockErrorCodes.EarlierStartDate));
         }
     }
 }

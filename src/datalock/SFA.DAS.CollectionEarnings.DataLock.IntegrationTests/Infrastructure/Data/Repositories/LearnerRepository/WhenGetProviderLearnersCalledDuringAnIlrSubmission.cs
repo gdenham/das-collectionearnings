@@ -67,13 +67,28 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             TestDataHelper.ExecuteScript("IlrSubmissionLearnerChangesEmployers.sql");
 
             // Act
+            var singleLearnerPriceEpisodes = _learnerRepository.GetProviderLearners(_ukprn);
+
+            // Assert
+            Assert.IsNotNull(singleLearnerPriceEpisodes);
+            Assert.AreEqual(2, singleLearnerPriceEpisodes.Length);
+            Assert.AreEqual(1, singleLearnerPriceEpisodes.Count(l => l.LearnStartDate == new DateTime(2017, 8, 1)));
+            Assert.AreEqual(1, singleLearnerPriceEpisodes.Count(l => l.LearnStartDate == new DateTime(2017, 11, 1)));
+        }
+
+        [Test]
+        public void ThenOneLearnerReturnedForOneLearnerThatChangesEmployersFromDasToNonDasInTheDatabase()
+        {
+            // Arrange
+            TestDataHelper.ExecuteScript("IlrSubmissionLearnerChangesEmployersDasToNonDas.sql");
+
+            // Act
             var learners = _learnerRepository.GetProviderLearners(_ukprn);
 
             // Assert
             Assert.IsNotNull(learners);
-            Assert.AreEqual(2, learners.Length);
+            Assert.AreEqual(1, learners.Length);
             Assert.AreEqual(1, learners.Count(l => l.LearnStartDate == new DateTime(2017, 8, 1)));
-            Assert.AreEqual(1, learners.Count(l => l.LearnStartDate == new DateTime(2017, 11, 1)));
         }
     }
 }
