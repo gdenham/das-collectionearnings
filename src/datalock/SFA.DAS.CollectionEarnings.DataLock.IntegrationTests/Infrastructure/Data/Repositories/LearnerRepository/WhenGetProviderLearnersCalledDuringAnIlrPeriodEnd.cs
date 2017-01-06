@@ -58,7 +58,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
 
             // Assert
             Assert.IsNotNull(learners);
-            Assert.AreEqual(8, learners.Length);
+            Assert.AreEqual(7, learners.Length);
         }
 
         [Test]
