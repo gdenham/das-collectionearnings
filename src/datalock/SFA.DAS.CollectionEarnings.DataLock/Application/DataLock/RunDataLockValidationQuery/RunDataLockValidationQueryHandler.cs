@@ -77,6 +77,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockVa
                                 LearnerReferenceNumber = learner.LearnerReferenceNumber,
                                 AimSequenceNumber = learner.AimSequenceNumber ?? -1,
                                 CommitmentId = matchResult.Commitment.CommitmentId,
+                                VersionId = matchResult.Commitment.VersionId,
                                 PriceEpisodeIdentifier = learner.PriceEpisodeIdentifier
                             });
                         }

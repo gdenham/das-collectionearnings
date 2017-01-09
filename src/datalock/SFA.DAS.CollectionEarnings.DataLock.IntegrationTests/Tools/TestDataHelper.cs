@@ -63,6 +63,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
             Execute(connectionString,
                 @"INSERT INTO [dbo].[DasCommitments] (
                         CommitmentId, 
+                        VersionId,
                         Uln, 
                         Ukprn, 
                         AccountId, 
@@ -74,12 +75,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                         FrameworkCode, 
                         PathwayCode,
                         Priority,
-                        VersionId,
                         PaymentStatus,
                         PaymentStatusDescription,
-                        Payable
+                        Payable,
+                        EffectiveFromDate,
+                        EffectiveToDate
                     ) VALUES (
                         @CommitmentId, 
+                        @VersionId, 
                         @Uln, 
                         @Ukprn, 
                         @AccountId, 
@@ -91,14 +94,16 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                         @FrameworkCode, 
                         @PathwayCode,
                         1,
-                        '1',
                         @PaymentStatus,
                         @PaymentStatusDescription,
-                        @Payable
+                        @Payable,
+                        @EffectiveFromDate,
+                        @EffectiveToDate
                     )",
                 new
                 {
                     CommitmentId = commitment.CommitmentId,
+                    VersionId = commitment.VersionId,
                     Uln = commitment.Uln,
                     Ukprn = commitment.Ukprn,
                     AccountId = commitment.AccountId,
@@ -111,7 +116,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
                     PathwayCode = commitment.PathwayCode,
                     PaymentStatus = commitment.PaymentStatus,
                     PaymentStatusDescription = commitment.PaymentStatusDescription,
-                    Payable = commitment.Payable
+                    Payable = commitment.Payable,
+                    EffectiveFromDate = commitment.EffectiveFrom,
+                    EffectiveToDate = commitment.EffectiveTo
                 });
         }
 

@@ -6,6 +6,7 @@
         public string LearnerReferenceNumber { get; set; }
         public long AimSequenceNumber { get; set; }
         public long CommitmentId { get; set; }
+        public long VersionId { get; set; }
         public string PriceEpisodeIdentifier { get; set; }
     }
 }

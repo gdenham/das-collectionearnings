@@ -5,6 +5,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities
     public class CommitmentEntity
     {
         public long CommitmentId { get; set; }
+        public long VersionId { get; set; }
+
         public long Uln { get; set; }
         public long Ukprn { get; set; }
         public string AccountId { get; set; }
@@ -21,6 +23,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities
         public bool Payable { get; set; }
 
         public int Priority { get; set; }
-        public string VersionId { get; set; }
+
+        public DateTime EffectiveFrom { get; set; }
+        public DateTime? EffectiveTo { get; set; }
     }
 }

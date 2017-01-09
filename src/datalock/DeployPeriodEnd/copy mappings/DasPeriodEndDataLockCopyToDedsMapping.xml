@@ -64,6 +64,10 @@
           <Destination>CommitmentId</Destination>
         </ColumnMapping>
         <ColumnMapping>
+          <Source>VersionId</Source>
+          <Destination>VersionId</Destination>
+        </ColumnMapping>
+        <ColumnMapping>
           <Source>CollectionPeriodName</Source>
           <Destination>CollectionPeriodName</Destination>
         </ColumnMapping>

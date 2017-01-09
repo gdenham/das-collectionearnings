@@ -359,6 +359,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
             Assert.AreEqual(13, response.ValidationErrors.Length);
             Assert.AreEqual(1, response.LearnerCommitments.Count(l =>
                                                                     l.CommitmentId == commitments[0].CommitmentId &&
+                                                                    l.VersionId == commitments[0].VersionId &&
                                                                     l.Ukprn == learners[0].Ukprn &&
                                                                     l.LearnerReferenceNumber == learners[0].LearnerReferenceNumber &&
                                                                     learners[0].AimSequenceNumber.HasValue &&

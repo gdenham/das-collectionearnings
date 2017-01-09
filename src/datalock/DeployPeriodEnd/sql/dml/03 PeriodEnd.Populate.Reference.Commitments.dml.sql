@@ -4,6 +4,7 @@ GO
 INSERT INTO [Reference].[DasCommitments]
     SELECT
         [CommitmentId],
+        [VersionId],
         [Uln],
         [Ukprn],
         [AccountId],
@@ -18,6 +19,7 @@ INSERT INTO [Reference].[DasCommitments]
         [PaymentStatusDescription],
         [Payable],
         [Priority],
-        [VersionId]
+		[EffectiveFromDate],
+		[EffectiveToDate]
     FROM ${DAS_Commitments.FQ}.[dbo].[DasCommitments]
 GO

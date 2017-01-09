@@ -8,6 +8,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
         private string _learnRefNumber = "Lrn001";
         private long _aimSeqNumber = 1;
         private long _commitmentId = 1;
+        private long _versionId = 1;
         private string _priceEpisodeIdentifier = "27-25-2016-09-01";
 
         public LearnerCommitmentEntity Build()
@@ -18,6 +19,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
                 LearnRefNumber = _learnRefNumber,
                 AimSeqNumber = _aimSeqNumber,
                 CommitmentId = _commitmentId,
+                VersionId = _versionId,
                 PriceEpisodeIdentifier = _priceEpisodeIdentifier
             };
         }
@@ -46,6 +48,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
         public LearnerCommitmentEntityBuilder WithCommitmentId(long commitmentId)
         {
             _commitmentId = commitmentId;
+
+            return this;
+        }
+
+        public LearnerCommitmentEntityBuilder WithVersionId(long versionId)
+        {
+            _versionId = versionId;
 
             return this;
         }

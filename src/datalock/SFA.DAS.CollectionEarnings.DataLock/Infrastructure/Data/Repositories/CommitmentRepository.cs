@@ -7,6 +7,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories
     {
         private const string CommitmentSource = "Reference.DasCommitments";
         private const string CommitmentColumns = "CommitmentId," +
+                                                 "VersionId," +
                                                  "Uln," +
                                                  "Ukprn," +
                                                  "AccountId," +
@@ -21,7 +22,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories
                                                  "PaymentStatusDescription," +
                                                  "Payable," +
                                                  "Priority," +
-                                                 "VersionId";
+                                                 "EffectiveFrom," +
+                                                 "EffectiveTo";
         private const string SelectCommitments = "SELECT " + CommitmentColumns + " FROM " + CommitmentSource;
         private const string SelectProviderCommitments = SelectCommitments + " WHERE Ukprn = @Ukprn";
 

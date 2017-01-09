@@ -18,6 +18,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Learner.AddL
                 LearnerReferenceNumber = "Lrn001",
                 AimSequenceNumber = 1,
                 CommitmentId = 1,
+                VersionId = 2,
                 PriceEpisodeIdentifier = "27-25-2016-09-01"
             },
             new LearnerCommitment
@@ -26,6 +27,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Learner.AddL
                 LearnerReferenceNumber = "Lrn002",
                 AimSequenceNumber = 9,
                 CommitmentId = 2,
+                VersionId = 1,
                 PriceEpisodeIdentifier = "27-25-2016-10-15"
             }
         };
@@ -100,11 +102,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Learner.AddL
 
         private bool LearnerCommitmentsMatch(LearnerCommitmentEntity entity, LearnerCommitment learnerCommitment)
         {
-            return entity.Ukprn == learnerCommitment.Ukprn &&
-                   entity.LearnRefNumber == learnerCommitment.LearnerReferenceNumber &&
-                   entity.AimSeqNumber == learnerCommitment.AimSequenceNumber &&
-                   entity.CommitmentId == learnerCommitment.CommitmentId &&
-                   entity.PriceEpisodeIdentifier == learnerCommitment.PriceEpisodeIdentifier;
+            return entity.Ukprn == learnerCommitment.Ukprn
+                   && entity.LearnRefNumber == learnerCommitment.LearnerReferenceNumber
+                   && entity.AimSeqNumber == learnerCommitment.AimSequenceNumber
+                   && entity.CommitmentId == learnerCommitment.CommitmentId
+                   && entity.VersionId == learnerCommitment.VersionId
+                   && entity.PriceEpisodeIdentifier == learnerCommitment.PriceEpisodeIdentifier;
         }
     }
 }

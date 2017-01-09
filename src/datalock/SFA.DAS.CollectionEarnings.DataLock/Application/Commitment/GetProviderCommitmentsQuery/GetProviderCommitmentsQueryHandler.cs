@@ -27,6 +27,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetProvider
                         new Commitment
                         {
                             CommitmentId = c.CommitmentId,
+                            VersionId = c.VersionId,
                             Uln = c.Uln,
                             Ukprn = c.Ukprn,
                             AccountId = c.AccountId,
@@ -41,7 +42,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetProvider
                             PaymentStatusDescription = c.PaymentStatusDescription,
                             Payable = c.Payable,
                             Priority = c.Priority,
-                            VersionId = c.VersionId
+                            EffectiveFrom = c.EffectiveFrom,
+                            EffectiveTo = c.EffectiveTo
                         }).ToArray()
                 };
             }

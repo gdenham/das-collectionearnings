@@ -9,6 +9,7 @@ GO
 
 CREATE TABLE [dbo].[DasCommitments](
 	[CommitmentId] [bigint] NOT NULL,
+	[VersionId] [bigint] NOT NULL,
 	[Uln] [bigint] NOT NULL,
 	[Ukprn] [bigint] NOT NULL,
 	[AccountId] [varchar](50) NOT NULL,
@@ -23,12 +24,15 @@ CREATE TABLE [dbo].[DasCommitments](
 	[PaymentStatusDescription] [varchar](50) NOT NULL,
 	[Payable] [bit] NOT NULL,
 	[Priority] [int] NOT NULL,
-	[VersionId] [varchar](50) NOT NULL,
+	[EffectiveFromDate] [date] NOT NULL,
+	[EffectiveToDate] [date] NULL
 	PRIMARY KEY CLUSTERED 
 	(
-		[CommitmentId] ASC
+		[CommitmentId] ASC,
+		[VersionId] ASC
 	)
 )
+GO
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
 -- EventStreamPointer
@@ -43,3 +47,4 @@ CREATE TABLE [dbo].[EventStreamPointer](
 	[EventId] [bigint] NOT NULL,
 	[ReadDate] [datetime] NOT NULL
 )
+GO

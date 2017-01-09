@@ -24,6 +24,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerComm
                         LearnRefNumber = lc.LearnerReferenceNumber,
                         AimSeqNumber = lc.AimSequenceNumber,
                         CommitmentId = lc.CommitmentId,
+                        VersionId = lc.VersionId,
                         PriceEpisodeIdentifier = lc.PriceEpisodeIdentifier
                     })
                 .ToArray();

@@ -7,6 +7,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
     public class CommitmentEntityBuilder : IBuilder<CommitmentEntity>
     {
         private long _commitmentId = 1;
+        private long _versionId = 1;
         private long _uln = 1000000019;
         private long _ukprn = 10007459;
         private string _accountId = "A-001";
@@ -20,12 +21,15 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
         private int _paymentStatus = 1;
         private string _paymentStatusDescription = "Active";
         private bool _payable = true;
+        private DateTime _effectiveFrom = new DateTime(2016, 9, 1);
+        private DateTime? _effectiveTo;
 
         public CommitmentEntity Build()
         {
             return new CommitmentEntity
             {
                 CommitmentId = _commitmentId,
+                VersionId = _versionId,
                 Uln = _uln,
                 Ukprn = _ukprn,
                 AccountId = _accountId,
@@ -38,13 +42,22 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
                 PathwayCode = _pathwayCode,
                 PaymentStatus = _paymentStatus,
                 PaymentStatusDescription = _paymentStatusDescription,
-                Payable = _payable
+                Payable = _payable,
+                EffectiveFrom = _effectiveFrom,
+                EffectiveTo = _effectiveTo
             };
         }
 
         public CommitmentEntityBuilder WithCommitmentId(long commitmentId)
         {
             _commitmentId = commitmentId;
+
+            return this;
+        }
+
+        public CommitmentEntityBuilder WithVersionId(long versionId)
+        {
+            _versionId = versionId;
 
             return this;
         }
@@ -123,6 +136,20 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
             _paymentStatus = (int)paymentStatus;
             _paymentStatusDescription = paymentStatus.ToString();
             _payable = paymentStatus == PaymentStatus.Active;
+
+            return this;
+        }
+
+        public CommitmentEntityBuilder WithEffectiveFrom(DateTime effectiveFrom)
+        {
+            _effectiveFrom = effectiveFrom;
+
+            return this;
+        }
+
+        public CommitmentEntityBuilder WithEffectiveTo(DateTime? effectiveTo)
+        {
+            _effectiveTo = effectiveTo;
 
             return this;
         }
