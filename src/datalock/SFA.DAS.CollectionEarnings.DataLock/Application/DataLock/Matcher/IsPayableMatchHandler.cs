@@ -5,7 +5,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
 {
     public class IsPayableMatchHandler : MatchHandler
     {
-        public override MatchResult Match(List<Commitment.Commitment> commitments, Learner.Learner learner)
+        public override MatchResult Match(List<Commitment.Commitment> commitments, PriceEpisode.PriceEpisode priceEpisode)
         {
             var commitmentsToMatch = commitments.Where(c => c.Payable).ToList();
 
@@ -17,7 +17,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
                 };
             }
 
-            return ExecuteNextHandler(commitmentsToMatch, learner);
+            return ExecuteNextHandler(commitmentsToMatch, priceEpisode);
         }
     }
 }

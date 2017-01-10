@@ -24,10 +24,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
                 new CommitmentBuilder().Build()
             };
 
-            var learner = new LearnerBuilder().Build();
+            var priceEpisode = new PriceEpisodeBuilder().Build();
 
             // Act
-            var matchResult = _matcher.Match(commitments, learner);
+            var matchResult = _matcher.Match(commitments, priceEpisode);
 
             // Assert
             Assert.IsNull(matchResult.ErrorCode);
@@ -43,10 +43,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Mat
                 new CommitmentBuilder().WithCommitmentId(2).Build()
             };
 
-            var learner = new LearnerBuilder().Build();
+            var priceEpisode = new PriceEpisodeBuilder().Build();
 
             // Act
-            var matchResult = _matcher.Match(commitments, learner);
+            var matchResult = _matcher.Match(commitments, priceEpisode);
 
             // Assert
             Assert.AreEqual(DataLockErrorCodes.MultipleMatches, matchResult.ErrorCode);

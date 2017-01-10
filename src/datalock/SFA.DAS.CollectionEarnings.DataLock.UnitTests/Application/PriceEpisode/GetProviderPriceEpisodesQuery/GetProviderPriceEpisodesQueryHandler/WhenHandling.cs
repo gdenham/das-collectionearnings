@@ -1,41 +1,41 @@
 ﻿using System;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetProviderLearnersQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.PriceEpisode.GetProviderPriceEpisodesQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
-namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Learner.GetProviderLearnersQuery.GetProviderLearnersQueryHandler
+namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.PriceEpisode.GetProviderPriceEpisodesQuery.GetProviderPriceEpisodesQueryHandler
 {
     public class WhenHandling
     {
         private readonly long _ukprn = 10007459;
 
-        private Mock<ILearnerRepository> _dasLearnerRepository;
+        private Mock<IPriceEpisodeRepository> _priceEpisodeRepository;
 
-        private GetProviderLearnersQueryRequest _request;
-        private CollectionEarnings.DataLock.Application.Learner.GetProviderLearnersQuery.GetProviderLearnersQueryHandler _handler;
+        private GetProviderPriceEpisodesQueryRequest _request;
+        private CollectionEarnings.DataLock.Application.PriceEpisode.GetProviderPriceEpisodesQuery.GetProviderPriceEpisodesQueryHandler _handler;
 
         [SetUp]
         public void Arrange()
         {
-            _dasLearnerRepository = new Mock<ILearnerRepository>();
+            _priceEpisodeRepository = new Mock<IPriceEpisodeRepository>();
 
-            _request = new GetProviderLearnersQueryRequest
+            _request = new GetProviderPriceEpisodesQueryRequest
             {
                 Ukprn = _ukprn
             };
 
-            _handler = new CollectionEarnings.DataLock.Application.Learner.GetProviderLearnersQuery.GetProviderLearnersQueryHandler(_dasLearnerRepository.Object);
+            _handler = new CollectionEarnings.DataLock.Application.PriceEpisode.GetProviderPriceEpisodesQuery.GetProviderPriceEpisodesQueryHandler(_priceEpisodeRepository.Object);
         }
 
         [Test]
         public void ThenValidResponseReturnedForValidRepositoryResponse()
         {
             // Arrange
-            _dasLearnerRepository
-                .Setup(dlr => dlr.GetProviderLearners(_ukprn))
-                .Returns(new[] {new LearnerEntityBuilder().Build()});
+            _priceEpisodeRepository
+                .Setup(dlr => dlr.GetProviderPriceEpisodes(_ukprn))
+                .Returns(new[] {new PriceEpisodeEntityBuilder().Build()});
 
             // Act
             var response = _handler.Handle(_request);
@@ -51,8 +51,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.Learner.GetP
         public void ThenInvalidResponseReturnedForInvalidRepositoryResponse()
         {
             // Arrange
-            _dasLearnerRepository
-                .Setup(dlr => dlr.GetProviderLearners(_ukprn))
+            _priceEpisodeRepository
+                .Setup(dlr => dlr.GetProviderPriceEpisodes(_ukprn))
                 .Throws<Exception>();
 
             // Act

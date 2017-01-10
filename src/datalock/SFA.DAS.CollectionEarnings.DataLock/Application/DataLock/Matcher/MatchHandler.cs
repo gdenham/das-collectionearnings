@@ -12,16 +12,16 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
             NextMatchHandler = nextMatchHandler;
         }
 
-        public abstract MatchResult Match(List<Commitment.Commitment> commitments, Learner.Learner learner);
+        public abstract MatchResult Match(List<Commitment.Commitment> commitments, PriceEpisode.PriceEpisode priceEpisode);
 
-        protected MatchResult ExecuteNextHandler(List<Commitment.Commitment> commitments, Learner.Learner learner)
+        protected MatchResult ExecuteNextHandler(List<Commitment.Commitment> commitments, PriceEpisode.PriceEpisode priceEpisode)
         {
             return NextMatchHandler == null
                 ? new MatchResult
                 {
                     Commitment = commitments.SingleOrDefault()
                 }
-                : NextMatchHandler.Match(commitments, learner);
+                : NextMatchHandler.Match(commitments, priceEpisode);
         }
     }
 }

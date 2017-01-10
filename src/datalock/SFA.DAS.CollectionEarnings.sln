@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DML", "DML", "{6C9AEB38-068
 		DeployPeriodEnd\sql\dml\01 PeriodEnd.Populate.Reference.CollectionPeriods.dml.sql = DeployPeriodEnd\sql\dml\01 PeriodEnd.Populate.Reference.CollectionPeriods.dml.sql
 		DeployPeriodEnd\sql\dml\02 PeriodEnd.Populate.Reference.Providers.dml.sql = DeployPeriodEnd\sql\dml\02 PeriodEnd.Populate.Reference.Providers.dml.sql
 		DeployPeriodEnd\sql\dml\03 PeriodEnd.Populate.Reference.Commitments.dml.sql = DeployPeriodEnd\sql\dml\03 PeriodEnd.Populate.Reference.Commitments.dml.sql
-		DeployPeriodEnd\sql\dml\05 PeriodEnd.DataLock.Populate.Reference.Learners.dml.sql = DeployPeriodEnd\sql\dml\05 PeriodEnd.DataLock.Populate.Reference.Learners.dml.sql
+		DeployPeriodEnd\sql\dml\05 PeriodEnd.DataLock.Populate.Reference.DataLockPriceEpisode.dml.sql = DeployPeriodEnd\sql\dml\05 PeriodEnd.DataLock.Populate.Reference.DataLockPriceEpisode.dml.sql
 		DeployPeriodEnd\sql\dml\PeriodEnd.DataLock.Cleanup.Deds.DML.sql = DeployPeriodEnd\sql\dml\PeriodEnd.DataLock.Cleanup.Deds.DML.sql
 	EndProjectSection
 EndProject

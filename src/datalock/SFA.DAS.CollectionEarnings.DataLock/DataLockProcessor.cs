@@ -4,9 +4,9 @@ using NLog;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetProviderCommitmentsQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
-using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerCommitmentsCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetProviderLearnersQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.PriceEpisode;
+using SFA.DAS.CollectionEarnings.DataLock.Application.PriceEpisode.GetProviderPriceEpisodesQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Provider.GetProvidersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
 
@@ -40,18 +40,18 @@ namespace SFA.DAS.CollectionEarnings.DataLock
                     _logger.Info($"Performing Data Lock Validation for provider with ukprn {provider.Ukprn}.");
 
                     var commitments = ReturnProviderCommitmentsOrThrow(provider.Ukprn);
-                    var learners = ReturnValidGetProviderLearnersQueryResponseOrThrow(provider.Ukprn);
+                    var priceEpisodes = ReturnValidGetProviderPriceEpisodesQueryResponseOrThrow(provider.Ukprn);
 
-                    if (learners.HasAnyItems())
+                    if (priceEpisodes.HasAnyItems())
                     {
-                        var dataLockValidationResult = ReturnDataLockValidationResultOrThrow(commitments, learners.Items);
+                        var dataLockValidationResult = ReturnDataLockValidationResultOrThrow(commitments, priceEpisodes.Items);
 
                         WriteDataLockValidationErrorsOrThrow(dataLockValidationResult);
                         WriteDataLockMatchingLearnersAndCommitments(dataLockValidationResult);
                     }
                     else
                     {
-                        _logger.Info("No learners found.");
+                        _logger.Info("No price episodes found.");
                     }
                 }
             }
@@ -93,24 +93,24 @@ namespace SFA.DAS.CollectionEarnings.DataLock
             return commitments.Items;
         }
 
-        private GetProviderLearnersQueryResponse ReturnValidGetProviderLearnersQueryResponseOrThrow(long ukprn)
+        private GetProviderPriceEpisodesQueryResponse ReturnValidGetProviderPriceEpisodesQueryResponseOrThrow(long ukprn)
         {
-            _logger.Info($"Reading learners for provider with ukprn {ukprn}.");
+            _logger.Info($"Reading price episodes for provider with ukprn {ukprn}.");
 
-            var learnersQueryResponse = _mediator.Send(new GetProviderLearnersQueryRequest
+            var priceEpisodesQueryResponse = _mediator.Send(new GetProviderPriceEpisodesQueryRequest
             {
                 Ukprn = ukprn
             });
 
-            if (!learnersQueryResponse.IsValid)
+            if (!priceEpisodesQueryResponse.IsValid)
             {
-                throw new DataLockProcessorException(DataLockProcessorException.ErrorReadingLearnersMessage, learnersQueryResponse.Exception);
+                throw new DataLockProcessorException(DataLockProcessorException.ErrorReadingPriceEpisodesMessage, priceEpisodesQueryResponse.Exception);
             }
 
-            return learnersQueryResponse;
+            return priceEpisodesQueryResponse;
         }
 
-        private RunDataLockValidationQueryResponse ReturnDataLockValidationResultOrThrow(Commitment[] commitments, Learner[] learners)
+        private RunDataLockValidationQueryResponse ReturnDataLockValidationResultOrThrow(Commitment[] commitments, PriceEpisode[] priceEpisodes)
         {
             _logger.Info("Started Data Lock Validation.");
 
@@ -118,7 +118,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock
                 _mediator.Send(new RunDataLockValidationQueryRequest
                 {
                     Commitments = commitments,
-                    Learners = learners
+                    PriceEpisodes = priceEpisodes
                 });
 
             _logger.Info("Finished Data Lock Validation.");

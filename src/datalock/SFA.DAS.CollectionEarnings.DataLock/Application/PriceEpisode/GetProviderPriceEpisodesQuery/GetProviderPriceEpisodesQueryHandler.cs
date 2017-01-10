@@ -3,28 +3,28 @@ using System.Linq;
 using MediatR;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data;
 
-namespace SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetProviderLearnersQuery
+namespace SFA.DAS.CollectionEarnings.DataLock.Application.PriceEpisode.GetProviderPriceEpisodesQuery
 {
-    public class GetProviderLearnersQueryHandler : IRequestHandler<GetProviderLearnersQueryRequest, GetProviderLearnersQueryResponse>
+    public class GetProviderPriceEpisodesQueryHandler : IRequestHandler<GetProviderPriceEpisodesQueryRequest, GetProviderPriceEpisodesQueryResponse>
     {
-        private readonly ILearnerRepository _learnerRepository;
+        private readonly IPriceEpisodeRepository _priceEpisodeRepository;
 
-        public GetProviderLearnersQueryHandler(ILearnerRepository learnerRepository)
+        public GetProviderPriceEpisodesQueryHandler(IPriceEpisodeRepository priceEpisodeRepository)
         {
-            _learnerRepository = learnerRepository;
+            _priceEpisodeRepository = priceEpisodeRepository;
         }
 
-        public GetProviderLearnersQueryResponse Handle(GetProviderLearnersQueryRequest message)
+        public GetProviderPriceEpisodesQueryResponse Handle(GetProviderPriceEpisodesQueryRequest message)
         {
             try
             {
-                var learnerEntities = _learnerRepository.GetProviderLearners(message.Ukprn);
+                var priceEpisodeEntities = _priceEpisodeRepository.GetProviderPriceEpisodes(message.Ukprn);
 
-                return new GetProviderLearnersQueryResponse
+                return new GetProviderPriceEpisodesQueryResponse
                 {
                     IsValid = true,
-                    Items = learnerEntities?.Select(l =>
-                    new Learner
+                    Items = priceEpisodeEntities?.Select(l =>
+                    new PriceEpisode
                     {
                         Ukprn = l.Ukprn,
                         LearnerReferenceNumber = l.LearnRefNumber,
@@ -43,7 +43,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetProviderLea
             }
             catch (Exception ex)
             {
-                return new GetProviderLearnersQueryResponse
+                return new GetProviderPriceEpisodesQueryResponse
                 {
                     IsValid = false,
                     Exception = ex

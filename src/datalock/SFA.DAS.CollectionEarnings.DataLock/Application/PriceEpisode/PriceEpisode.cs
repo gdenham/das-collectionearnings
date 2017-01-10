@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SFA.DAS.CollectionEarnings.DataLock.Application.Learner
+namespace SFA.DAS.CollectionEarnings.DataLock.Application.PriceEpisode
 {
-    public class Learner
+    public class PriceEpisode
     {
         public long Ukprn { get; set; }
         public string LearnerReferenceNumber { get; set; }

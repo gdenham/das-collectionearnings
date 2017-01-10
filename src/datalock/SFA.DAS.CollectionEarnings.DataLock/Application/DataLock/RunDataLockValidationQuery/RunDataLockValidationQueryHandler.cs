@@ -45,27 +45,27 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockVa
                 var validationErrors = new ConcurrentBag<ValidationError.ValidationError>();
                 var learnerCommitments = new ConcurrentBag<LearnerCommitment>();
 
-                var learners = message.Learners.ToList();
-                var partitioner = Partitioner.Create(0, learners.Count);
+                var priceEpisodes = message.PriceEpisodes.ToList();
+                var partitioner = Partitioner.Create(0, priceEpisodes.Count);
 
                 Parallel.ForEach(partitioner, range =>
                 {
                     for (var x = range.Item1; x < range.Item2; x++)
                     {
-                        var learner = learners[x];
+                        var priceEpisode = priceEpisodes[x];
 
                         // Execute the matching chain
-                        var matchResult = _initialHandler.Match(message.Commitments.ToList(), learner);
+                        var matchResult = _initialHandler.Match(message.Commitments.ToList(), priceEpisode);
 
                         if (!string.IsNullOrEmpty(matchResult.ErrorCode))
                         {
                             validationErrors.Add(new ValidationError.ValidationError
                             {
-                                Ukprn = learner.Ukprn,
-                                LearnerReferenceNumber = learner.LearnerReferenceNumber,
-                                AimSequenceNumber = learner.AimSequenceNumber,
+                                Ukprn = priceEpisode.Ukprn,
+                                LearnerReferenceNumber = priceEpisode.LearnerReferenceNumber,
+                                AimSequenceNumber = priceEpisode.AimSequenceNumber,
                                 RuleId = matchResult.ErrorCode,
-                                PriceEpisodeIdentifier = learner.PriceEpisodeIdentifier
+                                PriceEpisodeIdentifier = priceEpisode.PriceEpisodeIdentifier
                             });
                         }
 
@@ -73,12 +73,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockVa
                         {
                             learnerCommitments.Add(new LearnerCommitment
                             {
-                                Ukprn = learner.Ukprn,
-                                LearnerReferenceNumber = learner.LearnerReferenceNumber,
-                                AimSequenceNumber = learner.AimSequenceNumber ?? -1,
+                                Ukprn = priceEpisode.Ukprn,
+                                LearnerReferenceNumber = priceEpisode.LearnerReferenceNumber,
+                                AimSequenceNumber = priceEpisode.AimSequenceNumber ?? -1,
                                 CommitmentId = matchResult.Commitment.CommitmentId,
                                 VersionId = matchResult.Commitment.VersionId,
-                                PriceEpisodeIdentifier = learner.PriceEpisodeIdentifier
+                                PriceEpisodeIdentifier = priceEpisode.PriceEpisodeIdentifier
                             });
                         }
                     }

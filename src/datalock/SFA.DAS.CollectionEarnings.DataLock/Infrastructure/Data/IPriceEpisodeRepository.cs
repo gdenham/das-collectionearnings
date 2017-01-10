@@ -2,8 +2,8 @@
 
 namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data
 {
-    public interface ILearnerRepository
+    public interface IPriceEpisodeRepository
     {
-        LearnerEntity[] GetProviderLearners(long ukprn);
+        PriceEpisodeEntity[] GetProviderPriceEpisodes(long ukprn);
     }
 }

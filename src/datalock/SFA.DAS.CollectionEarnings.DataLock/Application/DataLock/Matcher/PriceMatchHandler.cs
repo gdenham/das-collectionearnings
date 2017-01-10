@@ -5,10 +5,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
 {
     public class PriceMatchHandler : MatchHandler
     {
-        public override MatchResult Match(List<Commitment.Commitment> commitments, Learner.Learner learner)
+        public override MatchResult Match(List<Commitment.Commitment> commitments, PriceEpisode.PriceEpisode priceEpisode)
         {
-            var commitmentsToMatch = commitments.Where(c => learner.NegotiatedPrice.HasValue &&
-                                                            (long) c.NegotiatedPrice == learner.NegotiatedPrice.Value).ToList();
+            var commitmentsToMatch = commitments.Where(c => priceEpisode.NegotiatedPrice.HasValue &&
+                                                            (long) c.NegotiatedPrice == priceEpisode.NegotiatedPrice.Value).ToList();
 
             if (!commitmentsToMatch.Any())
             {
@@ -18,7 +18,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
                 };
             }
 
-            return ExecuteNextHandler(commitmentsToMatch, learner);
+            return ExecuteNextHandler(commitmentsToMatch, priceEpisode);
         }
     }
 }

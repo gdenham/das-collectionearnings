@@ -8,7 +8,7 @@ using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerCommitmentsCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetProviderLearnersQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.PriceEpisode.GetProviderPriceEpisodesQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Provider;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Provider.GetProvidersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError;
@@ -62,13 +62,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                 });
 
             _mediator
-                .Setup(m => m.Send(It.IsAny<GetProviderLearnersQueryRequest>()))
-                .Returns(new GetProviderLearnersQueryResponse
+                .Setup(m => m.Send(It.IsAny<GetProviderPriceEpisodesQueryRequest>()))
+                .Returns(new GetProviderPriceEpisodesQueryResponse
                 {
                     IsValid = true,
                     Items = new[]
                     {
-                        new LearnerBuilder().Build()
+                        new PriceEpisodeBuilder().Build()
                     }
                 });
 
@@ -127,7 +127,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         }
 
         [Test]
-        public void ThenExpectingExceptionForGetAllCommitmentsQueryFailure()
+        public void ThenExpectingExceptionForGetProviderCommitmentsQueryFailure()
         {
             // Arrange
             _mediator
@@ -144,12 +144,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         }
 
         [Test]
-        public void ThenExpectingExceptionForGetAllDasLearnersQueryFailure()
+        public void ThenExpectingExceptionForGetProviderPriceEpisodesQueryFailure()
         {
             // Arrange
             _mediator
-                .Setup(m => m.Send(It.IsAny<GetProviderLearnersQueryRequest>()))
-                .Returns(new GetProviderLearnersQueryResponse
+                .Setup(m => m.Send(It.IsAny<GetProviderPriceEpisodesQueryRequest>()))
+                .Returns(new GetProviderPriceEpisodesQueryResponse
                 {
                     IsValid = false,
                     Exception = new Exception("Error.")
@@ -157,11 +157,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
 
             // Assert
             var ex = Assert.Throws<DataLockProcessorException>(() => _processor.Process());
-            Assert.IsTrue(ex.Message.Contains(DataLockProcessorException.ErrorReadingLearnersMessage));
+            Assert.IsTrue(ex.Message.Contains(DataLockProcessorException.ErrorReadingPriceEpisodesMessage));
         }
 
         [Test]
-        public void ThenExpectingExceptionForGetDataLockFailuresQueryFailure()
+        public void ThenExpectingExceptionForRunDataLockValidationQueryFailure()
         {
             // Arrange
             _mediator

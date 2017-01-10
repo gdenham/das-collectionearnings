@@ -14,7 +14,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Tools
             "01 PeriodEnd.Populate.Reference.CollectionPeriods.dml.sql",
             "02 PeriodEnd.Populate.Reference.Providers.dml.sql",
             "03 PeriodEnd.Populate.Reference.Commitments.dml.sql",
-            "05 PeriodEnd.DataLock.Populate.Reference.Learners.dml.sql"
+            "05 PeriodEnd.DataLock.Populate.Reference.DataLockPriceEpisode.dml.sql"
         };
 
         private static readonly string[] SubmissionCopyReferenceDataScripts =

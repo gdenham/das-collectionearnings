@@ -7,13 +7,13 @@ using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerCommitmentsCommand;
-using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetProviderLearnersQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.PriceEpisode;
+using SFA.DAS.CollectionEarnings.DataLock.Application.PriceEpisode.GetProviderPriceEpisodesQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Provider;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Provider.GetProvidersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application;
-using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
 {
@@ -22,7 +22,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         private static readonly object[] EmptyItems =
         {
             new object[] {null},
-            new object[] {new Learner[] {}}
+            new object[] {new PriceEpisode[] {}}
         };
 
         private static readonly Provider[] Providers =
@@ -80,13 +80,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                 });
 
             _mediator
-                .Setup(m => m.Send(It.IsAny<GetProviderLearnersQueryRequest>()))
-                .Returns(new GetProviderLearnersQueryResponse
+                .Setup(m => m.Send(It.IsAny<GetProviderPriceEpisodesQueryRequest>()))
+                .Returns(new GetProviderPriceEpisodesQueryResponse
                 {
                     IsValid = true,
                     Items = new[]
                     {
-                        new LearnerBuilder().Build()
+                        new PriceEpisodeBuilder().Build()
                     }
                 });
 
@@ -149,7 +149,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
         }
 
         [Test]
-        public void ThenItShouldCallGetProviderLearnersQueryMultipleTimesForMultipleProviders()
+        public void ThenItShouldCallGetProviderPriceEpisodesQueryMultipleTimesForMultipleProviders()
         {
             // Arrange
 
@@ -165,9 +165,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
             _processor.Process();
 
             // Assert
-            _mediator.Verify(m => m.Send(It.IsAny<GetProviderLearnersQueryRequest>()), Times.Exactly(2));
-            _mediator.Verify(m => m.Send(It.Is<GetProviderLearnersQueryRequest>(it => it.Ukprn == Providers[0].Ukprn)), Times.Once);
-            _mediator.Verify(m => m.Send(It.Is<GetProviderLearnersQueryRequest>(it => it.Ukprn == Providers[1].Ukprn)), Times.Once);
+            _mediator.Verify(m => m.Send(It.IsAny<GetProviderPriceEpisodesQueryRequest>()), Times.Exactly(2));
+            _mediator.Verify(m => m.Send(It.Is<GetProviderPriceEpisodesQueryRequest>(it => it.Ukprn == Providers[0].Ukprn)), Times.Once);
+            _mediator.Verify(m => m.Send(It.Is<GetProviderPriceEpisodesQueryRequest>(it => it.Ukprn == Providers[1].Ukprn)), Times.Once);
         }
 
         [Test]
@@ -230,12 +230,12 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
 
         [Test]
         [TestCaseSource(nameof(EmptyItems))]
-        public void ThenNoDataLockValidationIsExecutedForGetProviderLearnersQueryResponseWithNoItems(Learner[] items)
+        public void ThenNoDataLockValidationIsExecutedForGetProviderPriceEpisodesQueryResponseWithNoItems(PriceEpisode[] items)
         {
             // Arrange
             _mediator
-                .Setup(m => m.Send(It.IsAny<GetProviderLearnersQueryRequest>()))
-                .Returns(new GetProviderLearnersQueryResponse
+                .Setup(m => m.Send(It.IsAny<GetProviderPriceEpisodesQueryRequest>()))
+                .Returns(new GetProviderPriceEpisodesQueryResponse
                 {
                     IsValid = true,
                     Items = items
@@ -246,11 +246,11 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
             _processor.Process();
 
             // Assert
-            _logger.Verify(l => l.Info(It.IsRegex("No learners found.")), Times.Once);
+            _logger.Verify(l => l.Info(It.IsRegex("No price episodes found.")), Times.Once);
         }
 
         [Test]
-        public void ThenOutputsCorrectLogMessagesForGetProviderLearnersQueryResponseWithItems()
+        public void ThenOutputsCorrectLogMessagesForGetProviderPriceEpisodesQueryResponseWithItems()
         {
             // Act
             _processor.Process();
@@ -259,7 +259,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
             _logger.Verify(l => l.Info(It.IsRegex("Started Data Lock Processor.")), Times.Once);
             _logger.Verify(l => l.Info(It.IsRegex("Performing Data Lock Validation for provider with ukprn")), Times.Once);
             _logger.Verify(l => l.Info(It.IsRegex("Reading commitments for provider with ukprn")), Times.Once);
-            _logger.Verify(l => l.Info(It.IsRegex("Reading learners for provider with ukprn")), Times.Once);
+            _logger.Verify(l => l.Info(It.IsRegex("Reading price episodes for provider with ukprn")), Times.Once);
             _logger.Verify(l => l.Info(It.IsRegex("Started Data Lock Validation.")), Times.Once);
             _logger.Verify(l => l.Info(It.IsRegex("Finished Data Lock Validation.")), Times.Once);
             _logger.Verify(l => l.Info(It.IsRegex("Started writing Data Lock Validation Errors.")), Times.Once);
@@ -268,7 +268,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
             _logger.Verify(l => l.Info(It.IsRegex("Finished writing matching Learners and Commitments.")), Times.Once);
             _logger.Verify(l => l.Info(It.IsRegex("Finished Data Lock Processor.")), Times.Once);
 
-            _logger.Verify(l => l.Info(It.IsRegex("No learners found.")), Times.Never);
+            _logger.Verify(l => l.Info(It.IsRegex("No price episodes found.")), Times.Never);
         }
     }
 }

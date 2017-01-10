@@ -5,17 +5,17 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
 {
     public class PathwayMatchHandler : MatchHandler
     {
-        public override MatchResult Match(List<Commitment.Commitment> commitments, Learner.Learner learner)
+        public override MatchResult Match(List<Commitment.Commitment> commitments, PriceEpisode.PriceEpisode priceEpisode)
         {
-            if (!learner.StandardCode.HasValue)
+            if (!priceEpisode.StandardCode.HasValue)
             {
                 var commitmentsToMatch = commitments.Where(c => c.PathwayCode.HasValue &&
-                                                                learner.PathwayCode.HasValue &&
-                                                                c.PathwayCode.Value == learner.PathwayCode.Value).ToList();
+                                                                priceEpisode.PathwayCode.HasValue &&
+                                                                c.PathwayCode.Value == priceEpisode.PathwayCode.Value).ToList();
 
                 if (commitmentsToMatch.Any())
                 {
-                    return ExecuteNextHandler(commitmentsToMatch, learner);
+                    return ExecuteNextHandler(commitmentsToMatch, priceEpisode);
                 }
 
                 return new MatchResult
@@ -24,7 +24,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
                 };
             }
 
-            return ExecuteNextHandler(commitments, learner);
+            return ExecuteNextHandler(commitments, priceEpisode);
         }
     }
 }

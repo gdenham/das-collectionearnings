@@ -10,46 +10,46 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
 {
     public class WhenHandling
     {
-        private static readonly object[] LearnersWithMismatchingUln =
+        private static readonly object[] PriceEpisodesWithMismatchingUln =
         {
-            new object[] {new LearnerBuilder().WithUln(1000000018).Build()},
-            new object[] {new LearnerBuilder().WithUln(null).Build()}
+            new object[] {new PriceEpisodeBuilder().WithUln(1000000018).Build()},
+            new object[] {new PriceEpisodeBuilder().WithUln(null).Build()}
         };
 
-        private static readonly object[] LearnersWithMismatchingFramework =
+        private static readonly object[] PriceEpisodesWithMismatchingFramework =
         {
-            new object[] {new LearnerBuilder().WithFrameworkCode(999).Build()},
-            new object[] {new LearnerBuilder().WithFrameworkCode(null).Build()}
+            new object[] {new PriceEpisodeBuilder().WithFrameworkCode(999).Build()},
+            new object[] {new PriceEpisodeBuilder().WithFrameworkCode(null).Build()}
         };
 
-        private static readonly object[] LearnersWithMismatchingProgramme =
+        private static readonly object[] PriceEpisodesWithMismatchingProgramme =
         {
-            new object[] {new LearnerBuilder().WithProgrammeType(999).Build()},
-            new object[] {new LearnerBuilder().WithProgrammeType(null).Build()}
+            new object[] {new PriceEpisodeBuilder().WithProgrammeType(999).Build()},
+            new object[] {new PriceEpisodeBuilder().WithProgrammeType(null).Build()}
         };
 
-        private static readonly object[] LearnersWithMismatchingPathway =
+        private static readonly object[] PriceEpisodesWithMismatchingPathway =
         {
-            new object[] {new LearnerBuilder().WithPathwayCode(999).Build()},
-            new object[] {new LearnerBuilder().WithPathwayCode(null).Build()}
+            new object[] {new PriceEpisodeBuilder().WithPathwayCode(999).Build()},
+            new object[] {new PriceEpisodeBuilder().WithPathwayCode(null).Build()}
         };
 
-        private static readonly object[] LearnersWithMismatchingPrice =
+        private static readonly object[] PriceEpisodesWithMismatchingPrice =
         {
-            new object[] {new LearnerBuilder().WithNegotiatedPrice(999).Build()},
-            new object[] {new LearnerBuilder().WithNegotiatedPrice(null).Build()}
+            new object[] {new PriceEpisodeBuilder().WithNegotiatedPrice(999).Build()},
+            new object[] {new PriceEpisodeBuilder().WithNegotiatedPrice(null).Build()}
         };
 
-        private static readonly object[] LearnersWithMismatchingStartDates =
+        private static readonly object[] PriceEpisodesWithMismatchingStartDates =
        {
-            new object[] {new LearnerBuilder().WithLearnStartDate(new DateTime(2016, 8, 31)).Build()}
+            new object[] {new PriceEpisodeBuilder().WithLearnStartDate(new DateTime(2016, 8, 31)).Build()}
         };
 
         private RunDataLockValidationQueryRequest _request;
         private readonly CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery.RunDataLockValidationQueryHandler _handler = new CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery.RunDataLockValidationQueryHandler();
 
         [Test]
-        public void ThenNoErrorExpectedForMatchingCommitmentAndLearnerData()
+        public void ThenNoErrorExpectedForMatchingCommitmentAndPriceEpisodeData()
         {
             // Arrange
             _request = new RunDataLockValidationQueryRequest
@@ -58,9 +58,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
                 {
                     new CommitmentBuilder().Build()
                 },
-                Learners = new[]
+                PriceEpisodes = new[]
                 {
-                    new LearnerBuilder().Build()
+                    new PriceEpisodeBuilder().Build()
                 }
             };
 
@@ -84,9 +84,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
                 {
                     new CommitmentBuilder().Build()
                 },
-                Learners = new[]
+                PriceEpisodes = new[]
                 {
-                    new LearnerBuilder().WithUkprn(10007458).Build()
+                    new PriceEpisodeBuilder().WithUkprn(10007458).Build()
                 }
             };
 
@@ -101,8 +101,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
         }
 
         [Test]
-        [TestCaseSource(nameof(LearnersWithMismatchingUln))]
-        public void ThenErrorExpectedForNoUlnMatch(CollectionEarnings.DataLock.Application.Learner.Learner dasLearner)
+        [TestCaseSource(nameof(PriceEpisodesWithMismatchingUln))]
+        public void ThenErrorExpectedForNoUlnMatch(CollectionEarnings.DataLock.Application.PriceEpisode.PriceEpisode dasLearner)
         {
             // Arrange
             _request = new RunDataLockValidationQueryRequest
@@ -111,7 +111,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
                 {
                     new CommitmentBuilder().Build()
                 },
-                Learners = new[]
+                PriceEpisodes = new[]
                 {
                     dasLearner
                 }
@@ -137,9 +137,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
                 {
                     new CommitmentBuilder().WithStandardCode(999).Build()
                 },
-                Learners = new[]
+                PriceEpisodes = new[]
                 {
-                    new LearnerBuilder().WithStandardCode(998).Build()
+                    new PriceEpisodeBuilder().WithStandardCode(998).Build()
                 }
             };
 
@@ -154,8 +154,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
         }
 
         [Test]
-        [TestCaseSource(nameof(LearnersWithMismatchingFramework))]
-        public void ThenErrorExpectedForNoFrameworkMatch(CollectionEarnings.DataLock.Application.Learner.Learner dasLearner)
+        [TestCaseSource(nameof(PriceEpisodesWithMismatchingFramework))]
+        public void ThenErrorExpectedForNoFrameworkMatch(CollectionEarnings.DataLock.Application.PriceEpisode.PriceEpisode dasLearner)
         {
             // Arrange
             _request = new RunDataLockValidationQueryRequest
@@ -164,7 +164,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
                 {
                     new CommitmentBuilder().Build()
                 },
-                Learners = new[]
+                PriceEpisodes = new[]
                 {
                     dasLearner
                 }
@@ -181,8 +181,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
         }
 
         [Test]
-        [TestCaseSource(nameof(LearnersWithMismatchingProgramme))]
-        public void ThenErrorExpectedForNoProgrammeMatch(CollectionEarnings.DataLock.Application.Learner.Learner dasLearner)
+        [TestCaseSource(nameof(PriceEpisodesWithMismatchingProgramme))]
+        public void ThenErrorExpectedForNoProgrammeMatch(CollectionEarnings.DataLock.Application.PriceEpisode.PriceEpisode dasLearner)
         {
             // Arrange
             _request = new RunDataLockValidationQueryRequest
@@ -191,7 +191,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
                 {
                     new CommitmentBuilder().Build()
                 },
-                Learners = new[]
+                PriceEpisodes = new[]
                 {
                     dasLearner
                 }
@@ -208,8 +208,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
         }
 
         [Test]
-        [TestCaseSource(nameof(LearnersWithMismatchingPathway))]
-        public void ThenErrorExpectedForNoPathwayMatch(CollectionEarnings.DataLock.Application.Learner.Learner dasLearner)
+        [TestCaseSource(nameof(PriceEpisodesWithMismatchingPathway))]
+        public void ThenErrorExpectedForNoPathwayMatch(CollectionEarnings.DataLock.Application.PriceEpisode.PriceEpisode dasLearner)
         {
             // Arrange
             _request = new RunDataLockValidationQueryRequest
@@ -218,7 +218,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
                 {
                     new CommitmentBuilder().Build()
                 },
-                Learners = new[]
+                PriceEpisodes = new[]
                 {
                     dasLearner
                 }
@@ -235,8 +235,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
         }
 
         [Test]
-        [TestCaseSource(nameof(LearnersWithMismatchingPrice))]
-        public void ThenErrorExpectedForNoPriceMatch(CollectionEarnings.DataLock.Application.Learner.Learner dasLearner)
+        [TestCaseSource(nameof(PriceEpisodesWithMismatchingPrice))]
+        public void ThenErrorExpectedForNoPriceMatch(CollectionEarnings.DataLock.Application.PriceEpisode.PriceEpisode dasLearner)
         {
             // Arrange
             _request = new RunDataLockValidationQueryRequest
@@ -245,7 +245,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
                 {
                     new CommitmentBuilder().Build()
                 },
-                Learners = new[]
+                PriceEpisodes = new[]
                 {
                     dasLearner
                 }
@@ -262,8 +262,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
         }
 
         [Test]
-        [TestCaseSource(nameof(LearnersWithMismatchingStartDates))]
-        public void ThenErrorExpectedForNoStartDateOrEarlierStartDate(CollectionEarnings.DataLock.Application.Learner.Learner dasLearner)
+        [TestCaseSource(nameof(PriceEpisodesWithMismatchingStartDates))]
+        public void ThenErrorExpectedForNoStartDateOrEarlierStartDate(CollectionEarnings.DataLock.Application.PriceEpisode.PriceEpisode dasLearner)
         {
             // Arrange
             _request = new RunDataLockValidationQueryRequest
@@ -272,7 +272,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
                 {
                     new CommitmentBuilder().Build()
                 },
-                Learners = new[]
+                PriceEpisodes = new[]
                 {
                     dasLearner
                 }
@@ -301,9 +301,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
             _request = new RunDataLockValidationQueryRequest
             {
                 Commitments = commitments,
-                Learners = new[]
+                PriceEpisodes = new[]
                 {
-                    new LearnerBuilder().Build()
+                    new PriceEpisodeBuilder().Build()
                 }
             };
 
@@ -318,7 +318,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
         }
 
         [Test]
-        public void ThenMultipleErrorsExpectedForMultipleLearnersProvided()
+        public void ThenMultipleErrorsExpectedForMultiplePriceEpisodesProvided()
         {
             // Arrange
             var commitments = new[]
@@ -326,28 +326,28 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
                 new CommitmentBuilder().Build()
             };
 
-            var learners = new[]
+            var priceEpisodes = new[]
             {
-                new LearnerBuilder().Build(),
-                new LearnerBuilder().WithLearnRefNumber("Lrn002").WithUkprn(10007458).Build(),
-                new LearnerBuilder().WithLearnRefNumber("Lrn003").WithUln(1000000018).Build(),
-                new LearnerBuilder().WithLearnRefNumber("Lrn004").WithUln(null).Build(),
-                new LearnerBuilder().WithLearnRefNumber("Lrn005").WithStandardCode(998).Build(),
-                new LearnerBuilder().WithLearnRefNumber("Lrn006").WithFrameworkCode(999).Build(),
-                new LearnerBuilder().WithLearnRefNumber("Lrn007").WithFrameworkCode(null).Build(),
-                new LearnerBuilder().WithLearnRefNumber("Lrn008").WithProgrammeType(999).Build(),
-                new LearnerBuilder().WithLearnRefNumber("Lrn009").WithProgrammeType(null).Build(),
-                new LearnerBuilder().WithLearnRefNumber("Lrn010").WithPathwayCode(999).Build(),
-                new LearnerBuilder().WithLearnRefNumber("Lrn011").WithPathwayCode(null).Build(),
-                new LearnerBuilder().WithLearnRefNumber("Lrn012").WithNegotiatedPrice(999).Build(),
-                new LearnerBuilder().WithLearnRefNumber("Lrn013").WithNegotiatedPrice(null).Build(),
-                new LearnerBuilder().WithLearnRefNumber("Lrn014").WithLearnStartDate(new DateTime(2016, 8, 31)).Build()
+                new PriceEpisodeBuilder().Build(),
+                new PriceEpisodeBuilder().WithLearnRefNumber("Lrn002").WithUkprn(10007458).Build(),
+                new PriceEpisodeBuilder().WithLearnRefNumber("Lrn003").WithUln(1000000018).Build(),
+                new PriceEpisodeBuilder().WithLearnRefNumber("Lrn004").WithUln(null).Build(),
+                new PriceEpisodeBuilder().WithLearnRefNumber("Lrn005").WithStandardCode(998).Build(),
+                new PriceEpisodeBuilder().WithLearnRefNumber("Lrn006").WithFrameworkCode(999).Build(),
+                new PriceEpisodeBuilder().WithLearnRefNumber("Lrn007").WithFrameworkCode(null).Build(),
+                new PriceEpisodeBuilder().WithLearnRefNumber("Lrn008").WithProgrammeType(999).Build(),
+                new PriceEpisodeBuilder().WithLearnRefNumber("Lrn009").WithProgrammeType(null).Build(),
+                new PriceEpisodeBuilder().WithLearnRefNumber("Lrn010").WithPathwayCode(999).Build(),
+                new PriceEpisodeBuilder().WithLearnRefNumber("Lrn011").WithPathwayCode(null).Build(),
+                new PriceEpisodeBuilder().WithLearnRefNumber("Lrn012").WithNegotiatedPrice(999).Build(),
+                new PriceEpisodeBuilder().WithLearnRefNumber("Lrn013").WithNegotiatedPrice(null).Build(),
+                new PriceEpisodeBuilder().WithLearnRefNumber("Lrn014").WithLearnStartDate(new DateTime(2016, 8, 31)).Build()
             };
 
             _request = new RunDataLockValidationQueryRequest
             {
                 Commitments = commitments,
-                Learners = learners
+                PriceEpisodes = priceEpisodes
             };
 
             // Act
@@ -360,10 +360,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
             Assert.AreEqual(1, response.LearnerCommitments.Count(l =>
                                                                     l.CommitmentId == commitments[0].CommitmentId &&
                                                                     l.VersionId == commitments[0].VersionId &&
-                                                                    l.Ukprn == learners[0].Ukprn &&
-                                                                    l.LearnerReferenceNumber == learners[0].LearnerReferenceNumber &&
-                                                                    learners[0].AimSequenceNumber.HasValue &&
-                                                                    l.AimSequenceNumber == learners[0].AimSequenceNumber.Value));
+                                                                    l.Ukprn == priceEpisodes[0].Ukprn &&
+                                                                    l.LearnerReferenceNumber == priceEpisodes[0].LearnerReferenceNumber &&
+                                                                    priceEpisodes[0].AimSequenceNumber.HasValue &&
+                                                                    l.AimSequenceNumber == priceEpisodes[0].AimSequenceNumber.Value));
         }
 
         [Test]
@@ -380,9 +380,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.DataLock.Run
                 {
                     new CommitmentBuilder().WithPaymentStatus(notPayablePaymentStatus).Build()
                 },
-                Learners = new[]
+                PriceEpisodes = new[]
                 {
-                    new LearnerBuilder().Build()
+                    new PriceEpisodeBuilder().Build()
                 }
             };
 

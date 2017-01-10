@@ -5,13 +5,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.Matcher
 {
     public class UlnMatchHandler : MatchHandler
     {
-        public override MatchResult Match(List<Commitment.Commitment> commitments, Learner.Learner learner)
+        public override MatchResult Match(List<Commitment.Commitment> commitments, PriceEpisode.PriceEpisode priceEpisode)
         {
-            var commitmentsToMatch = commitments.Where(c => learner.Uln.HasValue && c.Uln == learner.Uln.Value).ToList();
+            var commitmentsToMatch = commitments.Where(c => priceEpisode.Uln.HasValue && c.Uln == priceEpisode.Uln.Value).ToList();
 
             if (commitmentsToMatch.Any())
             {
-                return ExecuteNextHandler(commitmentsToMatch, learner);
+                return ExecuteNextHandler(commitmentsToMatch, priceEpisode);
             }
 
             return new MatchResult

@@ -1,7 +1,7 @@
-TRUNCATE TABLE [Reference].[Learners]
+TRUNCATE TABLE [Reference].[DataLockPriceEpisode]
 GO
 
-INSERT INTO [Reference].[Learners]
+INSERT INTO [Reference].[DataLockPriceEpisode]
 	SELECT
 		l.[Ukprn],
 		l.[LearnRefNumber] AS [LearnRefNumber],

@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities
 {
-    public class LearnerEntity
+    public class PriceEpisodeEntity
     {
         public long Ukprn { get; set; }
         public string LearnRefNumber { get; set; }

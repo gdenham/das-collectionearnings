@@ -3,10 +3,10 @@ using SFA.DAS.Payments.DCFS.Infrastructure.Data;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories
 {
-    public class LearnerRepository : DcfsRepository, ILearnerRepository
+    public class PriceEpisodeRepository : DcfsRepository, IPriceEpisodeRepository
     {
-        private const string LearnerSource = "DataLock.vw_DasLearner";
-        private const string LearnerColumns = "Ukprn," +
+        private const string PriceEpisodeSource = "DataLock.vw_PriceEpisode";
+        private const string PriceEpisodeColumns = "Ukprn," +
                                               "LearnRefNumber," +
                                               "Uln," +
                                               "NiNumber," +
@@ -18,17 +18,17 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories
                                               "LearnStartDate," +
                                               "NegotiatedPrice, " +
                                               "PriceEpisodeIdentifier";
-        private const string SelectLearners = "SELECT " + LearnerColumns + " FROM " + LearnerSource;
-        private const string SelectProviderLearners = SelectLearners + " WHERE Ukprn = @Ukprn";
+        private const string SelectPriceEpisodes = "SELECT " + PriceEpisodeColumns + " FROM " + PriceEpisodeSource;
+        private const string SelectProviderPriceEpisodes = SelectPriceEpisodes + " WHERE Ukprn = @Ukprn";
 
-        public LearnerRepository(string connectionString)
+        public PriceEpisodeRepository(string connectionString)
             : base(connectionString)
         {
         }
 
-        public LearnerEntity[] GetProviderLearners(long ukprn)
+        public PriceEpisodeEntity[] GetProviderPriceEpisodes(long ukprn)
         {
-            return Query<LearnerEntity>(SelectProviderLearners, new { ukprn });
+            return Query<PriceEpisodeEntity>(SelectProviderPriceEpisodes, new { ukprn });
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
-using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
+using SFA.DAS.CollectionEarnings.DataLock.Application.PriceEpisode;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application
 {
-    public class LearnerBuilder : IBuilder<Learner>
+    public class PriceEpisodeBuilder : IBuilder<PriceEpisode>
     {
         private long _ukprn = 10007459;
         private string _learnRefNumber = "Lrn001";
@@ -17,9 +17,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application
         private long? _negotiatedPrice = 15000;
         private DateTime _learnStartDate = new DateTime(2016, 9, 1);
 
-        public Learner Build()
+        public PriceEpisode Build()
         {
-            return new Learner
+            return new PriceEpisode
             {
                 Ukprn = _ukprn,
                 LearnerReferenceNumber = _learnRefNumber,
@@ -35,77 +35,77 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application
             };
         }
 
-        public LearnerBuilder WithUkprn(long ukprn)
+        public PriceEpisodeBuilder WithUkprn(long ukprn)
         {
             _ukprn = ukprn;
 
             return this;
         }
 
-        public LearnerBuilder WithLearnRefNumber(string learnRefNumber)
+        public PriceEpisodeBuilder WithLearnRefNumber(string learnRefNumber)
         {
             _learnRefNumber = learnRefNumber;
 
             return this;
         }
 
-        public LearnerBuilder WithUln(long? uln)
+        public PriceEpisodeBuilder WithUln(long? uln)
         {
             _uln = uln;
 
             return this;
         }
 
-        public LearnerBuilder WithNiNumber(string niNumber)
+        public PriceEpisodeBuilder WithNiNumber(string niNumber)
         {
             _niNumber = niNumber;
 
             return this;
         }
 
-        public LearnerBuilder WithAimSeqNumber(long? aimseqNumber)
+        public PriceEpisodeBuilder WithAimSeqNumber(long? aimseqNumber)
         {
             _aimSeqNumber = aimseqNumber;
 
             return this;
         }
 
-        public LearnerBuilder WithStandardCode(long? standardCode)
+        public PriceEpisodeBuilder WithStandardCode(long? standardCode)
         {
             _standardCode = standardCode;
 
             return this;
         }
 
-        public LearnerBuilder WithProgrammeType(long? programmeType)
+        public PriceEpisodeBuilder WithProgrammeType(long? programmeType)
         {
             _programmeType = programmeType;
 
             return this;
         }
 
-        public LearnerBuilder WithFrameworkCode(long? frameworkCode)
+        public PriceEpisodeBuilder WithFrameworkCode(long? frameworkCode)
         {
             _frameworkCode = frameworkCode;
 
             return this;
         }
 
-        public LearnerBuilder WithPathwayCode(long? pathwayCode)
+        public PriceEpisodeBuilder WithPathwayCode(long? pathwayCode)
         {
             _pwayCode = pathwayCode;
 
             return this;
         }
 
-        public LearnerBuilder WithNegotiatedPrice(long? negotiatedPrice)
+        public PriceEpisodeBuilder WithNegotiatedPrice(long? negotiatedPrice)
         {
             _negotiatedPrice = negotiatedPrice;
 
             return this;
         }
 
-        public LearnerBuilder WithLearnStartDate(DateTime learnStartDate)
+        public PriceEpisodeBuilder WithLearnStartDate(DateTime learnStartDate)
         {
             _learnStartDate = learnStartDate;
 
