@@ -84,5 +84,32 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             Assert.IsNotNull(response);
             Assert.AreEqual(2, response.Length);
         }
+
+        [Test]
+        public void ThenLatestVersionOfACommitmentIsReturnedForACommitmentWithMultipleIdenticalVersions()
+        {
+            // Arrange
+            var commitments = new[]
+            {
+                new CommitmentEntityBuilder().Build(),
+                new CommitmentEntityBuilder().WithVersionId(2).Build(),
+                new CommitmentEntityBuilder().WithVersionId(3).Build(),
+                new CommitmentEntityBuilder().WithVersionId(4).Build()
+            };
+
+            TestDataHelper.AddCommitment(commitments[0]);
+            TestDataHelper.AddCommitment(commitments[1]);
+            TestDataHelper.AddCommitment(commitments[2]);
+            TestDataHelper.AddCommitment(commitments[3]);
+            TestDataHelper.CopyReferenceData();
+
+            // Act
+            var response = _commitmentRepository.GetProviderCommitments(_ukprn);
+
+            // Assert
+            Assert.IsNotNull(response);
+            Assert.AreEqual(1, response.Length);
+            Assert.AreEqual(4, response[0].VersionId);
+        }
     }
 }
