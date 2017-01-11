@@ -33,7 +33,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
                 new ValidationErrorBuilder().WithAimSeqNumber(null).Build(),
 
                 new ValidationErrorBuilder().WithRuleId(string.Empty).Build(),
-                new ValidationErrorBuilder().WithRuleId(null).Build()
+                new ValidationErrorBuilder().WithRuleId(null).Build(),
+
+                new ValidationErrorBuilder().WithPriceEpisodeIdentifier("A").Build()
             };
 
             // Act
@@ -43,7 +45,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             var errors = TestDataHelper.GetValidationErrors();
 
             Assert.IsNotNull(errors);
-            Assert.AreEqual(7, errors.Length);
+            Assert.AreEqual(8, errors.Length);
         }
     }
 }

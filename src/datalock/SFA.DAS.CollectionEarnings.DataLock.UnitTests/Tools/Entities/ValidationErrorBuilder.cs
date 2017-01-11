@@ -9,6 +9,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
         private string _learnRefNumber = "Lrn001";
         private long? _aimSeqNumber = 1;
         private string _ruleId = DataLockErrorCodes.MismatchingUkprn;
+        private string _priceEpisodeIdentifier = "27-25-2016-09-01";
 
         public ValidationErrorEntity Build()
         {
@@ -17,7 +18,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
                 Ukprn = _ukprn,
                 LearnRefNumber = _learnRefNumber,
                 AimSeqNumber = _aimSeqNumber,
-                RuleId = _ruleId
+                RuleId = _ruleId,
+                PriceEpisodeIdentifier=_priceEpisodeIdentifier
             };
         }
 
@@ -45,6 +47,13 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
         public ValidationErrorBuilder WithRuleId(string ruleId)
         {
             _ruleId = ruleId;
+
+            return this;
+        }
+
+        public ValidationErrorBuilder WithPriceEpisodeIdentifier(string priceEpisodeIdentifier)
+        {
+            _priceEpisodeIdentifier = priceEpisodeIdentifier;
 
             return this;
         }

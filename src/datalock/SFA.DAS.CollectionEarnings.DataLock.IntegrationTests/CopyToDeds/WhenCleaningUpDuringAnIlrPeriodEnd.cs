@@ -19,7 +19,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.CopyToDeds
         }
 
         [Test]
-        public void ThenExistingErrorsAreDeletedForTheCurrentukprn()
+        public void ThenExistingErrorsAreDeletedForTheCurrentUkprn()
         {
             // Act
             TestDataHelper.PeriodEndExecuteScript(@"Deds Cleanup\PeriodEnd.DataLock.Cleanup.Deds.DML.sql", true);
@@ -32,7 +32,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.CopyToDeds
         }
 
         [Test]
-        public void ThenExistingMatchesAreDeletedForTheCurrentukprn()
+        public void ThenExistingMatchesAreDeletedForTheCurrentUkprn()
         {
             // Act
             TestDataHelper.PeriodEndExecuteScript(@"Deds Cleanup\PeriodEnd.DataLock.Cleanup.Deds.DML.sql", true);

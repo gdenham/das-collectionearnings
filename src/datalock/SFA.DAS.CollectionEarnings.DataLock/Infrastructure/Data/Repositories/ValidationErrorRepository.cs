@@ -6,7 +6,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories
     public class ValidationErrorRepository : DcfsRepository, IValidationErrorRepository
     {
         private const string ValidationErrorDestination = "DataLock.ValidationError";
-        private const string AddValidationErrorCommand = "INSERT INTO " + ValidationErrorDestination + " (Ukprn, LearnRefNumber, AimSeqNumber, RuleId) VALUES (@Ukprn, @LearnRefNumber, @AimSeqNumber, @RuleId)";
+        private const string AddValidationErrorCommand = "INSERT INTO " + ValidationErrorDestination +
+                                                        " (Ukprn, LearnRefNumber, AimSeqNumber, RuleId, PriceEpisodeIdentifier)" +
+                                                        " VALUES (@Ukprn, @LearnRefNumber, @AimSeqNumber, @RuleId,@PriceEpisodeIdentifier)";
 
         public ValidationErrorRepository(string connectionString)
             : base(connectionString)
@@ -20,7 +22,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories
                 Ukprn = validationError.Ukprn,
                 LearnRefNumber = validationError.LearnRefNumber,
                 AimSeqNumber = validationError.AimSeqNumber,
-                RuleId = validationError.RuleId
+                RuleId = validationError.RuleId,
+                PriceEpisodeIdentifier = validationError.PriceEpisodeIdentifier
             });
         }
 

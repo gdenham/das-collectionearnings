@@ -1,14 +1,25 @@
 ﻿using System;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorCommand;
 using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data;
-using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
+using SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities;
 
 namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.ValidationError.AddValidationErrorCommand.AddValidationErrorCommandHandler
 {
     public class WhenHandling
     {
+        private static readonly CollectionEarnings.DataLock.Application.ValidationError.ValidationError ValidationError
+            = new CollectionEarnings.DataLock.Application.ValidationError.ValidationError
+            {
+                Ukprn = 10007459,
+                LearnerReferenceNumber = "Lrn001",
+                AimSequenceNumber = 1,
+                RuleId = DataLockErrorCodes.MismatchingUkprn,
+                PriceEpisodeIdentifier = "20-25-01/08/2016"
+            };
+
         private Mock<IValidationErrorRepository> _validationErrorRepository;
 
         private AddValidationErrorCommandRequest _request;
@@ -21,7 +32,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.ValidationEr
 
             _request = new AddValidationErrorCommandRequest
             {
-                ValidationError = new ValidationErrorBuilder().Build()
+                ValidationError = ValidationError
             };
 
             _handler = new CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorCommand.AddValidationErrorCommandHandler(_validationErrorRepository.Object);
@@ -30,10 +41,6 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.ValidationEr
         [Test]
         public void ThenSuccessfullForValidRepositoryResponse()
         {
-            // Arrange
-            _validationErrorRepository
-                .Setup(ver => ver.AddValidationError(It.IsAny<Infrastructure.Data.Entities.ValidationErrorEntity>()));
-
             // Act
             var response = _handler.Handle(_request);
 
@@ -42,15 +49,34 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Application.ValidationEr
         }
 
         [Test]
+        public void ThenItShouldWriteTheValidationErrorToTheRepository()
+        {
+            // Act
+            _handler.Handle(_request);
+
+            // Assert
+            _validationErrorRepository.Verify(r => r.AddValidationError(It.Is<ValidationErrorEntity>(ve => ValidationErrorsMatch(ve, ValidationError))));
+        }
+
+        [Test]
         public void ThenExceptionIsThrownForInvalidRepositoryResponse()
         {
             // Arrange
             _validationErrorRepository
-                .Setup(ver => ver.AddValidationError(It.IsAny<Infrastructure.Data.Entities.ValidationErrorEntity>()))
-                .Throws(new Exception("Exception while writing validation error."));
+                .Setup(ver => ver.AddValidationError(It.IsAny<ValidationErrorEntity>()))
+                .Throws<Exception>();
 
             // Assert
             Assert.Throws<Exception>(() => _handler.Handle(_request));
+        }
+
+        private bool ValidationErrorsMatch(ValidationErrorEntity entity, CollectionEarnings.DataLock.Application.ValidationError.ValidationError validationError)
+        {
+            return entity.Ukprn == validationError.Ukprn &&
+                   entity.LearnRefNumber == validationError.LearnerReferenceNumber &&
+                   entity.AimSeqNumber == validationError.AimSequenceNumber &&
+                   entity.RuleId == validationError.RuleId &&
+                   entity.PriceEpisodeIdentifier == validationError.PriceEpisodeIdentifier;
         }
     }
 }

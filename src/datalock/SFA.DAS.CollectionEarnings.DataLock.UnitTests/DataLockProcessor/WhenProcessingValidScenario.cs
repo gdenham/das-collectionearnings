@@ -3,12 +3,14 @@ using Moq;
 using NLog;
 using NUnit.Framework;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Commitment.GetProviderCommitmentsQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock;
 using SFA.DAS.CollectionEarnings.DataLock.Application.DataLock.RunDataLockValidationQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.AddLearnerCommitmentsCommand;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Learner.GetProviderLearnersQuery;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Provider;
 using SFA.DAS.CollectionEarnings.DataLock.Application.Provider.GetProvidersQuery;
+using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError;
 using SFA.DAS.CollectionEarnings.DataLock.Application.ValidationError.AddValidationErrorsCommand;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Application;
 using SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities;
@@ -95,7 +97,14 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.DataLockProcessor
                     IsValid = true,
                     ValidationErrors = new[]
                     {
-                        new ValidationErrorBuilder().Build()
+                        new ValidationError
+                        {
+                            Ukprn = 10007459,
+                            LearnerReferenceNumber = "Lrn001",
+                            AimSequenceNumber = 1,
+                            RuleId = DataLockErrorCodes.MismatchingUkprn,
+                            PriceEpisodeIdentifier = "20-25-01/08/2016"
+                        }
                     },
                     LearnerCommitments = new[]
                     {

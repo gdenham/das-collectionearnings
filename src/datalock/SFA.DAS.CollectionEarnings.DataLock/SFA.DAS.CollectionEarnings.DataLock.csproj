@@ -90,6 +90,7 @@
     <Compile Include="Application\DataLock\Matcher\StartDateMatcher.cs" />
     <Compile Include="Application\DataLock\Matcher\UkprnMatchHandler.cs" />
     <Compile Include="Application\DataLock\Matcher\UlnMatchHandler.cs" />
+    <Compile Include="Application\ValidationError\ValidationError.cs" />
     <Compile Include="Application\Learner\AddLearnerCommitmentsCommand\AddLearnerCommitmentsCommandHandler.cs" />
     <Compile Include="Application\Learner\AddLearnerCommitmentsCommand\AddLearnerCommitmentsCommandRequest.cs" />
     <Compile Include="Application\Learner\Learner.cs" />
