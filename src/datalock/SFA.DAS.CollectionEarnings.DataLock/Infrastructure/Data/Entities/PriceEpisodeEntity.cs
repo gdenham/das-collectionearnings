@@ -14,7 +14,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Entities
         public long? FrameworkCode { get; set; }
         public long? PathwayCode { get; set; }
         public long? NegotiatedPrice { get; set; }
-        public DateTime LearnStartDate { get; set; }
+        public DateTime StartDate { get; set; }
         public string PriceEpisodeIdentifier { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

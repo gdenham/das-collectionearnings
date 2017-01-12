@@ -15,9 +15,10 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Infrastructure.Data.Repositories
                                               "ProgrammeType," +
                                               "FrameworkCode," +
                                               "PathwayCode," +
-                                              "LearnStartDate," +
-                                              "NegotiatedPrice, " +
-                                              "PriceEpisodeIdentifier";
+                                              "StartDate," +
+                                              "NegotiatedPrice," +
+                                              "PriceEpisodeIdentifier," +
+                                              "EndDate";
         private const string SelectPriceEpisodes = "SELECT " + PriceEpisodeColumns + " FROM " + PriceEpisodeSource;
         private const string SelectProviderPriceEpisodes = SelectPriceEpisodes + " WHERE Ukprn = @Ukprn";
 

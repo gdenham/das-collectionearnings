@@ -12,9 +12,10 @@ INSERT INTO [Reference].[DataLockPriceEpisode]
 		ld.[ProgType] AS [ProgrammeType],
 		ld.[FworkCode] AS [FrameworkCode],
 		ld.[PwayCode] AS [PathwayCode],
-		ape.[EpisodeEffectiveTNPStartDate] AS [LearnStartDate],
+		ape.[EpisodeEffectiveTNPStartDate] AS [StartDate],
 		ape.[PriceEpisodeTotalTNPPrice] AS [NegotiatedPrice],
-		ape.[PriceEpisodeIdentifier]
+		ape.[PriceEpisodeIdentifier],
+		COALESCE(ape.[PriceEpisodeActualEndDate], ape.[PriceEpisodePlannedEndDate]) AS [EndDate]
 	FROM ${ILR_Deds.FQ}.[Rulebase].[AEC_ApprenticeshipPriceEpisode] ape
 		JOIN ${ILR_Deds.FQ}.[Valid].[Learner] l ON ape.[Ukprn] = l.[Ukprn]
 			AND ape.[LearnRefNumber] = l.[LearnRefNumber]

@@ -31,7 +31,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.UnitTests.Tools.Entities
                 FrameworkCode = _frameworkCode,
                 PathwayCode = _pwayCode,
                 NegotiatedPrice = _negotiatedPrice,
-                LearnStartDate = _learnStartDate
+                StartDate = _learnStartDate
             };
         }
 

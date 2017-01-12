@@ -74,8 +74,8 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             // Assert
             Assert.IsNotNull(priceEpisodes);
             Assert.AreEqual(2, priceEpisodes.Length);
-            Assert.AreEqual(1, priceEpisodes.Count(l => l.LearnStartDate == new DateTime(2017, 8, 1)));
-            Assert.AreEqual(1, priceEpisodes.Count(l => l.LearnStartDate == new DateTime(2017, 11, 1)));
+            Assert.AreEqual(1, priceEpisodes.Count(l => l.StartDate == new DateTime(2017, 8, 1)));
+            Assert.AreEqual(1, priceEpisodes.Count(l => l.StartDate == new DateTime(2017, 11, 1)));
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace SFA.DAS.CollectionEarnings.DataLock.IntegrationTests.Infrastructure.Da
             // Assert
             Assert.IsNotNull(priceEpisodes);
             Assert.AreEqual(1, priceEpisodes.Length);
-            Assert.AreEqual(1, priceEpisodes.Count(l => l.LearnStartDate == new DateTime(2017, 8, 1)));
+            Assert.AreEqual(1, priceEpisodes.Count(l => l.StartDate == new DateTime(2017, 8, 1)));
         }
     }
 }

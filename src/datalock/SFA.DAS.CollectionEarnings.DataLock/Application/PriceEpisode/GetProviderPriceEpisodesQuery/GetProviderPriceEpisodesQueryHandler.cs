@@ -36,8 +36,9 @@ namespace SFA.DAS.CollectionEarnings.DataLock.Application.PriceEpisode.GetProvid
                         FrameworkCode = l.FrameworkCode,
                         PathwayCode = l.PathwayCode,
                         NegotiatedPrice = l.NegotiatedPrice,
-                        LearningStartDate = l.LearnStartDate,
-                        PriceEpisodeIdentifier = l.PriceEpisodeIdentifier
+                        StartDate = l.StartDate,
+                        PriceEpisodeIdentifier = l.PriceEpisodeIdentifier,
+                        EndDate = l.EndDate
                     }).ToArray()
                 };
             }
